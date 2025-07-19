@@ -8,11 +8,14 @@
   <link rel="icon" href="./images/yinyang.ico" type="image/x-icon">
   <style>
     html {
-      font-size: 10px;
+      font-size: 20px;
     }
     /* ===== 基础 ===== */
     *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      line-height: 1.5;
+    }
 
     /* ===== 整页网格 ===== */
     .page{
@@ -50,7 +53,7 @@
       display:grid;
       grid-auto-flow:column;                /* 横向排列 */
       gap:6rem;
-      height:6rem;
+      height:3rem;
       align-items:center;
       list-style:none;
       justify-content:center;   /* ← 让所有栏目在可用宽度里居中 */
@@ -107,8 +110,54 @@
       display:grid;
       gap:12px;
     }
+
+
     .card h3{margin:0;font-size:20px;}
-    .card p{margin:0;color:#555;line-height:1.6;}
+    .card p{margin:0;color:#555;line-height:2;}
+
+    .team-member {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .team-member img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .team-member .info h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .team-member .info p {
+      margin: 0;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* 响应式小屏处理：上下结构 */
+    @media (max-width: 600px) {
+      .team-member {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .team-member img {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+      }
+
+      .team-member .info {
+        padding-top: 12px;
+      }
+    }
+
+    
   </style>
 </head>
 <body>
@@ -154,10 +203,91 @@
       <!-- ① 每个 section 都是一页内容；默认只显示 .active -->
       <section id="homeContainer" class="content-section active">
         <!-- 随便放些占位卡片 -->
-        <div class="card"><h3>文章标题 1</h3><p>这里是一段示例文字，用来测试布局效果。</p></div>
-        <div class="card"><h3>文章标题 2</h3><p>「CSS Grid + sticky」让布局更优雅。</p></div>
-        <div class="card"><h3>文章标题 3</h3><p>内容随意增减，网格会自动流式排布。</p></div>
-        <div class="card"><h3>文章标题 4</h3><p>再多放几条数据也不怕。</p></div>
+        <div class="card"><h3>第一环节：确认彼此意愿（誓言）</h3>
+          <p>司仪：</p>
+          <p></p>
+          <p>各位亲朋好友，今天是一个特别的日子，</p>
+          <p>我们在这里相聚，共同见证一段真挚的爱情，走入婚姻的殿堂。</p>
+          <p></p>
+          <p>婚姻，是爱情最美的归宿，是责任与陪伴的开始。</p>
+          <p>在正式进入这段旅程之前，我将向这对新人，郑重地提问：</p>
+          <p></p>
+          <p>请新郎 [杜亚楠] 听好——</p>
+          <p></p>
+          <p>在未来漫长的人生旅途中，</p>
+          <p>你愿意娶 [蔡媛媛] 为你的合法妻子，</p>
+          <p>无论是健康还是疾病、富有或贫穷、顺境或逆境，</p>
+          <p>都始终深爱她、尊重她、支持她、陪伴她，</p>
+          <p>不离不弃，直到生命尽头吗？</p>
+          <p></p>
+          <p>（等待新郎回答：“我愿意”）</p>
+          <p></p>
+          <p>感谢你坚定的回答，这不仅是对她的承诺，更是对未来的宣誓。</p>
+          <p></p>
+          <p></p>请新娘 [蔡媛媛] 听好——
+          <p></p>
+          <p>在未来共同走过的岁月里，</p>
+          <p>你愿意嫁给 [杜亚楠] 为你的合法丈夫，</p>
+          <p>无论风雨还是阳光，喜悦或困难，</p>
+          <p>都与你的爱人并肩而立、同心同行、彼此扶持，</p>
+          <p>以全部的真心，守护这份爱情，直到白头吗？</p>
+          <p></p>
+          <p>（等待新娘回答：“我愿意”）</p>
+          <p></p>
+          <p>非常好，两声“我愿意”，胜过千言万语，</p>
+          <p>是对彼此、对亲友、对未来最庄严的承诺。</p>
+          <p>此刻起，你们不仅是爱人，更是终身的伴侣。</p>
+        </div>
+        <div class="card"><h3>第二环节：交换戒指</h3>
+          <p>司仪：</p>
+<p></p>
+          <p>接下来，是我们今天最神圣的时刻之一 —— 交换戒指。</p>
+<p></p>
+          <p>戒指是一种无声的语言，</p>
+          <p>它没有起点，也没有终点，象征着永恒的爱与坚定的守护。</p>
+<p></p>
+          <p>请新郎取出戒指，为新娘戴上。</p>
+<p></p>
+          <p>（等新郎动作）</p>
+
+          <p>这一枚小小的戒指，从此将陪伴她左右，</p>
+          <p>提醒你——不论未来如何，请记得今天她望向你的眼神，</p>
+          <p>那是信任、是托付、是“我愿意”的延续。</p>
+<p></p>
+          <p>请新娘也取出戒指，为新郎戴上。</p>
+<p></p>
+          <p>（等新娘动作）</p>
+<p></p>
+          <p>这一刻起，你们彼此承诺：</p>
+          <p>从今以后，风雨同舟，患难与共，</p>
+          <p>无论时光如何流转，这份爱都不会褪色。</p>
+<p></p>
+          <p>愿你们的爱情，如这戒指一般，紧密相连、无始无终。</p>
+        </div>
+        <div class="card"><h3>第三环节：敬茶给父母</h3>
+          <p>司仪：</p>
+          <p></p>
+          <p>古语有云：“一日为子，终生为恩。”</p>
+          <p>今天，新人不仅走进婚姻的殿堂，也完成了人生的另一个重要礼节——向父母敬茶。</p>
+          <p></p>
+          <p>这一杯茶，是对养育之恩的感恩，</p>
+          <p>是从孩童到成年，从儿女到人夫人妇的见证。</p>
+<p></p>
+          <p>请新郎新娘向父母敬茶。</p>
+<p></p>
+          <p>这一杯，敬您们多年辛劳的抚育；</p>
+          <p>这一杯，感谢您们教会了他如何担当，如何爱人；</p>
+          <p>这一杯，代表他们从今开始组建自己的家庭，也一定会将孝道延续。</p>
+<p></p>
+          <p>（父母喝茶、送红包、祝福）</p>
+
+          <p>从这一刻起，两个家庭联结为一，</p>
+          <p>两位新人也将背负起责任、孝顺父母、传承亲情。</p>
+
+          <p>让我们为他们献上最热烈的掌声，</p>
+          <p>祝愿两位新人孝顺父母、恩爱一生，幸福美满！</p>
+        </div>
+
         <div class="card"><h3>文章标题 5</h3><p>……</p></div>
         <div class="card"><h3>文章标题 6</h3><p>……</p></div>
         <div class="card"><h3>文章标题 6</h3><p>……</p></div>
@@ -204,6 +334,22 @@
       </section>
 
       <section id="researchContainer" class="content-section">
+        <div class="card"><h3>新郎向新娘的父母敬茶</h3>
+          <p>各位亲友，现在我们将迎来一个意义非凡的时刻。</p>
+          <p>这是一个充满情感的时刻。</p>
+          <p></p>
+          <p>接下来，新郎将向新娘的父母敬上一杯茶</p>
+          <p></p>
+          <p>这一杯茶，不只是礼节，更是一种承诺。</p>
+          <!-- <p>今天，他不仅是女儿的爱人，更将成为你们的女婿，成为家庭的一份子。</p>
+          <p>他会用行动告诉你们，放心把女儿交给他，是值得的。</p>
+          <p>接下来，请向 新娘的父母 敬茶。</p> -->
+          <p></p>
+          <p>这一杯，感谢你们的含辛茹苦，养育了新娘的温柔与善良；</p>
+          <p>这一杯，承诺今后将以丈夫的身份陪她走完一生的道路，</p>
+          <p>不仅爱她，也孝敬你们，如同己出。</p>
+          <p>请各位亲友献上最热烈的掌声！</p>
+        </div>
         <div class="card">
           <h3>Research Interests</h3>
           <p> Major research topics of our lab include:
@@ -230,13 +376,49 @@
       </section>
 
       <section id="teamContainer" class="content-section">
-        <div class="card">
-          <h3>TEAM 成员</h3>
-          <p>Jingsong Nie</p>
-          <p>
-Jingsong completed Master of Engineering in Biomedical Engineering program at University of British Columbia. Before that, he majored in Biotechnology at Sun Yat-sen University, and got Bachelor degree.</p>
+        <div class="card team-member">
+          <img src="./images/jingsong.jpg" alt="Jingsong Nie">
+          <div class="info">
+            <h4>Jingsong Nie</h4>
+            <p>
+              Jingsong completed Master of Engineering in Biomedical Engineering program at University of British Columbia.
+              Before that, he majored in Biotechnology at Sun Yat-sen University, and got Bachelor degree.
+            </p>
+          </div>
         </div>
+
+        <div class="card team-member">
+          <img src="./images/alex.jpg" alt="Alex Chen">
+          <div class="info">
+            <h4>Alex Chen</h4>
+            <p>
+              Alex focuses on single-cell transcriptomics and deep learning. He has a PhD in Bioinformatics from Tsinghua University.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/lisa.jpg" alt="Lisa Wang">
+          <div class="info">
+            <h4>Lisa Wang</h4>
+            <p>
+              Lisa specializes in integrative multi-omics data analysis and cancer genomics. She holds a Master's from Fudan University.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/mark.jpg" alt="Mark Liu">
+          <div class="info">
+            <h4>Mark Liu</h4>
+            <p>
+              Mark is developing novel algorithms for machine unlearning. He previously worked at Tencent AI Lab.
+            </p>
+          </div>
+        </div>
+
       </section>
+
 
       <section id="piContainer" class="content-section">
         <div class="card"><h3>About PI</h3><p>……</p></div>
