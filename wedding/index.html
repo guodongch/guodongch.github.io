@@ -78,6 +78,7 @@
       margin-inline: auto;
     }
 
+    
     .content-section {
       display: none;
       grid-template-columns: 1fr;
@@ -141,6 +142,46 @@
         padding-top: 12px;
       }
     }
+    /* ① 平板及以下 (≤768 px) */
+    @media (max-width: 768px) {
+      html { font-size: 17px; }
+
+      main.content-container {
+        width: 100%;
+        padding: 20px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      /* 导航改为两列自动换行 */
+      .navbar ul {
+        display: flex;          /* 替换 grid 更易换行 */
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        height: auto;
+        justify-content: center;
+        padding: 8px 0;
+      }
+      .navbar li { flex: 1 1 45%; text-align: center; }
+    }
+
+    /* ② 手机窄屏 (≤480 px) */
+    @media (max-width: 480px) {
+      html { font-size: 15px; }
+
+      .card {
+        padding: 14px;
+      }
+
+      .card h3 { font-size: 1.1rem; }
+      .card p   { font-size: 0.95rem; }
+
+      /* 让导航按钮一行一个（可选）*/
+      .navbar li { flex: 1 1 100%; }
+    }
+
   </style>
 </head>
 <body>
@@ -151,11 +192,11 @@
       <ul>
         <li><a href="#homeContainer">HOME</a></li>
         <li><a href="#researchContainer">新娘家</a></li>
-        <li><a href="#publicationContainer">PUBLICATION</a></li>
+        <!-- <li><a href="#publicationContainer">PUBLICATION</a></li>
         <li><a href="#resourceContainer">RESOURCE</a></li>
         <li><a href="#teamContainer">TEAM</a></li>
         <li><a href="#piContainer">PI</a></li>
-        <li><a href="#contactContainer">CONTACT</a></li>
+        <li><a href="#contactContainer">CONTACT</a></li> -->
       </ul>
     </nav>
 
