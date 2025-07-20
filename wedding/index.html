@@ -15,10 +15,22 @@
       margin: 0;
       padding: 0;
     }
-    body {
+    /* body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       line-height: 1.5;
+    } */
+
+
+    /* === 婚礼红底 + 金黄字 === */
+    body {
+      background: #B20000;          /* 中国红 */
+      color: #FFD700;               /* 金黄 */
     }
+
+
+
+
+
 
     .page {
       display: grid;
@@ -26,14 +38,26 @@
       min-height: 100vh;
     }
 
-    nav.navbar {
+    /* nav.navbar {
       position: sticky;
       top: 0;
       z-index: 100;
       background: #1E90FF;
       box-shadow: 0 2px 6px rgba(0,0,0,.06);
       padding: 0 24px;
+    } */
+
+    /* 顶部导航改为深红，并把文字换成金黄 */
+    nav.navbar {
+      background: #8A0000;
     }
+    .navbar a { color: #FFD700; }
+    .navbar a:hover,
+    .navbar a.active { color: #FFF048; }   /* 高亮更亮一些 */
+    .navbar a.active::after { background: #FFF048; }
+
+
+
     .navbar ul {
       display: grid;
       grid-auto-flow: column;
@@ -88,37 +112,41 @@
       display: grid;
     }
 
-    .card {
+    /* .card {
       background: #f5f5f7;
       border-radius: 8px;
       padding: 24px;
       display: grid;
       gap: 12px;
-    }
+    } */
 
+
+
+
+/*     
     .card h3 {
       margin: 0;
       font-size: 20px;
-    }
+    } */
 
-    .card p {
+    /* .card p {
       margin: 0;
       color: #555;
       line-height: 1.5;
-    }
+    } */
 
-    .team-member {
+    /* .team-member {
       display: grid;
       grid-template-columns: 120px 1fr;
       gap: 16px;
       align-items: start;
-    }
+    } */
     .team-member img {
       width: 100%;
       height: auto;
       border-radius: 8px;
     }
-    .team-member .info h4 {
+    /* .team-member .info h4 {
       margin: 0 0 8px;
       font-size: 18px;
     }
@@ -126,7 +154,30 @@
       margin: 0;
       color: #555;
       line-height: 1.6;
+    } */
+
+
+    /* 卡片改为半透明深红，边与标题也统一金黄可读 */
+    .card {
+      background: rgba(255, 255, 255, 0.05);  /* 轻微透底 */
+      border: 1px solid #FFD700;
+      color: #FFD700;
+      line-height: 1.5;   /* ← 这里 */
     }
+    .card h3 { color: #FFF048; }
+
+    /* TEAM 头像边框 & 文本 */
+    .team-member img {
+      border: 2px solid #FFD700;
+    }
+    .team-member .info h4 { color: #FFF048; }
+
+    /* 滚动条（可选美化） */
+    ::-webkit-scrollbar-thumb { background: #FFD700; }
+    ::-webkit-scrollbar-track { background: #8A0000; }
+
+
+
 
     @media (max-width: 600px) {
       .team-member {
