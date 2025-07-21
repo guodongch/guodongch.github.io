@@ -8,7 +8,37 @@
   <title>Guodong Lab</title>
   <link rel="icon" href="./images/yinyang.ico" type="image/x-icon">
   <style>
-    
+    /* 响应式布局适配手机 */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 10px;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .carousel img {
+        width: 100%;
+        height: auto;
+      }
+
+      .grid {
+        grid-template-columns: 1fr; /* 单列显示 */
+      }
+
+      .nav-item {
+        padding: 12px 8px;
+        font-size: 16px;
+      }
+
+      .footer {
+        text-align: center;
+      }
+    }
+
     html {
       font-size: 10px;
     }
