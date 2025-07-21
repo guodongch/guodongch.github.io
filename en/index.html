@@ -21,7 +21,7 @@
     /* ===== 整页网格 ===== */
     .page{
       display:grid;
-      grid-template-rows:auto auto 1fr;      /* header / nav / main */
+      grid-template-rows: auto auto 1fr auto; /* header / nav / main / footer */
       min-height:100vh;
     }
 
@@ -200,7 +200,41 @@
       }
     }
 
-    
+    .site-footer {
+      background-color: #1E90FF;
+      color: white;
+      text-align: center;
+      padding: 12px 0;
+      font-size: 1.4rem;
+    }
+
+    /* 整个滚动条 */
+    ::-webkit-scrollbar {
+      width: 1.2rem;
+      /* height: 1.2rem; */
+    }
+
+    /* 滚动条轨道背景 */
+    ::-webkit-scrollbar-track {
+      /* background: #f0f0f0; */
+      background: transparent;
+    }
+
+    /* 滚动条滑块颜色 */
+    ::-webkit-scrollbar-thumb {
+      background: rgb(30, 144, 255, 0.5);
+      border: 0.1rem solid transparent; /* 给 thumb 加“空隙边” */
+      border-radius: 0.6rem;
+      background-clip: content-box;
+    }
+
+    /* 滑块 hover 时颜色 */
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(30, 144, 255, 1);
+      border: 0.1rem solid transparent; /* 给 thumb 加“空隙边” */
+      background-clip: content-box;
+    }
+
   </style>
 </head>
 <body>
@@ -419,6 +453,9 @@ Congratulations to everyone on this exciting new chapter. Here’s to growth, br
       </section>
 
     </main>
+    <footer class="site-footer">
+      <p>&copy; 2025 Guodong Lab. All rights reserved.</p>
+    </footer>
   </div>
 
   <!-- ===== 原来的 JS 原封不动搬下来 ===== -->
