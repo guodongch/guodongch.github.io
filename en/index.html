@@ -1,0 +1,538 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guodong Lab</title>
+  <link rel="icon" href="./images/yinyang.ico" type="image/x-icon">
+  <style>
+    html {
+      font-size: 10px;
+    }
+    /* ===== 基础 ===== */
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      line-height: 1.5;
+    }
+
+    /* ===== 整页网格 ===== */
+    .page{
+      display:grid;
+      grid-template-rows:auto auto 1fr;      /* header / nav / main */
+      min-height:100vh;
+    }
+
+    /* ===================== 轮播区域（原样移植，只改居中） ===================== */
+    header.slider{
+      justify-self:center;                  /* 水平居中 */
+      /* margin-top:16px; */
+    }
+    /* .slider{width:960px;height:240px;overflow:hidden;} */
+    .slider{width:100%;height:200px;overflow:hidden;}
+    .slider-wrapper{width:100%;height:200px;position: relative; /* 新增 */}
+    .slider-wrapper img{width:100%;height:100%;display:block;}
+    .slider-footer {
+      position: absolute;         /* 修改 */
+      bottom: 0; left: 0;          /* 对齐底部 */
+      width: 100%;
+      height: 40px;
+      background-color: rgba(36, 31, 33, 0.6); /* 半透明 */
+      color: #fff;
+      padding: 2px 12px 0;
+      z-index: 2; /* ✅ 确保在图像上方 */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .slider-footer .toggle{position:absolute;right:0;top:5px;display:flex;}
+    .slider-footer .toggle button{margin-right:12px;width:30px;height:30px;appearance:none;border:none;background:rgba(255,255,255,.1);color:#fff;border-radius:4px;cursor:pointer;}
+    .slider-footer .toggle button:hover{background:rgba(255,255,255,.2);}
+    .slider-footer p{margin:0;color:#fff;font-size:15px;margin-bottom:0px;}
+    .slider-indicator{margin:0;padding:0;list-style:none;display:flex;align-items:center;}
+    .slider-indicator li{width:5px;height:5px;margin:3px;border-radius:50%;background:#fff;opacity:.4;cursor:pointer;}
+    .slider-indicator li.active{width:6px;height:6px;opacity:1;}
+
+    /* ===================== 导航栏 ===================== */
+    nav.navbar{
+      position:sticky; top:0;               /* 滚动到顶部时吸顶 */
+      z-index:100;
+      background:#1E90FF;
+      box-shadow:0 2px 6px rgba(0,0,0,.06);
+      padding:0 24px;
+    }
+    .navbar ul{
+      display:grid;
+      grid-auto-flow:column;                /* 横向排列 */
+      gap:12rem;
+      height:6rem;
+      align-items:center;
+      list-style:none;
+      justify-content:center;   /* ← 让所有栏目在可用宽度里居中 */
+    }
+    .navbar a{
+      text-decoration:none;
+      color:#fff;
+      font-size:16px;
+      /* font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif; */
+      font-weight: 600;
+      transition:color .2s;
+    }
+    /* .navbar a:hover{color:#ADFF2F;} */
+    .navbar a:hover{color:#FF99FF;}
+
+    .navbar a.active{
+      color:#FF99FF;
+      position:relative;
+    }
+    .navbar a.active::after{          /* 简单下划线指示器 */
+      content:'';
+      position:absolute;left:0;bottom:-4px;
+      width:100%;height:2px;
+      background:#FF99FF;border-radius:1px;
+    }
+
+
+
+    /* ===================== 主体内容示例 ===================== */
+    main.content-container{
+      display:grid;
+      /* grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); */
+      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      grid-template-columns: 1fr;   /* ➜ 只留 1 列，竖着排 */
+      grid-auto-rows: auto;         /* 行高根据内容自适应（默认即可，写上更直观） */
+      gap:24px;
+      padding:32px;
+      /* width:960px;              */
+      width:1200px;             
+      margin-inline:auto;          /* 👉 水平居中 */
+
+    }
+
+    /* 每块内容还是 Grid，一列竖排 */
+    .content-section{
+      display:none;                 /* 先全部隐藏 */
+      grid-template-columns:1fr;
+      gap:24px;
+      align-content: start;    /* ✅ 内容靠上排列 */
+      justify-content: start;  /* 可选：如果你遇到水平居中也不希望 */
+    }
+    /* 初始透明 */ /* 内部切换页面用 */
+    .content-section {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      display: none;
+    }
+    .content-section.show {
+      display: grid;
+    }
+    .content-section.fade-in {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .content-section.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .content-section.active{display:grid;}     /* 仅激活块可见 */
+    /* 内部切换页面用 */
+    .content-section.active {
+      display: grid;
+      opacity: 1;
+    }
+    .card{
+      /* background:#f5f5f7; */
+      background:#EFEFFF;
+      border-radius:8px;
+      padding:24px;
+      display:grid;
+      gap:12px;
+    }
+
+
+    .card h3{margin:0;font-size:20px;}
+    .card p{font-size: 1.6rem; margin:0;color:#555;line-height:2;}
+
+    #publicationContainer .card  p {font-family: "Times New Roman", Times, serif;}
+    .team-member {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .team-member img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .team-member .info h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .team-member .info p {
+      margin: 0;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* 响应式小屏处理：上下结构 */
+    @media (max-width: 600px) {
+      .team-member {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .team-member img {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto;
+      }
+
+      .team-member .info {
+        padding-top: 12px;
+      }
+    }
+
+    
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ===== 轮播 ===== -->
+    <header class="slider">
+      <div class="slider-wrapper">
+        <img src="./images/header/a01.png" alt="" />
+        <div class="slider-footer">
+          <p>Bioinformatics</p>
+          <ul class="slider-indicator">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+          <div class="toggle">
+            <button class="prev">&lt;</button>
+            <button class="next">&gt;</button>
+          </div>
+        </div>
+      </div>
+      
+    </header>
+
+    <!-- ===== 导航 ===== -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="#homeContainer">HOME</a></li>
+        <li><a href="#researchContainer">RESEARCH</a></li>
+        <li><a href="#publicationContainer">PUBLICATION</a></li>
+        <li><a href="#resourceContainer">RESOURCE</a></li>
+        <li><a href="#teamContainer">TEAM</a></li>
+        <li><a href="#piContainer">PI</a></li>
+        <li><a href="#contactContainer">CONTACT</a></li>
+      </ul>
+    </nav>
+
+    <!-- ===== 主体内容（示例）===== -->
+    <main class="content-container">
+      <!-- ① 每个 section 都是一页内容；默认只显示 .active -->
+      <section id="homeContainer" class="content-section show fade-in">
+        <!-- 随便放些占位卡片 -->
+        <div class="card"><h3>With Purpose Unchanged, Our Dreams Set Sail</h3><p>It is with great excitement and pride that we officially announce the founding of the lab!
+
+This marks a new beginning—one filled with opportunity, collaboration, and the pursuit of knowledge. With every member bringing unique strengths and perspectives, we are confident that this group will become a hub of innovation, discovery, and meaningful research.
+
+Let’s work together to build a strong, inspiring team culture where ideas flourish, challenges are embraced, and achievements are shared. The journey ahead may be demanding, but it will surely be rewarding.
+
+Congratulations to everyone on this exciting new chapter. Here’s to growth, breakthroughs, and shared success! </p>
+<p>September 1, 2025</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+      </section>
+
+      <section id="researchContainer" class="content-section">
+        <div class="card">
+          <h3>Research Interests</h3>
+          <p> Major research topics of our lab include:
+            phylogenetics analysis
+            Comparative genomics analysis
+            Integrative analysis of multi-omics and multimodal data
+            Bulk RNA-seq, single-cell RNA-seq, and spatial transcriptomics analysis
+            Data integration and data mining
+            Machine Learning and deep learning in Biology and Medicine 
+            Machine Unlearning in Medicine
+            Please explore our publications for the latest developments in our research.
+          </p>
+        </div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+      </section>
+
+      <section id="publicationContainer" class="content-section">
+        <div class="card"><h3>Articles in the Natural Sciences</h3>
+          <p>Ouyang Z#, <strong>Zhang G#</strong>, He S, Huang Q, Zhang L, Duan X, Zhang X, Liu Y, Ke T, Yang J, Ai C, Lu Y, Liao C*. CT and MRI bimodal radiomics for predicting EGFR status in NSCLC patients with brain metastases: A multicenter study. <strong><em>Eur J Radiol</em></strong>. 2025 Feb;183:111853. doi: 10.1016/j.ejrad.2024.111853. Epub 2024 Nov 28. PMID: 39647269.</p>
+          <p>Urrutia K, Chen YH, Tang J, Hung TI, <strong>Zhang G</strong>, Xu W, Zhao W, Tonthat D, Chang CA, Zhao L*. DNA sequence and lesion-dependent mitochondrial transcription factor A (TFAM)-DNA-binding modulates DNA repair activities and products. <strong><em>Nucleic Acids Res</em></strong>. 2024 Dec 11;52(22):14093-14111. doi: 10.1093/nar/gkae1144. PMID: 39607700; PMCID: PMC11662936.</p>
+          <p>Ouyang Z#, <strong>Zhang G#</strong>, Wang W, Shao L, Du X, Li G, Tan N, Zhou X, Yang J, Huang L, Liao C*. Transcriptome profile analysis revealed the potential mechanism of LIPUS treatment for Adriamycin-induced chronic kidney disease rat. <strong><em>Heliyon</em></strong>. 2023 Nov 3;9(11):e21531. doi: 10.1016/j.heliyon.2023.e21531. PMID: 38027717; PMCID: PMC10663852.</p>
+          <p>……</p>
+          <p>……</p>
+        </div>
+
+        <div class="card"><h3>Articles in the Social Sciences</h3>
+          <p>……</p>
+          <p>……</p>
+        </div>
+
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+      </section>
+
+      <section id="resourceContainer" class="content-section">
+        <div class="card"><h3>Software</h3><p>……</p></div>
+        <div class="card"><h3>Toolbox</h3><p>……</p></div>
+        <div class="card"><h3>Dataset</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+      </section>
+
+      <section id="teamContainer" class="content-section">
+        <div class="card team-member">
+          <img src="./images/team/JingsongNIe.jpg" alt="Jingsong Nie">
+          <div class="info">
+            <h4>Jingsong Nie</h4>
+            <p>
+              Jingsong completed Master of Engineering in Biomedical Engineering program at University of British Columbia.
+              Before that, he majored in Biotechnology at Sun Yat-sen University, and got Bachelor degree.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/alex.jpg" alt="Alex Chen">
+          <div class="info">
+            <h4>Alex Chen</h4>
+            <p>
+              Alex focuses on single-cell transcriptomics and deep learning. He has a PhD in Bioinformatics from Tsinghua University.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/lisa.jpg" alt="Lisa Wang">
+          <div class="info">
+            <h4>Lisa Wang</h4>
+            <p>
+              Lisa specializes in integrative multi-omics data analysis and cancer genomics. She holds a Master's from Fudan University.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/mark.jpg" alt="Mark Liu">
+          <div class="info">
+            <h4>Mark Liu</h4>
+            <p>
+              Mark is developing novel algorithms for machine unlearning. He previously worked at Tencent AI Lab.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/mark.jpg" alt="Mark Liu">
+          <div class="info">
+            <h4>Mark Liu</h4>
+            <p>
+              Mark is developing novel algorithms for machine unlearning. He previously worked at Tencent AI Lab.
+            </p>
+          </div>
+        </div>
+
+        <div class="card team-member">
+          <img src="./images/mark.jpg" alt="Mark Liu">
+          <div class="info">
+            <h4>Mark Liu</h4>
+            <p>
+              Mark is developing novel algorithms for machine unlearning. He previously worked at Tencent AI Lab.
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+
+      <section id="piContainer" class="content-section">
+        <div class="card"><h3>About PI</h3><p>……</p></div>
+        <div class="card"><h3>Projects</h3><p>……</p></div>
+        <div class="card"><h3>Funding Agencies</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+      </section>
+
+      <section id="contactContainer" class="content-section">
+        <div class="card"><h3>CONTACT</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+        <div class="card"><h3>文章标题 6</h3><p>……</p></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== 原来的 JS 原封不动搬下来 ===== -->
+  <script>
+    // 1. 初始数据
+    const data = [
+      { url: './images/header/a01.png', title: 'Bioinformatics', color: 'rgb(36, 31, 33, 0.6)' },
+      { url: './images/header/a02.png', title: 'Machine Learning', color: 'rgb(43, 35, 26, 0.6)' },
+      { url: './images/header/a03.png', title: 'Deep Learning & Artificial Intelligence', color: 'rgb(36, 31, 33, 0.6)' },
+      { url: './images/header/a04.png', title: 'Phylogenetics Analysis', color: 'rgb(43, 35, 26, 0.6)' },
+      { url: './images/header/a05.png', title: 'Machine Unlearing', color: 'rgb(36, 31, 33, 0.6)' },
+      { url: './images/header/a06.png', title: 'Cancer Bioinformatics', color: 'rgb(43, 35, 26, 0.6)' },
+    ];
+    // 获取元素
+    const img = document.querySelector('.slider-wrapper img');
+    const p   = document.querySelector('.slider-footer p');
+    const footer = document.querySelector('.slider-footer');
+    const next = document.querySelector('.next');
+    const prev = document.querySelector('.prev');
+    let i = 0; // 当前索引
+
+    next.addEventListener('click', () => {
+      i = ++i >= data.length ? 0 : i;
+      toggle();
+    });
+
+    prev.addEventListener('click', () => {
+      i = --i < 0 ? data.length - 1 : i;
+      toggle();
+    });
+
+    function toggle() {
+      img.src = data[i].url;
+      p.textContent = data[i].title;
+      footer.style.backgroundColor = data[i].color;
+      document.querySelector('.slider-indicator .active').classList.remove('active');
+      document.querySelector(`.slider-indicator li:nth-child(${i + 1})`).classList.add('active');
+    }
+
+    // 自动轮播
+    let timerId = setInterval(() => next.click(), 3000);
+
+    // 鼠标悬停暂停
+    const slider = document.querySelector('.slider');
+    slider.addEventListener('mouseenter', () => clearInterval(timerId));
+    slider.addEventListener('mouseleave', () => {
+      clearInterval(timerId);
+      timerId = setInterval(() => next.click(), 3000);
+    });
+
+
+    // 切换脚本
+    /* ====== 点击导航切内容 ====== */
+    const navLinks = document.querySelectorAll('.navbar a');
+    const sections = document.querySelectorAll('.content-section');
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').slice(1);
+        const current = document.querySelector('.content-section.show');
+        const next = document.getElementById(targetId);
+
+        if (current === next) return;
+
+        // 淡出当前
+        current.classList.remove('fade-in');
+        current.classList.add('fade-out');
+
+        // 等待淡出动画结束，再切换显示
+        setTimeout(() => {
+          current.classList.remove('fade-out', 'show');
+
+          next.classList.add('show');
+          // 强制触发过渡
+          setTimeout(() => {
+            next.classList.add('fade-in');
+          }, 200);
+        }, 200);
+
+        // 高亮导航
+        document.querySelector('.navbar a.active')?.classList.remove('active');
+        link.classList.add('active');
+
+        // 更新地址栏 hash
+        history.pushState(null, '', `#${targetId}`);
+      });
+    });
+
+
+    // window.addEventListener('load', () => {
+    //   const hash = location.hash.slice(1) || 'homeContainer';
+    //   const target = document.getElementById(hash);
+    //   target?.classList.add('show', 'fade-in');
+    //   document.querySelector(`.navbar a[href="#${hash}"]`)?.classList.add('active');
+    // });
+
+
+    window.addEventListener('load', () => {
+      const hash = location.hash.slice(1) || 'homeContainer';
+
+      // 移除所有 section 的显示状态
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('show', 'fade-in', 'fade-out');
+      });
+
+      // 显示 hash 对应 section
+      const target = document.getElementById(hash);
+      target?.classList.add('show', 'fade-in');
+
+      // 高亮对应导航
+      document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
+      document.querySelector(`.navbar a[href="#${hash}"]`)?.classList.add('active');
+    });
+
+  </script>
+</body>
+</html>
