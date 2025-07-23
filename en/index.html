@@ -715,9 +715,14 @@
 
     // 下拉菜单导航同步高亮和切换 这个是结合响应式下来菜单，主要是为了手机
     document.getElementById('mobileNav').addEventListener('change', function () {
-      const targetId = this.value.slice(1);
+      const value = this.value;
+      if (!value) return; // 如果没选，直接返回
+
+      const targetId = value.slice(1); // 移除 #
       const current = document.querySelector('.content-section.show');
       const next = document.getElementById(targetId);
+
+      if (!next) return; // 如果找不到对应的 section，终止
 
       if (current !== next) {
         current.classList.remove('fade-in');
@@ -730,8 +735,11 @@
         }, 200);
       }
 
-      // 同步 hash 和样式
-      history.pushState(null, '', `#${targetId}`);
+      // 高亮同步（下拉不会高亮导航，但可以清除现有高亮）
+      document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
+
+      // 更新地址栏 hash
+      history.pushState(null, '', value);
     });
 
 
