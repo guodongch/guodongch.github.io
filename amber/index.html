@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guodong Lab</title>
-  <link rel="icon" href="./images/yinyang.ico" type="image/x-icon">
+  <link rel="icon" href="./images/amberSpider.ico" type="image/x-icon">
   <style>
     /* 响应式布局适配手机 */
     @media (max-width: 768px) {
@@ -103,7 +103,7 @@
     nav.navbar{
       position:sticky; top:0;               /* 滚动到顶部时吸顶 */
       z-index:100;
-      background:#1E90FF;
+      background:#CD853F;
       box-shadow:0 2px 6px rgba(0,0,0,.06);
       padding:0 24px;
     }
@@ -125,17 +125,17 @@
       transition:color .2s;
     }
     /* .navbar a:hover{color:#ADFF2F;} */
-    .navbar a:hover{color:#00FF7F;}
+    .navbar a:hover{color:#FFD700;}
 
     .navbar a.active{
-      color:#00FF7F;
+      color:#FFD700;
       position:relative;
     }
     .navbar a.active::after{          /* 简单下划线指示器 */
       content:'';
       position:absolute;left:0;bottom:-4px;
       width:100%;height:2px;
-      background:#00FF7F;border-radius:1px;
+      background:#FFD700;border-radius:1px;
     }
 
 
@@ -189,7 +189,7 @@
     }
     .card{
       /* background:#f5f5f7; */
-      background:#E9E9FF;
+      background:#D7FFD7;
       border-radius:8px;
       padding:24px;
       display:grid;
@@ -267,7 +267,7 @@
     }
 
     .site-footer {
-      background-color: #1E90FF;
+      background-color: #CD853F;
       color: white;
       text-align: center;
       padding: 12px 0;
@@ -306,7 +306,7 @@
     .mobile-menu {
       display: none;
       padding: 12px;
-      background-color: #1E90FF;
+      background-color: #CD853F;
     }
 
     .mobile-menu select {
@@ -385,11 +385,16 @@
     <nav class="navbar">
       <ul>
         <li><a href="#homeContainer">HOME</a></li>
-        <li><a href="#researchContainer">RESEARCH</a></li>
-        <li><a href="#publicationContainer">PUBLICATION</a></li>
-        <li><a href="#resourceContainer">RESOURCE</a></li>
+        <li><a href="#downloadContainer">DOWNLOAD</a></li>
+        <li><a href="#instructionContainer">INSTRUCTION</a></li>
+        <li><a href="#exampleContainer">EXAMPLE</a></li>
+        <li><a href="#datasetContainer">DATASET</a></li>
+        
+        <!-- <li><a href="#researchContainer">RESEARCH</a></li>
         <li><a href="#teamContainer">TEAM</a></li>
-        <li><a href="#piContainer">PI</a></li>
+        <li><a href="#piContainer">PI</a></li> -->
+
+        <li><a href="#publicationContainer">PUBLICATION</a></li>
         <li><a href="#contactContainer">CONTACT</a></li>
       </ul>
     </nav>
@@ -399,11 +404,16 @@
       <select id="mobileNav" onchange="if(this.value) location.href=this.value">
         <option value="">MENU</option>
         <option value="#homeContainer">HOME</option>
-        <option value="#researchContainer">RESEARCH</option>
-        <option value="#publicationContainer">PUBLICATION</option>
-        <option value="#resourceContainer">RESOURCE</option>
+        <option value="#downloadContainer">DOWNLOAD</option>
+        <option value="#instructionContainer">INSTRUCTION</option>
+        <option value="#exampleContainer">EXAMPLE</option>
+        <option value="#datasetContainer">DATASET</option>
+
+        <!-- <option value="#researchContainer">RESEARCH</option>
         <option value="#teamContainer">TEAM</option>
-        <option value="#piContainer">PI</option>
+        <option value="#piContainer">PI</option> -->
+
+        <option value="#publicationContainer">PUBLICATION</option>
         <option value="#contactContainer">CONTACT</option>
       </select>
     </div>
@@ -415,18 +425,18 @@
         <!-- 随便放些占位卡片 -->
         <div class="card"><h3>NEWS</h3>
           <p>
-            With a spirit of exploration for the world and a determination to overcome challenges in pursuit of beautiful things, our laboratory was founded.
+            <!-- With a spirit of exploration for the world and a determination to overcome challenges in pursuit of beautiful things, our laboratory was founded. -->
           </p>
-          <p>September 1, 2025</p>
         </div>
         <div class="card"><h3>With Purpose Unchanged, Our Dreams Set Sail</h3>
-          <p>No matter how the world changes, our hearts remain steady. 
+          <p>
+            <!-- No matter how the world changes, our hearts remain steady. 
             With a clear purpose guiding us, we continue to chase our dreams with passion and determination. 
             Challenges may come and go, but our vision stays firm. 
             Like ships setting sail under the stars, we advance through the unknown, guided not by certainty, but by purpose and vision. 
             In the vast sea of scientific inquiry, each discovery is a star that lights our path. 
-            Though the night may be long and the currents strong, our direction remains clear—we sail forward, fueled by curiosity, and anchored in the pursuit of truth.</p>
-          <p>July 23, 2025</p>
+            Though the night may be long and the currents strong, our direction remains clear—we sail forward, fueled by curiosity, and anchored in the pursuit of truth. -->
+          </p>
         </div>
         <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
       </section>
@@ -453,37 +463,44 @@
       </section>
 
       <section id="publicationContainer" class="content-section">
-        <div class="card"><h3>Articles in the Natural Sciences</h3>
-          <p>Ouyang Z#, <strong>Zhang G#</strong>, He S, Huang Q, Zhang L, Duan X, Zhang X, Liu Y, Ke T, Yang J, Ai C, Lu Y, Liao C*. CT and MRI bimodal radiomics for predicting EGFR status in NSCLC patients with brain metastases: A multicenter study. <strong><em>Eur J Radiol</em></strong>. 2025 Feb;183:111853. doi: 10.1016/j.ejrad.2024.111853. Epub 2024 Nov 28. PMID: 39647269.</p>
-          <p>Urrutia K, Chen YH, Tang J, Hung TI, <strong>Zhang G</strong>, Xu W, Zhao W, Tonthat D, Chang CA, Zhao L*. DNA sequence and lesion-dependent mitochondrial transcription factor A (TFAM)-DNA-binding modulates DNA repair activities and products. <strong><em>Nucleic Acids Res</em></strong>. 2024 Dec 11;52(22):14093-14111. doi: 10.1093/nar/gkae1144. PMID: 39607700; PMCID: PMC11662936.</p>
-          <p>Ouyang Z#, <strong>Zhang G#</strong>, Wang W, Shao L, Du X, Li G, Tan N, Zhou X, Yang J, Huang L, Liao C*. Transcriptome profile analysis revealed the potential mechanism of LIPUS treatment for Adriamycin-induced chronic kidney disease rat. <strong><em>Heliyon</em></strong>. 2023 Nov 3;9(11):e21531. doi: 10.1016/j.heliyon.2023.e21531. PMID: 38027717; PMCID: PMC10663852.</p>
-          <!-- <p>Zhiqiang Ouyang#, Guodong Zhang#, Weipeng Wang, Lishi Shao, Xiaolan Du, Guocheng Li, Na Tan, Xinyan Zhou, Jun Yang, Lin Huang*, Chengde Liao*. Transcriptome profile analysis revealed the potential mechanism of LIPUS treatment for Adriamycin-induced chronic kidney disease rat. Heliyon. 2023, 9(11):e21531.</p> -->
-          <p>Wang Yuanbing#, Wang Yao#, Fan Qi#, Duan Donge#, <strong>Zhang Guodong#</strong>, Dai Ruqin, Dai Yongdong, Zeng Wenbo, Chen Zihong, Li Dandan, Tang Dexiang, Xu Zhihong, Sun Tao, Nguyen Thi Tra, Tran Ngoc Lan, Dao Van Minh, Zhang Can Ming, Huang Luodong, Liu Yongjun, Zhang Xiaomei, Yang Darong, Sanjuan Tatiana, Liu Xingzhong, Yang Zhu L.*, Yu Hong*. Multigene phylogeny of the family Cordycipitaceae (Hypocreales): new taxa and the new systematic position of the Chinese cordycipitoid fungus Paecilomyces hepiali. <strong><em>Fungal Diversity</em></strong>. 2020, 103:1-46.</p>
-          <p>Qian Song#, Yaxi Du#, Yanfang Liu, <strong>Guodong Zhang*</strong> & Yuanbing Wang*, Complete mitochondrial genome of Aspergillus japonicus from the built environment and its phylogenetic analysis. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2020, 5(2): 1445–1446. </p>
-          <p>Qi Fan, Yuanbing Wang, <strong>Guodong Zhang</strong>, Dexiang Tang & Hong Yu*. Multigene Phylogeny and Morphology of Ophiocordyceps alboperitheciata sp. nov., A New Entomopathogenic Fungus Attacking Lepidopteran Larva from Yunnan, China. <strong><em>Mycobiology</em></strong>. 2021, 49(2): 133-141. </p>
-          <p>Zhi-Hong Xu, Ngoc-Lan Tran, Yao Wang, <strong>Guo-Dong Zhang</strong>, Van-Minh Dao, Thi-Tra Nguyen, Yuan-Bing Wang*, Hong Yu*. Phylogeny and morphology of Ophiocordyceps puluongensis sp. nov. (Ophiocordycipitaceae, Hypocreales), a new fungal pathogen on termites from Vietnam. <strong><em>Journal of Invertebrate Athology</em></strong>. 2022;192:107771.</p>
-          <p>Yao Wang, Huijuan Wu, Ngoc Lan Tran, <strong>Guodong Zhang</strong>, Sisommay Souvanhnachit, Yuanbing Wang, Hong Yu. Ophiocordyceps furcatosubulata, a new entomopathogenic fungus parasitizing beetle larvae (Coleoptera: Elateridae). <strong><em>Phytotaxa</em></strong>. 2021.</p>
-          <p>Zhiyuan Zhao, Kongfu Zhu, Dexiang Tang, Yuanbing Wang, Yao Wang, <strong>Guodong Zhang</strong>, Yupeng Geng & Hong Yu. Comparative Analysis of Mitochondrial Genome Features among Four Clonostachys Species and Insight into Their Systematic Positions in the Order Hypocreales. <strong><em>International journal of molecular sciences</em></strong>. 2021, 22(11), 5530.</p>
-          <p>Tang Dexiang, <strong>Zhang Guodong</strong>, Wang Yao, Zhang Mingxi, Wang Yuanbing*, Yu Hong*. Characterization of complete mitochondrial genome of Nemania diffusa (Xylariaceae, Xylariales) and its phylogenetic analysis. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2020, 5(1): 459-460.</p>
-          <p>Liu Yanfang, <strong>Zhang Guodong</strong>, Yao Wang, Zhu Kongfu, Yang Wusong, Wang Yuanbing*, Yu Hong*. Complete mitochondrial genome of Cladosporium cladosporioides YFCC 8621 isolated from a salt mine in Yunnan, southwestern China. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2020, 5(1): 558-559.</p>
-          <p>Li Jianping, <strong>Zhang Guodong</strong>, Yu Hong, Huang Luodong, Zeng Wenbo*, Wang Yuanbing*. Complete mitochondrial genome of the important bio-control fungus Purpureocillium lilacinum (Ophiocordycipitaceae, Hypocreales) and its phylogenetic analysis. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2019, 5(1): 240–242.</p>
-          <p>Li Dandan, <strong>Zhang Guodong</strong>, Huang Luodong, Wang Yuanbing*, Yu Hong*. Complete mitochondrial genome of the important entomopathogenic fungus Cordyceps tenuipes (Hypocreales, Cordycipitaceae). <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2019, 4(1): 1329-1331.</p>
-          <p>Wang Yao, Liu Yanfang, <strong>Zhang Guodong</strong>, Zhang Mingxi, Zhu Kongfu, Wang Yuanbing*, Yu Hong*. Complete mitochondrial genome of Cladosporium zixishanense sp. nov. YFCC 8620 isolated from the spider in Yunnan, southwestern China. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2019, 5(1): 210-211.</p>
-          <p>Liu Yanfang#, Tang Dexiang#, <strong>Zhang Guodong</strong>, Zhang Mingxi, Wang Yao, Wang Yuanbing*, Yu Hong*. Complete mitochondrial genome of Tolypocladium sp. YFCC 1805002 isolated from Ophiocordyceps sinensis in Baima Snow Mountain, Southwestern China. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2019, 5(1): 171-173.</p>
-          <p>Jiang Cong#, Zou Qian#, Chen Yue, Yu Haitian, Wang Lingxian, Liu Yanfang, <strong>Zhang Guodong</strong>, Wang Yuanbing*, Ding Mingliang*. The complete mitochondrial genome of Penicillium sp. D1806 from Oryza sativa seeds and its phylogenetic implication. <strong><em>Mitochondrial DNA Part B-Resources</em></strong>. 2020, 5(2): 1443-1444.</p>
+        <div class="card"><h3>Articles</h3>
           <p>……</p>
         </div>
 
-        <div class="card"><h3>Articles in the Social Sciences</h3>
-          <p>……</p>
-          <p>……</p>
-        </div>
 
         <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
 
       </section>
 
-      <section id="resourceContainer" class="content-section">
+      <section id="downloadContainer" class="content-section">
+        <div class="card"><h3>Software</h3><p>……</p></div>
+        <div class="card"><h3>Toolbox</h3><p>……</p></div>
+        <div class="card"><h3>Dataset</h3><p>……</p></div>
+        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+      </section>
+
+      <section id="instructionContainer" class="content-section">
+        <div class="card"><h3>Software</h3><p>……</p></div>
+        <div class="card"><h3>Toolbox</h3><p>……</p></div>
+        <div class="card"><h3>Dataset</h3><p>……</p></div>
+        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+      </section>
+
+      <section id="exampleContainer" class="content-section">
+        <div class="card"><h3>Software</h3><p>……</p></div>
+        <div class="card"><h3>Toolbox</h3><p>……</p></div>
+        <div class="card"><h3>Dataset</h3><p>……</p></div>
+        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+      </section>
+
+      <section id="datasetContainer" class="content-section">
+        <div class="card"><h3>Software</h3><p>……</p></div>
+        <div class="card"><h3>Toolbox</h3><p>……</p></div>
+        <div class="card"><h3>Dataset</h3><p>……</p></div>
+        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+      </section>
+
+      <section id="downloadContainer" class="content-section">
         <div class="card"><h3>Software</h3><p>……</p></div>
         <div class="card"><h3>Toolbox</h3><p>……</p></div>
         <div class="card"><h3>Dataset</h3><p>……</p></div>
