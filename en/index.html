@@ -137,7 +137,7 @@
       gap:24px;
       padding:32px;
       /* width:960px;              */
-      width:1200px;             
+      max-width: 1200px;      /* ✅ 宽屏仍然不会超出 */
       margin-inline:auto;          /* 👉 水平居中 */
     }
 
@@ -288,6 +288,53 @@
       background-clip: content-box;
     }
 
+
+    /* 为了手机响应式布局 */
+    .mobile-menu {
+      display: none;
+      padding: 12px;
+      background-color: #1E90FF;
+    }
+
+    .mobile-menu select {
+      width: 100%;
+      font-size: 16px;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    /* 手机端样式调整 */
+    @media (max-width: 768px) {
+      .navbar {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .content-container {
+        width: 94%;
+        padding: 16px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .card h3 {
+        font-size: 18px;
+      }
+
+      .card p {
+        font-size: 14px;
+        line-height: 1.7;
+      }
+    }
+
+
+
+
   </style>
 </head>
 <body>
@@ -328,6 +375,20 @@
         <li><a href="#contactContainer">CONTACT</a></li>
       </ul>
     </nav>
+
+    <!-- 响应式下拉菜单 主要为了适应手机 -->
+    <div class="mobile-menu">
+      <select id="mobileNav" onchange="if(this.value) location.href=this.value">
+        <option value="">MENU</option>
+        <option value="#homeContainer">HOME</option>
+        <option value="#researchContainer">RESEARCH</option>
+        <option value="#publicationContainer">PUBLICATION</option>
+        <option value="#resourceContainer">RESOURCE</option>
+        <option value="#teamContainer">TEAM</option>
+        <option value="#piContainer">PI</option>
+        <option value="#contactContainer">CONTACT</option>
+      </select>
+    </div>
 
     <!-- ===== 主体内容（示例）===== -->
     <main class="content-container">
@@ -649,6 +710,28 @@
         // 更新地址栏 hash
         history.pushState(null, '', `#${targetId}`);
       });
+    });
+
+
+    // 下拉菜单导航同步高亮和切换 这个是结合响应式下来菜单，主要是为了手机
+    document.getElementById('mobileNav').addEventListener('change', function () {
+      const targetId = this.value.slice(1);
+      const current = document.querySelector('.content-section.show');
+      const next = document.getElementById(targetId);
+
+      if (current !== next) {
+        current.classList.remove('fade-in');
+        current.classList.add('fade-out');
+
+        setTimeout(() => {
+          current.classList.remove('fade-out', 'show');
+          next.classList.add('show');
+          setTimeout(() => next.classList.add('fade-in'), 200);
+        }, 200);
+      }
+
+      // 同步 hash 和样式
+      history.pushState(null, '', `#${targetId}`);
     });
 
 
