@@ -150,8 +150,8 @@
       grid-auto-rows: auto;         /* 行高根据内容自适应（默认即可，写上更直观） */
       gap:24px;
       padding:32px;
-      /* width:960px;              */
       max-width: 1200px;      /* ✅ 宽屏仍然不会超出 */
+      width: 100%;      /* ✅ 保障不会因没有足够的字符等内容而无法撑开card */
       margin-inline:auto;          /* 👉 水平居中 */
     }
 
@@ -327,10 +327,10 @@
         display: block;
       }
 
-      .content-container {
-        width: 94%;
+      /* .content-container {
+        width: 100%;
         padding: 16px;
-      }
+      } */
 
       .card {
         padding: 16px;
