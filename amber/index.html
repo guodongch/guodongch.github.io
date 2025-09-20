@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,814 +7,496 @@
   <title>AMBER</title>
   <link rel="icon" href="./images/amberSpider.ico" type="image/x-icon">
   <style>
-    /* 响应式布局适配手机 */
-    /* @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-        padding: 10px;
-      }
-
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .carousel img {
-        width: 100%;
-        height: auto;
-      }
-
-      .grid {
-        grid-template-columns: 1fr; 
-      }
-
-      .nav-item {
-        padding: 12px 8px;
-        font-size: 16px;
-      }
-
-      .footer {
-        text-align: center;
-      }
-    } */
-
-    html {
-      font-size: 10px;
-    }
-    /* ===== 基础 ===== */
-    *{box-sizing:border-box;margin:0;padding:0;}
+    html { font-size: 10px; }
+    *{ box-sizing:border-box; margin:0; padding:0; }
     body{
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-      line-height: 1.5;
+      line-height: 1.6; color:#222; background:#fff;
     }
+    .page{ display:grid; grid-template-rows:auto auto 1fr auto; min-height:100vh; }
 
-    /* ===== 整页网格 ===== */
-    .page{
-      display:grid;
-      grid-template-rows: auto auto 1fr auto; /* header / nav / main / footer */
-      min-height:100vh;
-    }
+    /* ===== 顶部轮播（与原版一致，略微精简） ===== */
+    header.slider{ justify-self:center; width:100%; }
+    .slider{ width:100%; aspect-ratio:9.6/1; overflow:hidden; position:relative; }
+    .slider-wrapper{ width:100%; height:100%; position:relative; }
+    .slider-wrapper img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .slider-footer{ position:absolute; inset:auto 0 0 0; height:40px; background:rgba(36,31,33,.6); color:#fff; padding:2px 12px 0; display:flex; flex-direction:column; justify-content:space-between; }
+    .slider-footer p{ font-size:15px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .slider-indicator{ list-style:none; display:flex; gap:6px; }
+    .slider-indicator li{ width:6px; height:6px; border-radius:50%; background:#fff; opacity:.4; cursor:pointer; }
+    .slider-indicator li.active{ opacity:1; transform:scale(1.05); }
+    .toggle{ position:absolute; right:8px; top:5px; display:flex; gap:12px; }
+    .toggle button{ width:30px; height:30px; border:none; border-radius:4px; background:rgba(255,255,255,.12); color:#fff; cursor:pointer; }
+    .toggle button:hover{ background:rgba(255,255,255,.22); }
 
-    /* ===================== 轮播区域（原样移植，只改居中） ===================== */
-    header.slider{
-      justify-self:center;                  /* 水平居中 */
-      /* margin-top:16px; */
-    }
-    /* .slider{width:100%;height:200px;overflow:hidden;}
-    .slider-wrapper{width:100%;height:200px;position: relative;} */
+    /* ===== 导航 ===== */
+    nav.navbar{ position:sticky; top:0; z-index:100; background:#CD853F; box-shadow:0 2px 6px rgba(0,0,0,.06); padding:0 24px; }
+    .navbar ul{ display:grid; grid-auto-flow:column; gap:12rem; height:6rem; align-items:center; list-style:none; justify-content:center; overflow:auto hidden; }
+    .navbar a{ color:#fff; text-decoration:none; font-size:16px; font-weight:600; padding:4px 0; transition:color .2s; }
+    .navbar a:hover{ color:#FFD700; }
+    .navbar a.active{ color:#FFD700; position:relative; }
+    .navbar a.active::after{ content:''; position:absolute; left:0; bottom:-4px; width:100%; height:2px; background:#FFD700; border-radius:1px; }
 
-    /* 下面这个代码可以保证高度也随着宽度等比例随缩小 */
-    .slider {
-      width: 100%;
-      aspect-ratio: 9.6 / 1;  /* ✅ 宽高比例，自动根据宽度决定高度 */
-      overflow: hidden;
-    }
+    /* ===== 手机菜单 ===== */
+    .mobile-menu{ display:none; padding:12px; background:#CD853F; }
+    .mobile-menu select{ width:100%; font-size:16px; padding:8px; border-radius:4px; border:none; }
 
-    .slider-wrapper {
-      width: 100%;
-      height: 100%;         /* ✅ 保持一致 */
-      position: relative;
-    }
-
-
-    .slider-wrapper img{width:100%;height:100%;display:block;}
-    .slider-footer {
-      position: absolute;         /* 修改 */
-      bottom: 0; left: 0;          /* 对齐底部 */
-      width: 100%;
-      height: 40px;
-      background-color: rgba(36, 31, 33, 0.6); /* 半透明 */
-      color: #fff;
-      padding: 2px 12px 0;
-      z-index: 2; /* ✅ 确保在图像上方 */
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .slider-footer .toggle{position:absolute;right:0;top:5px;display:flex;}
-    .slider-footer .toggle button{margin-right:12px;width:30px;height:30px;appearance:none;border:none;background:rgba(255,255,255,.1);color:#fff;border-radius:4px;cursor:pointer;}
-    .slider-footer .toggle button:hover{background:rgba(255,255,255,.2);}
-    .slider-footer p{margin:0;color:#fff;font-size:15px;margin-bottom:0px;}
-    .slider-indicator{margin:0;padding:0;list-style:none;display:flex;align-items:center;}
-    .slider-indicator li{width:5px;height:5px;margin:3px;border-radius:50%;background:#fff;opacity:.4;cursor:pointer;}
-    .slider-indicator li.active{width:6px;height:6px;opacity:1;}
-
-    /* ===================== 导航栏 ===================== */
-    nav.navbar{
-      position:sticky; top:0;               /* 滚动到顶部时吸顶 */
-      z-index:100;
-      background:#CD853F;
-      box-shadow:0 2px 6px rgba(0,0,0,.06);
-      padding:0 24px;
-    }
-    .navbar ul{
-      display:grid;
-      grid-auto-flow:column;                /* 横向排列 */
-      gap:12rem;
-      height:6rem;
-      align-items:center;
-      list-style:none;
-      justify-content:center;   /* ← 让所有栏目在可用宽度里居中 */
-    }
-    .navbar a{
-      text-decoration:none;
-      color:#fff;
-      font-size:16px;
-      /* font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif; */
-      font-weight: 600;
-      transition:color .2s;
-    }
-    /* .navbar a:hover{color:#ADFF2F;} */
-    .navbar a:hover{color:#FFD700;}
-
-    .navbar a.active{
-      color:#FFD700;
-      position:relative;
-    }
-    .navbar a.active::after{          /* 简单下划线指示器 */
-      content:'';
-      position:absolute;left:0;bottom:-4px;
-      width:100%;height:2px;
-      background:#FFD700;border-radius:1px;
-    }
-
-
-
-    /* ===================== 主体内容示例 ===================== */
+    /* ===== 主体 ===== */
     main.content-container{
-      display:grid;
-      /* grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); */
-      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-      grid-template-columns: 1fr;   /* ➜ 只留 1 列，竖着排 */
-      grid-auto-rows: auto;         /* 行高根据内容自适应（默认即可，写上更直观） */
-      gap:24px;
-      padding:32px;
-      max-width: 1200px;      /* ✅ 宽屏仍然不会超出 */
-      width: 100%;      /* ✅ 保障不会因没有足够的字符等内容而无法撑开card */
-      margin-inline:auto;          /* 👉 水平居中 */
+      display:grid; grid-template-columns:1fr; gap:24px; padding:32px; max-width:1200px; width:100%; margin-inline:auto;
     }
-
-    /* 每块内容还是 Grid，一列竖排 */
     .content-section{
-      display:none;                 /* 先全部隐藏 */
-      grid-template-columns:1fr;
-      gap:24px;
-      align-content: start;    /* ✅ 内容靠上排列 */
-      justify-content: start;  /* 可选：如果你遇到水平居中也不希望 */
+      display:none; grid-template-columns:1fr; gap:24px; align-content:start; opacity:0; pointer-events:none; transition:opacity .3s ease;
     }
-    /* 初始透明 */ /* 内部切换页面用 */
-    .content-section {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      display: none;
-    }
-    .content-section.show {
-      display: grid;
-    }
-    .content-section.fade-in {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .content-section.show{ display:grid; }
+    .content-section.fade-in{ opacity:1; pointer-events:auto; }
+    .content-section.fade-out{ opacity:0; pointer-events:none; }
 
-    .content-section.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .content-section.active{display:grid;}     /* 仅激活块可见 */
-    /* 内部切换页面用 */
-    .content-section.active {
-      display: grid;
-      opacity: 1;
-    }
-    .card{
-      /* background:#f5f5f7; */
-      background:#D7FFD7;
-      border-radius:8px;
-      padding:24px;
-      display:grid;
-      gap:12px;
-    }
+    .card{ background:#D7FFD7; border-radius:8px; padding:24px; display:grid; gap:12px; }
+    .card h3{ font-size:20px; }
+    .card p{ font-size:1.6rem; color:#555; }
 
-
-    .card h3{margin:0;font-size:20px;}
-    .card p{font-size: 1.6rem; margin:0;color:#555;line-height:2;}
-
-    #publicationContainer .card  p {font-family: "Times New Roman", Times, serif;}
-    .team-member {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 16px;
-      align-items: start;
+    /* ===== 使用手册样式（INSTRUCTION 改造） ===== */
+    .manual{
+      display:grid; grid-template-columns: 280px 1fr; gap:24px;
     }
-
-    .media {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .manual .toc{
+      position:sticky; top:80px; align-self:start; background:#fff; border:1px solid #eee; border-radius:8px; padding:16px; max-height: calc(100vh - 120px); overflow:auto;
     }
+    .manual .toc h4{ font-size:14px; color:#666; margin-bottom:8px; }
+    .manual .toc a{ display:block; font-size:14px; color:#333; text-decoration:none; padding:4px 6px; border-radius:4px; }
+    .manual .toc a:hover{ background:#f6f6f6; }
+    .manual .toc a.active{ color:#0a7f2e; background:#e7f7ec; font-weight:600; }
+    .manual .toc .toc-l2{ padding-left:12px; }
+    .manual .toc .toc-l3{ padding-left:24px; }
 
-    .media img {
-      width: 100px;
-      height: auto;
-      border-radius: 8px;
+    .manual .manual-body{
+      background:#fff; border:1px solid #eee; border-radius:8px; padding:24px;
     }
-
-    .media p {
-      margin-top: 8px;
-      text-align: center;
-      font-size: 1.4rem;
-      color: #666;
+    .manual .manual-body h1{ font-size:2.4rem; margin-bottom:8px; }
+    .manual .manual-body .meta{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; color:#666; font-size:1.3rem; }
+    .badge{
+      display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:4px 8px; border-radius:999px; background:#f0f0f0; color:#333;
     }
+    .badge.success{ background:#e7f7ec; color:#0a7f2e; }
+    .badge.info{ background:#e7f0ff; color:#1f4ed8; }
+    .badge.warn{ background:#fff7e6; color:#a15d00; }
 
-    .team-member .info h4 {
-      margin: 0 0 8px;
-      font-size: 18px;
+    .manual .manual-body h2{ font-size:2rem; margin:24px 0 12px; }
+    .manual .manual-body h3{ font-size:1.8rem; margin:18px 0 8px; }
+    .manual .manual-body p, .manual .manual-body li{ font-size:1.5rem; color:#333; }
+    .manual .manual-body ul, .manual .manual-body ol{ padding-left:16px; margin:8px 0 12px; }
+
+    /* 代码块 */
+    pre{ position:relative; background:#0b1020; color:#e6edf3; padding:14px 16px; border-radius:8px; overflow:auto; }
+    pre code{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:13px; }
+    .copy-btn{
+      position:absolute; right:10px; top:10px; font-size:12px; border:none; padding:6px 8px; border-radius:6px; background:#233; color:#cde; cursor:pointer;
+    }
+    .copy-btn:hover{ background:#2c3e; }
+
+    /* 平台 Tab */
+    .tabs{ display:flex; gap:8px; border-bottom:1px solid #eee; margin-bottom:12px; }
+    .tab-btn{
+      appearance:none; border:none; background:#f1f1f1; color:#333; padding:6px 10px; border-radius:6px 6px 0 0; cursor:pointer; font-size:12px;
+    }
+    .tab-btn[aria-selected="true"]{ background:#fff; border:1px solid #eee; border-bottom-color:#fff; }
+    .tab-panel{ display:none; }
+    .tab-panel.active{ display:block; }
+
+    /* Callouts */
+    .callout{ border-left:4px solid #999; background:#f8f8f8; padding:12px 14px; border-radius:6px; margin:12px 0; }
+    .callout.tip{ border-left-color:#0a7f2e; background:#e7f7ec; }
+    .callout.warn{ border-left-color:#a15d00; background:#fff7e6; }
+    .callout.info{ border-left-color:#1f4ed8; background:#e7f0ff; }
+
+    /* 打印：仅打印手册正文 */
+    @media print{
+      header.slider, nav.navbar, .mobile-menu, footer.site-footer, #homeContainer, #publicationContainer, #downloadContainer, #exampleContainer, #datasetContainer, #teamContainer, #piContainer, #contactContainer { display:none !important; }
+      #instructionContainer{ display:block !important; opacity:1 !important; }
+      .manual{ grid-template-columns: 1fr; }
+      .manual .toc{ display:none; }
+      body{ background:#fff; }
     }
 
-    .team-member .info p {
-      margin: 0;
-      color: #555;
-      line-height: 1.6;
+    /* 响应式 */
+    @media (max-width: 1024px){
+      .manual{ grid-template-columns: 1fr; }
+      .manual .toc{ position:relative; top:auto; max-height:none; }
     }
-
-    /* 响应式小屏处理：上下结构 */
-    @media (max-width: 600px) {
-      .team-member {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-
-      .team-member img {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto;
-      }
-
-      .team-member .info {
-        padding-top: 12px;
-      }
+    @media (max-width: 768px){
+      .navbar{ display:none; }
+      .mobile-menu{ display:block; }
+      main.content-container{ padding:16px; }
+      .manual .manual-body{ padding:16px; }
     }
-
-
-    .pi-member .media img {
-      width: 120px;         /* 可按需调整大小 */
-      height: 120px;
-      border-radius: 50%;   /* 圆形核心属性 */
-      object-fit: cover;    /* 保证不变形 */
-      margin-bottom: 12px;  /* 与文字之间间距 */
-    }
-
-    .site-footer {
-      background-color: #CD853F;
-      color: white;
-      text-align: center;
-      padding: 12px 0;
-      font-size: 1.4rem;
-    }
-
-    /* 整个滚动条 */
-    ::-webkit-scrollbar {
-      width: 1.2rem;
-      /* height: 1.2rem; */
-    }
-
-    /* 滚动条轨道背景 */
-    ::-webkit-scrollbar-track {
-      /* background: #f0f0f0; */
-      background: transparent;
-    }
-
-    /* 滚动条滑块颜色 */
-    ::-webkit-scrollbar-thumb {
-      background: rgb(205, 133, 63, 0.5);
-      border: 0.1rem solid transparent; /* 给 thumb 加“空隙边” */
-      border-radius: 0.6rem;
-      background-clip: content-box;
-    }
-
-    /* 滑块 hover 时颜色 */
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgb(205, 133, 63, 1);
-      border: 0.1rem solid transparent; /* 给 thumb 加“空隙边” */
-      background-clip: content-box;
-    }
-
-
-    /* 为了手机响应式布局 */
-    .mobile-menu {
-      display: none;
-      padding: 12px;
-      background-color: #CD853F;
-    }
-
-    .mobile-menu select {
-      width: 100%;
-      font-size: 16px;
-      padding: 8px;
-      border-radius: 4px;
-    }
-
-    /* 手机端样式调整 */
-    @media (max-width: 768px) {
-      .navbar {
-        display: none;
-      }
-
-      .mobile-menu {
-        display: block;
-      }
-
-      /* .content-container {
-        width: 100%;
-        padding: 16px;
-      } */
-
-      .card {
-        padding: 16px;
-      }
-
-      .card h3 {
-        font-size: 18px;
-      }
-
-      .card p {
-        font-size: 14px;
-        line-height: 1.7;
-      }
-    }
-
-    /* 根据宽高比来设置轮播图的高度 */
-    @media (max-aspect-ratio: 9/10) {
-      .slider {
-        aspect-ratio: 5 / 1;
-      }
-    }
-
-
   </style>
 </head>
 <body>
   <div class="page">
 
     <!-- ===== 轮播 ===== -->
-    <header class="slider">
+    <header class="slider" role="region" aria-label="Hero carousel">
       <div class="slider-wrapper">
-        <img src="./images/header/a01.png" alt="" />
-        <div class="slider-footer">
-          <p>Bioinformatics</p>
-          <ul class="slider-indicator">
-            <li class="active"></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+        <img src="./images/header/a01.png" alt="Slide: Bioinformatics" />
+        <div class="slider-footer" id="sliderFooter" aria-live="polite">
+          <p id="sliderTitle">Bioinformatics</p>
+          <ul class="slider-indicator" role="tablist" aria-label="Carousel indicators">
+            <li class="active" role="tab" aria-selected="true" tabindex="0"></li>
+            <li role="tab" aria-selected="false" tabindex="0"></li>
+            <li role="tab" aria-selected="false" tabindex="0"></li>
+            <li role="tab" aria-selected="false" tabindex="0"></li>
+            <li role="tab" aria-selected="false" tabindex="0"></li>
+            <li role="tab" aria-selected="false" tabindex="0"></li>
           </ul>
           <div class="toggle">
-            <button class="prev">&lt;</button>
-            <button class="next">&gt;</button>
+            <button class="prev" aria-label="Previous slide" title="Previous">&lt;</button>
+            <button class="next" aria-label="Next slide" title="Next">&gt;</button>
           </div>
         </div>
       </div>
-      
     </header>
 
-    <!-- ===== 导航 ===== -->
-    <nav class="navbar">
+    <!-- ===== 顶部导航 ===== -->
+    <nav class="navbar" aria-label="Primary">
       <ul>
         <li><a href="#homeContainer">HOME</a></li>
         <li><a href="#downloadContainer">DOWNLOAD</a></li>
         <li><a href="#instructionContainer">INSTRUCTION</a></li>
         <li><a href="#exampleContainer">EXAMPLE</a></li>
         <li><a href="#datasetContainer">DATASET</a></li>
-        
-        <!-- <li><a href="#researchContainer">RESEARCH</a></li>
-        <li><a href="#teamContainer">TEAM</a></li>
-        <li><a href="#piContainer">PI</a></li> -->
-
         <li><a href="#publicationContainer">PUBLICATION</a></li>
         <li><a href="#contactContainer">CONTACT</a></li>
       </ul>
     </nav>
 
-    <!-- 响应式下拉菜单 主要为了适应手机 -->
+    <!-- 手机菜单 -->
     <div class="mobile-menu">
-      <select id="mobileNav" onchange="if(this.value) location.href=this.value">
+      <select id="mobileNav">
         <option value="">MENU</option>
         <option value="#homeContainer">HOME</option>
         <option value="#downloadContainer">DOWNLOAD</option>
         <option value="#instructionContainer">INSTRUCTION</option>
         <option value="#exampleContainer">EXAMPLE</option>
         <option value="#datasetContainer">DATASET</option>
-
-        <!-- <option value="#researchContainer">RESEARCH</option>
-        <option value="#teamContainer">TEAM</option>
-        <option value="#piContainer">PI</option> -->
-
         <option value="#publicationContainer">PUBLICATION</option>
         <option value="#contactContainer">CONTACT</option>
       </select>
     </div>
 
-    <!-- ===== 主体内容（示例）===== -->
+    <!-- ===== 主体 ===== -->
     <main class="content-container">
-      <!-- ① 每个 section 都是一页内容；默认只显示 .active -->
+
+      <!-- 其他栏目（保持与你之前一致，可按需编辑） -->
       <section id="homeContainer" class="content-section show fade-in">
-        <!-- 随便放些占位卡片 -->
-        <div class="card"><h3>NEWS</h3>
-          <p>
-            <!-- With a spirit of exploration for the world and a determination to overcome challenges in pursuit of beautiful things, our laboratory was founded. -->
-          </p>
-        </div>
-        <div class="card"><h3>With Purpose Unchanged, Our Dreams Set Sail</h3>
-          <p>
-            <!-- No matter how the world changes, our hearts remain steady. 
-            With a clear purpose guiding us, we continue to chase our dreams with passion and determination. 
-            Challenges may come and go, but our vision stays firm. 
-            Like ships setting sail under the stars, we advance through the unknown, guided not by certainty, but by purpose and vision. 
-            In the vast sea of scientific inquiry, each discovery is a star that lights our path. 
-            Though the night may be long and the currents strong, our direction remains clear—we sail forward, fueled by curiosity, and anchored in the pursuit of truth. -->
-          </p>
-        </div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+        <div class="card"><h3>NEWS</h3><p></p></div>
+        <div class="card"><h3>With Purpose Unchanged, Our Dreams Set Sail</h3><p></p></div>
       </section>
 
-      <section id="researchContainer" class="content-section">
-        <div class="card">
-          <h3>Research Interests</h3>
-          <p>Our lab focuses on a range of cutting-edge research topics, including phylogenetic analysis, comparative genomics, integrative analysis of multi-omics and multimodal data, bulk and single-cell RNA sequencing, spatial transcriptomics, data integration and mining, as well as applications of machine learning, deep learning, and machine unlearning in biology and medicine.
-          <!-- For the latest developments and findings, please explore our publications. -->
-          </p>
-        </div>
-        <div class="card"><h3>Phylogenetics and Evolution</h3>
-          <p>Our research in phylogenetics and evolution focuses on understanding the genetic and evolutionary relationships among species across the tree of life. We develop and apply computational methods to reconstruct phylogenetic trees, infer ancestral traits, and model evolutionary processes at both molecular and macroevolutionary scales. A key component of our work involves integrating diverse phylogenetic analysis methods and optimizing analytical pipelines to improve accuracy, scalability, and reproducibility in evolutionary inference. By combining genomic, morphological, and temporal data, we aim to uncover patterns of speciation, adaptation, and lineage diversification. Our research has broad applications in biodiversity conservation, comparative genomics, evolutionary developmental biology (evo-devo), and infectious disease evolution. We are particularly interested in methodological challenges such as incomplete lineage sorting, horizontal gene transfer, and phylogenetic model selection in large-scale datasets.</p>
-        </div>
-        <div class="card"><h3>Cancer Evolution Research</h3>
-          <p>Cancer evolution research investigates how tumors develop, adapt, and progress through dynamic genetic and epigenetic changes. Our work focuses on understanding the clonal architecture of tumors, the selective pressures driving subclonal diversification, and the evolutionary mechanisms underlying therapy resistance and metastasis. By integrating multi-omics data—including genomic, transcriptomic, and epigenomic profiles—we reconstruct tumor phylogenies and track clonal dynamics over time and space. We also develop computational tools and models to simulate tumor evolution and predict future trajectories under different treatment regimens. Ultimately, our goal is to leverage evolutionary insights to improve cancer diagnosis, personalize therapeutic strategies, and anticipate resistance before it arises.</p>
-        </div>
-        <div class="card"><h3>Deep Learning in Cancer Diagnosis and Treatment</h3>
-          <p>Deep learning is transforming cancer diagnosis and treatment by enabling more accurate, efficient, and data-driven decision-making across the clinical pipeline. Our research explores how convolutional neural networks (CNNs), transformers, and other deep learning architectures can be applied to medical imaging, pathology slides, genomics, and electronic health records to detect cancer at earlier stages, classify tumor subtypes, and predict treatment response. We also focus on model interpretability, robustness, and generalizability to ensure safe and transparent deployment in real-world clinical settings. By integrating domain knowledge with large-scale clinical and molecular data, our goal is to advance precision oncology through intelligent and adaptive AI systems.</p>
-        </div>
-        <div class="card"><h3>Machine Unlearning in Medical Imaging</h3>
-          <p>Machine unlearning in medical imaging focuses on developing algorithms that can selectively remove the influence of specific data from trained models without retraining from scratch. This capability is critical in scenarios involving data privacy regulations, such as GDPR and HIPAA, where patients may revoke consent for the use of their medical data. Our research investigates efficient and reliable unlearning techniques tailored to deep learning models used in radiology, pathology, and other imaging domains. We aim to ensure that once data are removed, the model’s performance and generalization are preserved while fully erasing any learned representation of the deleted data. Key challenges we address include catastrophic forgetting, verification of unlearning effectiveness, and scalability in large-scale imaging datasets. Ultimately, our goal is to build trustworthy, compliant AI systems that respect data ownership and enable safe deployment in clinical settings.</p>
+      <!-- ===== 使用手册（新版 INSTRUCTION） ===== -->
+      <section id="instructionContainer" class="content-section">
+        <div class="manual">
+          <!-- 左侧目录（自动生成） -->
+          <aside class="toc" aria-label="Manual Table of Contents">
+            <h4>使用手册目录</h4>
+            <nav id="manualToc"></nav>
+          </aside>
+
+          <!-- 右侧正文 -->
+          <article class="manual-body" id="manualBody">
+            <header>
+              <h1>AMBER 使用手册</h1>
+              <div class="meta">
+                <span class="badge info">版本：v1.0.0</span>
+                <span class="badge">更新时间：2025-09-20</span>
+                <span class="badge success">稳定</span>
+              </div>
+              <div class="callout tip">
+                💡 小提示：目录、锚点与滚动高亮都是自动生成的。你只需维护下面的标题（H2/H3）与正文内容即可。
+              </div>
+            </header>
+
+            <!-- 你只需按需编辑以下各节内容即可；目录会自动识别 h2 / h3 -->
+            <section>
+              <h2>1. 介绍</h2>
+              <p>AMBER 是用于 <em>（在此简述你的软件核心功能/应用场景）</em> 的工具套件，支持跨平台运行，并提供命令行与可编程 API 两种使用方式。</p>
+              <div class="callout info">
+                ✅ 适用对象：研究者、工程师、学生；<br>
+                ✅ 支持平台：Windows / macOS / Linux。
+              </div>
+            </section>
+
+            <section>
+              <h2>2. 安装</h2>
+              <h3>2.1 系统要求</h3>
+              <ul>
+                <li>操作系统：Windows 10+/macOS 12+/Ubuntu 20.04+</li>
+                <li>CPU/内存：≥ 2 核 / 8 GB RAM</li>
+                <li>依赖：Python 3.10+ 或 Node.js 18+（按你的实现修改）</li>
+              </ul>
+
+              <h3>2.2 通过包管理器安装</h3>
+              <!-- 平台命令 Tab 示例 -->
+              <div class="tabs" role="tablist" aria-label="Install Tabs">
+                <button class="tab-btn" role="tab" aria-selected="true" data-tab="win">Windows (PowerShell)</button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-tab="mac">macOS (zsh)</button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-tab="linux">Linux (bash)</button>
+              </div>
+              <div id="tab-panels-install">
+                <div class="tab-panel active" data-panel="win" role="tabpanel">
+                  <pre><button class="copy-btn" data-copy>复制</button><code>winget install YourOrg.AMBER</code></pre>
+                </div>
+                <div class="tab-panel" data-panel="mac" role="tabpanel">
+                  <pre><button class="copy-btn" data-copy>复制</button><code>brew tap yourorg/tap
+brew install amber</code></pre>
+                </div>
+                <div class="tab-panel" data-panel="linux" role="tabpanel">
+                  <pre><button class="copy-btn" data-copy>复制</button><code>curl -fsSL https://your.domain/install.sh | bash</code></pre>
+                </div>
+              </div>
+
+              <h3>2.3 从源码构建</h3>
+              <pre><button class="copy-btn" data-copy>复制</button><code>git clone https://your.domain/amber.git
+cd amber
+make build  # 或者: npm i && npm run build / pip install -e .</code></pre>
+            </section>
+
+            <section>
+              <h2>3. 快速开始</h2>
+              <h3>3.1 运行第一个任务</h3>
+              <pre><button class="copy-btn" data-copy>复制</button><code>amber run --input samples/demo.fastq --out results/demo --threads 8</code></pre>
+              <div class="callout tip">如果你只有一台双核笔记本，把 <code>--threads</code> 设为 2~4 即可。</div>
+
+              <h3>3.2 最小配置文件</h3>
+              <pre><button class="copy-btn" data-copy>复制</button><code># config.yaml
+input: samples/demo.fastq
+output_dir: results/demo
+threads: 8
+modes:
+  - align
+  - call
+  - report</code></pre>
+            </section>
+
+            <section>
+              <h2>4. 命令行选项</h2>
+              <h3>4.1 常用参数</h3>
+              <ul>
+                <li><code>--input &lt;path&gt;</code>：输入文件路径（必需）。</li>
+                <li><code>--out &lt;dir&gt;</code>：输出目录（默认 <code>./results</code>）。</li>
+                <li><code>--threads &lt;n&gt;</code>：并行线程数（默认根据 CPU 自动）。</li>
+                <li><code>--mode &lt;name&gt;</code>：运行模式（<code>align</code>、<code>call</code>、<code>report</code>）。</li>
+                <li><code>--config &lt;file&gt;</code>：从 YAML 配置加载参数。</li>
+              </ul>
+
+              <h3>4.2 示例：组合参数</h3>
+              <pre><button class="copy-btn" data-copy>复制</button><code>amber run \
+  --input data/sample1.fastq \
+  --out results/sample1 \
+  --threads 12 \
+  --mode align,call,report</code></pre>
+            </section>
+
+            <section>
+              <h2>5. 输出与日志</h2>
+              <ul>
+                <li><code>logs/amber.log</code>：完整日志。</li>
+                <li><code>report/index.html</code>：交互式报告。</li>
+                <li><code>metrics.json</code>：关键指标汇总。</li>
+              </ul>
+              <div class="callout info">建议把 <code>results/</code> 设置到 SSD 盘以提升 I/O 性能。</div>
+            </section>
+
+            <section>
+              <h2>6. 常见问题</h2>
+              <h3>6.1 安装失败</h3>
+              <p>请检查网络与包管理器源是否可用；或改用源码构建。</p>
+              <h3>6.2 性能不佳</h3>
+              <p>减少并发、关闭杀毒实时扫描、或把临时目录放到本地 SSD。</p>
+            </section>
+
+            <section>
+              <h2>7. 反馈与支持</h2>
+              <p>提交 Issue：<em>（替换为你的邮箱/Git 仓库/工单系统）</em></p>
+            </section>
+          </article>
         </div>
       </section>
 
-      <section id="publicationContainer" class="content-section">
-        <div class="card"><h3>Articles</h3>
-          <p>……</p>
-        </div>
-
-
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
-
-      </section>
-
+      <!-- 其它栏目（保持） -->
       <section id="downloadContainer" class="content-section">
         <div class="card"><h3>Software</h3><p>……</p></div>
         <div class="card"><h3>Toolbox</h3><p>……</p></div>
         <div class="card"><h3>Dataset</h3><p>……</p></div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
-      </section>
-
-      <section id="instructionContainer" class="content-section">
-        <div class="card"><h3>Software</h3><p>……</p></div>
-        <div class="card"><h3>Toolbox</h3><p>……</p></div>
-        <div class="card"><h3>Dataset</h3><p>……</p></div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
       </section>
 
       <section id="exampleContainer" class="content-section">
         <div class="card"><h3>Software</h3><p>……</p></div>
         <div class="card"><h3>Toolbox</h3><p>……</p></div>
         <div class="card"><h3>Dataset</h3><p>……</p></div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
       </section>
 
       <section id="datasetContainer" class="content-section">
         <div class="card"><h3>Software</h3><p>……</p></div>
         <div class="card"><h3>Toolbox</h3><p>……</p></div>
         <div class="card"><h3>Dataset</h3><p>……</p></div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
       </section>
 
-      <section id="downloadContainer" class="content-section">
-        <div class="card"><h3>Software</h3><p>……</p></div>
-        <div class="card"><h3>Toolbox</h3><p>……</p></div>
-        <div class="card"><h3>Dataset</h3><p>……</p></div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
-      </section>
-
-      <section id="teamContainer" class="content-section">
-        <div class="card team-member">
-          <div class="media">
-            <img src="./images/team/JingsongNie.png" alt="Jingsong Nie">
-            <!-- <p>Jingsong Nie</p> -->
-            <p>Engineer</p>
-          </div>
-          <div class="info">
-            <h4>Jingsong Nie</h4>
-            <!-- <p>Jingsong Nie</p> -->
-            <!-- <p>Engineer</p> -->
-            <p>
-              His research interests include genome sequencing, analysis, and comparative genomics to understand evolutionary patterns.
-              Jingsong completed Master of Engineering in Biomedical Engineering program at University of British Columbia.
-              Before that, he majored in Biotechnology at Sun Yat-sen University, and got Bachelor degree.
-            </p>
-          </div>
-        </div>
-
-        <div class="card team-member">
-          <div class="media">
-            <img src="./images/team/runLou.png" alt="Run Lou">
-            <p>Run Lou</p>
-            <p>Research Assistant</p>
-          </div>
-          <div class="info">
-            <h4></h4>
-            <p>
-              She is primarily interested in phylogenetic analysis.
-
-
-            </p>
-          </div>
-        </div>
-
-        <div class="card team-member">
-          <div class="media">
-            <img src="./images/team/yuHan.png" alt="Yu Han">
-            <p>Yu Han</p>
-            <p>MS student</p>
-          </div>
-          <div class="info">
-            <h4></h4>
-            <p>
-              She is mainly interested in the evolutionary dynamics of cancer cells, with a research focus on cancer evolution, particularly tumor heterogeneity and clonal selection.
-
-
-            </p>
-          </div>
-        </div>
-
-        <!-- 
-        <div class="card team-member">
-          <div class="media">
-            <img src="./images/.jpg" alt="">
-            <p></p>
-            <p></p>
-          </div>
-          <div class="info">
-            <h4></h4>
-            <p>
-
-
-
-            </p>
-          </div>
-        </div> 
-        -->
-
-      </section>
-
-      <section id="piContainer" class="content-section">
-
-        <div class="card pi-member"><h3>About PI</h3>
-          <div class="media">
-            <img src="./images/pi/a01.jpg" alt="Guodong Zhang">
-            <p>Guodong Zhang</p>
-            <p>Senior Engineer</p>
-          </div>
-          <div class="info">
-            <p>Guodong is a Senior Engineer at The Third Affiliated Hospital of Kunming Medical University, Yunnan Cancer Hospital, Peking University Cancer Hospital Yunnan. Previously, he worked as a Research Assistant at Yunnan University. He was a Visiting Scholar at the University of California, Riverside, from March 2024 to March 2025.</p>
-            <p>He obtained his Master's degree in Biochemistry and Molecular Biology from Kunming University of Science and Technology. Earlier, he earned his Bachelor of Engineering in Biological Engineering from Hebei University of Technology.</p>
-          </div>
-        </div>
-          <!-- 
-            <p>
-              Education
-              2015.9 - 2018.6: Master of Science in Biochemistry and Molecular Biology, Kunming University of Science and Technology.
-              2009.9 - 2013.6: Bachelor of Engineering in Biological Engineering, Hebei University of Tecnology.
-            </p>
-            <p>
-              Research Experience
-              2021.1 - present: Senior Engineer (Computer and Software), Peking University Cancer Hospital Yunnan Campus, Yunnan Cancer Hospital, The Third Affiliated Hospital of Kunming Medical University & Yunnan Cancer Center.
-              2024.3 - 2025.3: Visiting Scholar, University of California, Riverside.
-              2018. 7 - 2020.12: Research Assistant, Yunnan University.
-            </p>
-          -->
-        <div class="card"><h3>Projects</h3>
-          <p>……</p>
-          <p>……</p>
-        </div>
-        <div class="card"><h3>Projects (Completed)</h3>
-          <p>Species classification, phylogeny and mitochondrial genome evolution of Ophiocordyceps in Hengduan Mountain Area, First Participant.</p>
-          <p>Using Crab-Eating Macaques as a Primate Model to Elucidate Determining Factors and Temporal Regulatory Features in the Early Development of Primordial Germ Cells, Third Participant.</p>
-          <p>Research on the Clinical Diagnosis and Treatment of Non-Small Cell Lung Cancer Assisted by Circulating Tumor Cell (CTC) PD-L1 Detection, Third Participant.</p>
-          <p>……</p>
-          <!-- 
-          <p>National Natural Science Foundation of China: No. 32060007, Species classification, phylogeny and mitochondrial genome evolution of Ophiocordyceps in Hengduan Mountain Area, 2021.01-2022.12, CNY 300,000￥, First Participant.</p>
-          <p>National Natural Science Foundation of China: No. 31760338, Using Crab-Eating Macaques as a Primate Model to Elucidate Determining Factors and Temporal Regulatory Features in the Early Development of Primordial Germ Cells, 2018.01-2021.12, CNY 370,000￥, Third Participant.</p>
-          <p>Yunnan Provincial Department of Science and Technology Project: No. 202201AY070001-151, Research on the Clinical Diagnosis and Treatment of Non-Small Cell Lung Cancer Assisted by Circulating Tumor Cell (CTC) PD-L1 Detection, 2022.09-2025.08, CNY 100,000￥, Third Participant.</p>
-          -->
-        </div>
-        <div class="card"><h3>Funding Agencies</h3>
-          <p>National Natural Science Foundation of China</p>
-          <p>Yunnan Provincial Department of Science and Technology</p>
-          <p>……</p>
-        </div>
-        <div class="card"><h3>Honors and Awards</h3>
-          <p>Time's Person of the Year in 2006</p>
-          <p>The Touching China Annual Person of the Year Award in 2008 (Special Award)</p>
-          <p>The 2019 Champions of the Earth</p>
-          <p>The winner of the 2022 Olympic Cup</p>
-          <p>……</p>
-        </div>
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+      <section id="publicationContainer" class="content-section">
+        <div class="card"><h3>Articles</h3><p>……</p></div>
       </section>
 
       <section id="contactContainer" class="content-section">
-        <div class="card"><h3>Contact</h3>
-          <p>
-            Email: 
-          </p>
-        </div>
-        <div class="card"><h3>Location</h3>
-          <p>Address: No. 519, Kunzhou Road, Xishan District, Kunming City, Yunnan Province, China</p>
-          <p>Postal Code: 650118</p>
-        </div>
-        <div class="card"><h3>Introduction to Kunming</h3>
-          <p>Kunming is the capital city of Yunnan Province in southwest China. It is known as the “Spring City” because of its mild climate all year round. The weather is neither too hot in summer nor too cold in winter, which makes it a very comfortable place to live.
-
-          Kunming has a long history and rich culture. It is also a gateway to Southeast Asia due to its location. The city is famous for beautiful natural scenery, such as Dianchi Lake, Stone Forest, and Western Hills. You can also enjoy colorful ethnic cultures, as many minority groups live in and around the area.
-
-          In recent years, Kunming has developed rapidly, with modern transportation, shopping centers, and universities. It's a great place to explore Chinese culture and nature at the same time.
-          </p>
-        </div>
-        <div class="card"><h3>Introduction to Yunnan</h3>
-          <p>
-            Yunnan Province is located in the southwest of China. It is famous for its beautiful landscapes, rich biodiversity, and diverse ethnic cultures. Yunnan shares borders with Vietnam, Laos, and Myanmar, which makes it an important gateway for international trade and cultural exchange.
-
-            The province has many famous tourist attractions, such as Lijiang Old Town, Dali Ancient City, Shangri-La, and Yuanyang Rice Terraces. One of the most famous natural wonders is the Stone Forest, a UNESCO World Heritage Site. You can also visit snow-capped mountains, tropical rainforests, and crystal-clear lakes in different parts of the province.
-
-            Yunnan is also home to 25 ethnic minority groups, more than any other province in China. This gives the region a colorful cultural heritage, including traditional music, dances, clothing, and festivals.
-
-            The capital city of Yunnan is Kunming, which is known as the "Spring City" because of its pleasant weather all year round.
-          </p>
-        </div>
-
-        <!-- <div class="card"><h3>文章标题 6</h3><p>……</p></div> -->
+        <div class="card"><h3>Contact</h3><p>Email: </p></div>
+        <div class="card"><h3>Location</h3><p>Address: No. 519, Kunzhou Road, Xishan District, Kunming City, Yunnan Province, China</p><p>Postal Code: 650118</p></div>
       </section>
-
     </main>
+
     <footer class="site-footer">
       <p>&copy; 2025 Guodong Lab. All rights reserved.</p>
     </footer>
   </div>
 
-  <!-- ===== 原来的 JS 原封不动搬下来 ===== -->
+  <!-- ===== JS ===== -->
   <script>
-    // 1. 初始数据
-    const data = [
-      { url: './images/header/a01.png', title: 'Bioinformatics', color: 'rgb(36, 31, 33, 0.6)' },
-      { url: './images/header/a02.png', title: 'Machine Learning', color: 'rgb(43, 35, 26, 0.6)' },
-      { url: './images/header/a03.png', title: 'Deep Learning & Artificial Intelligence', color: 'rgb(36, 31, 33, 0.6)' },
-      { url: './images/header/a04.png', title: 'Phylogenetic Analysis', color: 'rgb(43, 35, 26, 0.6)' },
-      { url: './images/header/a05.png', title: 'Machine Unlearing', color: 'rgb(36, 31, 33, 0.6)' },
-      { url: './images/header/a06.png', title: 'Cancer Bioinformatics', color: 'rgb(43, 35, 26, 0.6)' },
+    /* ========= 轮播（原思路增强版） ========= */
+    const slides = [
+      { url:'./images/header/a01.png', title:'Bioinformatics', color:'rgba(36,31,33,.6)', alt:'Bioinformatics' },
+      { url:'./images/header/a02.png', title:'Machine Learning', color:'rgba(43,35,26,.6)', alt:'Machine Learning' },
+      { url:'./images/header/a03.png', title:'Deep Learning & Artificial Intelligence', color:'rgba(36,31,33,.6)', alt:'Deep Learning & AI' },
+      { url:'./images/header/a04.png', title:'Phylogenetic Analysis', color:'rgba(43,35,26,.6)', alt:'Phylogenetic Analysis' },
+      { url:'./images/header/a05.png', title:'Machine Unlearning', color:'rgba(36,31,33,.6)', alt:'Machine Unlearning' },
+      { url:'./images/header/a06.png', title:'Cancer Bioinformatics', color:'rgba(43,35,26,.6)', alt:'Cancer Bioinformatics' },
     ];
-    // 获取元素
-    const img = document.querySelector('.slider-wrapper img');
-    const p   = document.querySelector('.slider-footer p');
-    const footer = document.querySelector('.slider-footer');
-    const next = document.querySelector('.next');
-    const prev = document.querySelector('.prev');
-    let i = 0; // 当前索引
-
-    next.addEventListener('click', () => {
-      i = ++i >= data.length ? 0 : i;
-      toggle();
-    });
-
-    prev.addEventListener('click', () => {
-      i = --i < 0 ? data.length - 1 : i;
-      toggle();
-    });
-
-    function toggle() {
-      img.src = data[i].url;
-      p.textContent = data[i].title;
-      footer.style.backgroundColor = data[i].color;
-      document.querySelector('.slider-indicator .active').classList.remove('active');
-      document.querySelector(`.slider-indicator li:nth-child(${i + 1})`).classList.add('active');
+    const sliderEl = document.querySelector('.slider');
+    const imgEl = document.querySelector('.slider-wrapper img');
+    const titleEl = document.getElementById('sliderTitle');
+    const footerEl = document.getElementById('sliderFooter');
+    const nextBtn = document.querySelector('.next');
+    const prevBtn = document.querySelector('.prev');
+    const dots = Array.from(document.querySelectorAll('.slider-indicator li'));
+    let idx=0, autoplayId=null; const AUTOPLAY=3000;
+    function show(i){ idx=(i+slides.length)%slides.length; const s=slides[idx];
+      imgEl.src=s.url; imgEl.alt='Slide: '+(s.alt||s.title); titleEl.textContent=s.title; footerEl.style.backgroundColor=s.color;
+      document.querySelector('.slider-indicator li.active')?.classList.remove('active'); dots[idx]?.classList.add('active');
+      dots.forEach((d,k)=>d.setAttribute('aria-selected',k===idx?'true':'false'));
     }
+    function next(){ show(idx+1); } function prev(){ show(idx-1); }
+    function start(){ stop(); autoplayId=setInterval(next,AUTOPLAY); }
+    function stop(){ if(autoplayId){ clearInterval(autoplayId); autoplayId=null; } }
+    function interacted(){ stop(); start(); }
+    nextBtn.addEventListener('click', ()=>{ next(); interacted(); });
+    prevBtn.addEventListener('click', ()=>{ prev(); interacted(); });
+    dots.forEach((d,i)=>{ d.addEventListener('click', ()=>{ show(i); interacted(); }); d.addEventListener('keydown',e=>{ if(['Enter',' '].includes(e.key)){ e.preventDefault(); show(i); interacted(); } })});
+    sliderEl.addEventListener('mouseenter', stop); sliderEl.addEventListener('mouseleave', start);
+    let sx=0; sliderEl.addEventListener('touchstart',e=>{ sx=e.changedTouches[0].clientX; },{passive:true});
+    sliderEl.addEventListener('touchend',e=>{ const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40){ dx<0?next():prev(); interacted(); } },{passive:true});
+    document.addEventListener('visibilitychange',()=>{ document.hidden?stop():start(); });
+    show(0); start();
 
-    // 自动轮播
-    let timerId = setInterval(() => next.click(), 3000);
+    /* ========= 路由切换 ========= */
+    const navLinks=document.querySelectorAll('.navbar a');
+    const sections=document.querySelectorAll('.content-section');
+    const mobileSelect=document.getElementById('mobileNav');
+    function switchTo(id){
+      const cur=document.querySelector('.content-section.show');
+      const tar=document.getElementById(id);
+      if(!tar||cur===tar) return;
+      cur?.classList.remove('fade-in'); cur?.classList.add('fade-out');
+      setTimeout(()=>{ cur?.classList.remove('fade-out','show'); tar.classList.add('show'); setTimeout(()=>tar.classList.add('fade-in'),16); },180);
+      document.querySelector('.navbar a.active')?.classList.remove('active');
+      document.querySelector(`.navbar a[href="#${id}"]`)?.classList.add('active');
+      if(mobileSelect && mobileSelect.value!==`#${id}`) mobileSelect.value=`#${id}`;
+    }
+    navLinks.forEach(a=>a.addEventListener('click',e=>{ e.preventDefault(); const id=a.getAttribute('href').slice(1); history.pushState({section:id},'',`#${id}`); switchTo(id); }));
+    mobileSelect.addEventListener('change',function(){ if(!this.value) return; const id=this.value.slice(1); history.pushState({section:id},'',`#${id}`); switchTo(id); });
+    function initByHash(){ const h=location.hash.slice(1)||'homeContainer';
+      sections.forEach(s=>s.classList.remove('show','fade-in','fade-out'));
+      document.querySelectorAll('.navbar a').forEach(a=>a.classList.remove('active'));
+      document.querySelector(`.navbar a[href="#${h}"]`)?.classList.add('active');
+      document.getElementById(h)?.classList.add('show','fade-in');
+      if(mobileSelect) mobileSelect.value=`#${h}`;
+    }
+    window.addEventListener('load', initByHash);
+    window.addEventListener('popstate', ()=>{ const h=location.hash.slice(1)||'homeContainer'; switchTo(h); });
 
-    // 鼠标悬停暂停
-    const slider = document.querySelector('.slider');
-    slider.addEventListener('mouseenter', () => clearInterval(timerId));
-    slider.addEventListener('mouseleave', () => {
-      clearInterval(timerId);
-      timerId = setInterval(() => next.click(), 3000);
-    });
+    /* ========= 使用手册：目录自动生成 / 滚动高亮 / 复制按钮 / Tabs ========= */
+    (function manualEnhance(){
+      const body = document.getElementById('manualBody');
+      if(!body) return;
 
-
-    // 切换脚本
-    /* ====== 点击导航切内容 ====== */
-    const navLinks = document.querySelectorAll('.navbar a');
-    const sections = document.querySelectorAll('.content-section');
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href').slice(1);
-        const current = document.querySelector('.content-section.show');
-        const next = document.getElementById(targetId);
-
-        if (current === next) return;
-
-        // 淡出当前
-        current.classList.remove('fade-in');
-        current.classList.add('fade-out');
-
-        // 等待淡出动画结束，再切换显示
-        setTimeout(() => {
-          current.classList.remove('fade-out', 'show');
-
-          next.classList.add('show');
-          // 强制触发过渡
-          setTimeout(() => {
-            next.classList.add('fade-in');
-          }, 200);
-        }, 200);
-
-        // 高亮导航
-        document.querySelector('.navbar a.active')?.classList.remove('active');
-        link.classList.add('active');
-
-        // 更新地址栏 hash
-        history.pushState(null, '', `#${targetId}`);
-      });
-    });
-
-
-    // 下拉菜单导航同步高亮和切换 这个是结合响应式下来菜单，主要是为了手机
-    document.getElementById('mobileNav').addEventListener('change', function () {
-      const value = this.value;
-      if (!value) return; // 如果没选，直接返回
-
-      const targetId = value.slice(1); // 移除 #
-      const current = document.querySelector('.content-section.show');
-      const next = document.getElementById(targetId);
-
-      if (!next) return; // 如果找不到对应的 section，终止
-
-      if (current !== next) {
-        current.classList.remove('fade-in');
-        current.classList.add('fade-out');
-
-        setTimeout(() => {
-          current.classList.remove('fade-out', 'show');
-          next.classList.add('show');
-          setTimeout(() => next.classList.add('fade-in'), 200);
-        }, 200);
+      // 1) 为 h2/h3 自动生成 id
+      const headings = body.querySelectorAll('h2, h3');
+      const slugMap = new Map();
+      function slugify(text){
+        const base = text.trim().toLowerCase().replace(/[^\u4e00-\u9fa5\w\s\-]+/g,'').replace(/\s+/g,'-');
+        if(!slugMap.has(base)) { slugMap.set(base, 0); return base; }
+        const n = slugMap.get(base)+1; slugMap.set(base,n); return `${base}-${n}`;
       }
-
-      // 高亮同步（下拉不会高亮导航，但可以清除现有高亮）
-      document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
-
-      // 更新地址栏 hash
-      history.pushState(null, '', value);
-    });
-
-
-    // window.addEventListener('load', () => {
-    //   const hash = location.hash.slice(1) || 'homeContainer';
-    //   const target = document.getElementById(hash);
-    //   target?.classList.add('show', 'fade-in');
-    //   document.querySelector(`.navbar a[href="#${hash}"]`)?.classList.add('active');
-    // });
-
-
-    window.addEventListener('load', () => {
-      const hash = location.hash.slice(1) || 'homeContainer';
-
-      // 移除所有 section 的显示状态
-      document.querySelectorAll('.content-section').forEach(section => {
-        section.classList.remove('show', 'fade-in', 'fade-out');
+      headings.forEach(h=>{
+        if(!h.id){ h.id = slugify(h.textContent || 'section'); }
       });
 
-      // 显示 hash 对应 section
-      const target = document.getElementById(hash);
-      target?.classList.add('show', 'fade-in');
+      // 2) 构建 TOC
+      const toc = document.getElementById('manualToc');
+      const frag = document.createDocumentFragment();
+      headings.forEach(h=>{
+        if(!(h.tagName==='H2' || h.tagName==='H3')) return;
+        const a=document.createElement('a');
+        a.href = `#${h.id}`;
+        a.textContent = h.textContent;
+        a.className = h.tagName==='H2' ? 'toc-l2' : 'toc-l3';
+        a.addEventListener('click', (e)=>{ e.preventDefault(); document.getElementById(h.id)?.scrollIntoView({behavior:'smooth', block:'start'}); history.pushState(null,'',`#${h.id}`); });
+        frag.appendChild(a);
+      });
+      toc.innerHTML = ''; toc.appendChild(frag);
 
-      // 高亮对应导航
-      document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
-      document.querySelector(`.navbar a[href="#${hash}"]`)?.classList.add('active');
-    });
+      // 3) 滚动高亮（scroll spy）
+      const tocLinks = Array.from(toc.querySelectorAll('a'));
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          const id = entry.target.id;
+          const link = tocLinks.find(a=>a.getAttribute('href')===`#${id}`);
+          if(!link) return;
+          if(entry.isIntersecting){
+            tocLinks.forEach(n=>n.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '0px 0px -70% 0px', threshold: 0.1 });
+      headings.forEach(h => observer.observe(h));
 
+      // 4) 代码块复制按钮
+      body.querySelectorAll('pre .copy-btn[data-copy]').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const pre = btn.closest('pre'); const code = pre?.querySelector('code')?.innerText || '';
+          try{
+            await navigator.clipboard.writeText(code);
+            const old = btn.textContent; btn.textContent='已复制 ✔️'; setTimeout(()=>btn.textContent=old,1200);
+          }catch(err){ btn.textContent='失败 ❗'; setTimeout(()=>btn.textContent='复制',1200); }
+        });
+      });
+
+      // 5) 平台 Tab 切换
+      function handleTabs(root){
+        const tabBtns = root.querySelectorAll('.tab-btn');
+        const panels = root.parentElement.querySelectorAll('.tab-panel');
+        tabBtns.forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const target = btn.dataset.tab;
+            tabBtns.forEach(b=>b.setAttribute('aria-selected', String(b===btn)));
+            panels.forEach(p=>p.classList.toggle('active', p.dataset.panel===target));
+          });
+        });
+      }
+      document.querySelectorAll('.tabs').forEach(handleTabs);
+
+      // 6) 若 URL 含有手册内的锚点，进入后平滑滚动定位
+      if(location.hash){
+        const el = document.getElementById(location.hash.slice(1));
+        el && setTimeout(()=>el.scrollIntoView({behavior:'smooth', block:'start'}), 200);
+      }
+    })();
   </script>
 </body>
 </html>
