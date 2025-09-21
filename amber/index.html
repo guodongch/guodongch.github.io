@@ -247,6 +247,13 @@
     }
     .figure-row img{ width:100%; height:auto; max-height: 50vh; object-fit: contain; }
 
+    p {
+      margin-block: 1rem 0.5rem;          /* 相当于 上、下 */
+      /* 单独控制时： */
+      /* margin-block-start: 0.5rem; */   /* 段前 */
+      /* margin-block-end: 1rem; */       /* 段后 */
+    }
+
   </style>
 </head>
 <body>
@@ -373,6 +380,7 @@
                 </div>
               </div>
               <h3>2.1 Collection</h3>
+              <p>The imported data can be broadly categorized into two types: single-gene or multi-gene data, and genome-scale data. Single-gene and multi-gene datasets are typically generated through Sanger sequencing and correspond to specific, targeted DNA sequences. In contrast, genome-scale data are derived from whole-genome sequencing followed by assembly and annotation.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
@@ -380,11 +388,54 @@
                     <span class="step-title">Collection of single-gene and multi-gene data</span>
                   </div>
                   <div class="step-body">
-                    <p></p>
+                    <p>AMBER supports direct import of raw sequencing files (.ab1) for both single-gene and multi-gene datasets, encompassing single or multiple DNA fragments. Based on predefined quality parameters, raw data can be automatically processed to generate high-confidence sequences, significantly reducing manual effort and improving both accuracy and consistency. Additionally, sequences in FASTA format can be imported. Data from online sources can be integrated via structured table files, and all acquired data are automatically merged into a unified dataset.</p>
                     <p>在菜单栏选择 <strong>文件 → 新建项目</strong>（或 <strong>打开项目</strong>）。为项目选择一个空目录，用于保存配置与输出文件。</p>
                     <figure>
                       <img src="./images/howtouse/collection_01.png" alt="Collection of single-gene and multi-gene data" data-lightbox>
                       <figcaption>Figure: Collection of single-gene and multi-gene data</figcaption>
+                    </figure>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(1) Import through Form</strong></p>
+                    <p>表格文件准备。准备一个表格文件，第一行为列名。第一列和第二列的列名（第一行）需为表格中的，不可以更改。第三列以后列名为基因名，列中的数据为对应的NCBI ACCESSION号。AMBER将自动下载并整合数据。</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_form.png" alt="Form Data" data-lightbox>
+                      <figcaption>Figure: Accession Numbers in the Form</figcaption>
+                    </figure>
+                    <p>下载的文件为genbank文件，文件保存在download_data文件夹中，再次导入时则不需下载。可以将常用的文件保存在local_database文件夹中。当local_database中存在需要的数据时，则不会再下载，直接导入。</p>
+                    <div class="callout info">此功能十分方便，可以手动下载保存，或者从其他地方拷贝。避免消耗时间重复下载文件</div>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_download.png" alt="Sava Dat" data-lightbox>
+                      <figcaption>Figure: Sava Data</figcaption>
+                    </figure>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(2) Import from Folder</strong></p>
+                    <p>数据文件准备。将同一个基因的fasta文件放入同一个文件夹内，文件夹名称为基因名。文件夹中的fasta文件如果只有一个序列时，文件名为序列名称；如果fasta中有多条序列时，序列名使用fasta文件中的名称（>后的字符）；以此将文件整合在一起。</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_datasets_form.png" alt="Import from Folder" data-lightbox>
+                      <figcaption>Figure: Import from the Folder</figcaption>
+                    </figure>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(3) Datasets presentation</strong></p>
+                    <p>从表格中导入序列的数据统计</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_datasets_form.png" alt="Presentation of datasets from the form" data-lightbox>
+                      <figcaption>Figure: Presentation of datasets from the form</figcaption>
+                    </figure>
+                    <p>从文件夹中导入序列的数据统计</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_datasets_folder.png" alt="Presentation of datasets from the folder" data-lightbox>
+                      <figcaption>Figure: Presentation of datasets from the folder</figcaption>
+                    </figure>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(4) Sequences presentation</strong></p>
+                    <p>序列数据展示</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_sequences.png" alt="sequences presentation" data-lightbox>
+                      <figcaption>Figure: Sequences presentation</figcaption>
                     </figure>
                   </div>
                 </div>
@@ -402,10 +453,59 @@
                     </figure>
                     <div class="callout info">可批量导入；重复导入会自动去重或提示覆盖（具体行为以设置为准）。</div>
                   </div>
+                  <div class="step-body">
+                    <p><strong>(1) Import through Form</strong></p>
+                    <p>表格文件准备。准备一个表格文件，第一行为列名。第一列的列名（第一行）需为表格中的，不可以更改。第二列中的数据为对应的NCBI ACCESSION号。AMBER将自动下载并整合数据。</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_02_form.png" alt="Form Data" data-lightbox>
+                      <figcaption>Figure: Accession Numbers in the Form</figcaption>
+                    </figure>
+                    <p>下载的文件为genbank文件，文件保存在download_data文件夹中，再次导入时则不需下载。可以将常用的文件保存在local_database文件夹中。当local_database中存在需要的数据时，则不会再下载，直接导入。</p>
+                    <div class="callout info">此功能十分方便，可以手动下载保存，或者从其他地方拷贝。避免消耗时间重复下载文件</div>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_download.png" alt="Sava Dat" data-lightbox>
+                      <figcaption>Figure: Sava Data</figcaption>
+                    </figure>
+                    <div class="callout info">可批量导入；重复导入会自动去重或提示覆盖（具体行为以设置为准）。</div>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(2) Import from Folder</strong></p>
+                    <p>数据文件准备。将所需提取数据的genbank文件放入文件夹内。若提取的nuclear genomes或prokaryotic genomes为genbank文件，每个taxon只能放在单独的genbank文件中。gff, gtf与tbl格式文件应为单独的taxon，导入时须有同名（扩展名不同的）fasta文件，否则无法导入。</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_02_datasets_form.png" alt="Import from Folder" data-lightbox>
+                      <figcaption>Figure: Import from the Folder</figcaption>
+                    </figure>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(3) Datasets presentation</strong></p>
+                    <p>从表格中导入序列的数据统计</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_02_datasets_form.png" alt="Presentation of datasets from the form" data-lightbox>
+                      <figcaption>Figure: Presentation of datasets from the form</figcaption>
+                    </figure>
+                    <p>从文件夹中导入序列的数据统计</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_02_datasets_folder.png" alt="Presentation of datasets from the folder" data-lightbox>
+                      <figcaption>Figure: Presentation of datasets from the folder</figcaption>
+                    </figure>
+                  </div>
+                  <div class="step-body">
+                    <p><strong>(4) Sequences presentation</strong></p>
+                    <p>序列数据展示</p>
+                    <figure>
+                      <img src="./images/howtouse/collection_01_sequences.png" alt="sequences presentation" data-lightbox>
+                      <figcaption>Figure: Sequences presentation</figcaption>
+                    </figure>
+                  </div>
                 </div>
               </div>
 
               <h3>2.2 Alignment</h3>
+              <table class="kv">
+                <tr><th>MAFFT</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>MUSCLE</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>Clustal Omega</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
@@ -456,9 +556,22 @@
                 </div>
               </div>
               <h3>2.3 Trimming</h3>
+              <table class="kv">
+                <tr><th>TrimAl</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>Gblocks</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+              </table>
               <h3>2.4 Integrate</h3>
               <h3>2.5 Model</h3>
+              <table class="kv">
+                <tr><th>ModelFinder</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>PartitionFinder</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+              </table>
               <h3>2.6 Reconstruct</h3>
+              <table class="kv">
+                <tr><th>IQtree</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>MrBayes</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>RAxML</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
               <h3>2.7 Treeverse</h3>
               <h3>2.8 Phylogenetic Agent</h3>
             </section>
@@ -486,20 +599,7 @@
                 <tr><th>资源</th><td>线程、内存、临时目录、GPU（如有）。</td></tr>
                 <tr><th>高级</th><td>阈值、过滤规则、重试策略、日志级别。</td></tr>
               </table>
-
-              <h3>3.4 报告</h3>
-              <table class="kv">
-                <tr><th>图表</th><td>可交互折线/柱状/散点/热力图等。</td></tr>
-                <tr><th>导出</th><td>PDF/HTML/PNG，支持水印与模板。</td></tr>
-                <tr><th>共享</th><td>生成只读链接（若连接到你的服务端）。</td></tr>
-              </table>
-
-              <h3>3.5 设置</h3>
-              <table class="kv">
-                <tr><th>通用</th><td>语言、主题、自动更新、匿名使用统计（可关）。</td></tr>
-                <tr><th>路径</th><td>默认项目目录、缓存目录、下载目录。</td></tr>
-                <tr><th>通知</th><td>桌面通知、声音、完成提醒。</td></tr>
-              </table>
+              
             </section>
 
             <!-- 4. Gene Set Enrichment Analysis -->
@@ -583,9 +683,8 @@
       </section>
 
       <section id="datasetContainer" class="content-section">
-        <div class="card"><h3>Software</h3><p>……</p></div>
-        <div class="card"><h3>Toolbox</h3><p>……</p></div>
-        <div class="card"><h3>Dataset</h3><p>……</p></div>
+        <div class="card"><h3>Multi-gene</h3><p>……</p></div>
+        <div class="card"><h3>Mitogenome</h3><p>……</p></div>
       </section>
 
       <section id="publicationContainer" class="content-section">
