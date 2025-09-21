@@ -98,10 +98,10 @@
     }
     .step-header{ display:flex; align-items:center; gap:10px; }
     .step-num{
-      width:26px; height:26px; border-radius:50%; background:#0a7f2e; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:12px;
+      width:2.5rem; height:2.5rem; border-radius:50%; background:#0a7f2e; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:1.5rem;
       flex:0 0 auto;
     }
-    .step-title{ font-weight:700; }
+    .step-title{ font-weight:700; font-size: 1.5rem;}
     .step-body img{ border:1px solid #eee; border-radius:8px; max-width:100%; height:auto; cursor:zoom-in; }
     .step-actions{ display:flex; gap:8px; flex-wrap:wrap; }
     .btn{
@@ -206,8 +206,47 @@
     /* 避开吸顶导航：目录跳转时标题不被顶住 */
     .manual .manual-body h2,
     .manual .manual-body h3 {
-      scroll-margin-top: 6rem; /* 6rem 导航 + 一点间距 */
+      scroll-margin-top: 7rem; /* 6rem 导航 + 1rem 一点间距 */
     }
+
+    /* 统一：手册正文与步骤里的图片，默认不再铺满整行 */
+    .manual .manual-body figure { 
+      display:flex; flex-direction:column; align-items:center; 
+    }
+    .manual .manual-body figure img,
+    .manual .manual-body .step-body img {
+      width: auto;                         /* 关键：不要强行 100% */
+      max-width: min(100%, 900px);         /* 默认上限 900px，且不超过容器 */
+      max-height: 70vh;                    /* 竖屏截图也不会太高 */
+      object-fit: contain;                 /* 等比缩放不变形 */
+      border: 1px solid #eee;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.06);
+    }
+
+    /* 移动端仍然允许全宽展示（屏幕窄，小图全宽没问题） */
+    @media (max-width: 768px){
+      .manual .manual-body figure img,
+      .manual .manual-body .step-body img {
+        max-width: 100%;
+        max-height: 62vh;
+      }
+    }
+
+    /* 常用尺寸工具类：按需加到 <img> 上精细控制 */
+    .img-sm   { max-width: 520px !important; }
+    .img-md   { max-width: 720px !important; }
+    .img-lg   { max-width: 960px !important; }
+    .img-full { max-width: 100% !important; width: 100% !important; } /* 真全宽 */
+
+    /* 多图并排（可选）：把多张图放到同一个 .figure-row 容器里 */
+    .figure-row{
+      display:grid; gap:12px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      align-items:start;
+    }
+    .figure-row img{ width:100%; height:auto; max-height: 50vh; object-fit: contain; }
+
   </style>
 </head>
 <body>
@@ -283,64 +322,89 @@
           <!-- 正文 -->
           <article class="manual-body" id="manualBody">
             <header>
-              <h1>AMBER 图形界面使用手册</h1>
+              <h1>AMBER Usage</h1>
               <div class="meta">
-                <span class="badge info">适用版本：v1.0.0+</span>
-                <span class="badge">更新：2025-09-20</span>
-                <span class="badge success">GUI 版</span>
+                <span class="badge info">Version: 0.5.5+</span>
+                <span class="badge">Last updated: 2025-09-21</span>
+                <span class="badge success">GUI</span>
               </div>
-              <div class="callout tip">本手册围绕界面操作展开：打开软件 → 导入数据 → 配置参数 → 启动任务 → 查看结果。</div>
+              <div class="callout tip">Feature overview and usage instructions for AMBER-related components</div>
             </header>
 
             <!-- 1. Introduction -->
             <section>
               <h2>1. Introduction</h2>
-              <p>分析功能主要包含: Phylogenetic Analysis, Evolutionary Analysis, Gene Set Enrichment Analysis</p>
+              <p>Key analysis features include: Phylogenetic Analysis, Evolutionary Analysis, Gene Set Enrichment Analysis (GSEA). The Toolbox also includes DIAMOND. </p>
               <figure>
-                <img src="./images/manual/overview.png" alt="分析功能总览示意图，可替换为真实截图" data-lightbox>
-                <figcaption>图 1：Introduction（点击图片可放大）。</figcaption>
+                <img src="./images/howtouse/introduction.png" alt="分析功能总览示意图，可替换为真实截图" data-lightbox>
+                <figcaption>Figure: Introduction.</figcaption>
               </figure>
               <table class="kv">
-                <tr><th>Phylogenetic Analysis</th><td>访问「文件/编辑/查看/帮助」等全局功能。</td></tr>
-                <tr><th>Evolutionary Analysis</th><td>模块切换（如：项目、数据、分析、报告、设置）。</td></tr>
-                <tr><th>Gene Set Enrichment Analysis</th><td>当前模块的主交互区域（表格、图表、表单等）。</td></tr>
+                <tr><th>Phylogenetic Analysis</th><td>The analysis features include data collection, sequence alignment, low-quality sequence trimming, model selection, partitioning scheme setup, phylogenetic reconstruction, statistical analysis, as well as sequence and tree visualization.</td></tr>
+                <tr><th>Evolutionary Analysis</th><td>The analysis features include molecular evolutionary analysis, population genetics analyses, community ecology diversity analyses, and related visualizations.</td></tr>
+                <tr><th>Gene Set Enrichment Analysis</th><td>GSEA features include GO and KEGG pathway enrichment, pre-ranked GSEA, single sample GSEA, Gene Set Variation Analysis (GSVA) and so on. </td></tr>
+                <tr><th>Toolbox</th><td>DIAMOND </td></tr>
               </table>
             </section>
 
             <!-- 2. 快速开始（步骤卡片） -->
             <section>
               <h2>2. Phylogenetic Analysis</h2>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <!-- <span class="step-num">1</span> -->
+                    <span class="step-title">The main process of phylogenetic analysis</span>
+                  </div>
+                  <div class="step-body">
+                    <p>Phylogenetic analysis involves multiple steps. 
+                      First, sequence data (such as gene sequences, protein sequences, or genome sequences) must be collected and organized. 
+                      Next, a Multiple Sequence Alignment (MSA) is performed. Once the alignment is accurate, low-quality regions are identified and processed. 
+                      The sequences are then concatenated for further analysis. 
+                      After that, an appropriate evolutionary model is selected, and data partitioning is optimized to improve the reliability of tree construction. 
+                      Then, a phylogenetic tree is built using methods such as Maximum Likelihood, Bayesian Inference, or the Neighbor-Joining method. 
+                      Finally, the phylogenetic tree is visualized to clearly display the evolutionary relationships.</p>
+                    <p>Operation process in AMBER: <span class="kbd">Collection</span><strong> → </strong><span class="kbd">Alignment</span><strong> → </strong><span class="kbd">Trimming</span><strong> → </strong><span class="kbd">Integrate</span><strong> → </strong><span class="kbd">Model</span><strong> → </strong><span class="kbd">reconstruct</span></p>
+                    <figure>
+                      <img src="./images/howtouse/Phylogenetic_Analysis.png" alt="Phylogenetic_Analysis" data-lightbox>
+                      <figcaption>Figure: Operation process in AMBER。</figcaption>
+                    </figure>
+                  </div>
+                </div>
+              </div>
               <h3>2.1 Collection</h3>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">1</span>
-                    <span class="step-title">创建或打开项目</span>
+                    <span class="step-title">Collection of single-gene and multi-gene data</span>
                   </div>
                   <div class="step-body">
+                    <p></p>
                     <p>在菜单栏选择 <strong>文件 → 新建项目</strong>（或 <strong>打开项目</strong>）。为项目选择一个空目录，用于保存配置与输出文件。</p>
                     <figure>
-                      <img src="./images/manual/new-project.png" alt="新建项目对话框" data-lightbox>
-                      <figcaption>图 2：新建项目。</figcaption>
+                      <img src="./images/howtouse/collection_01.png" alt="Collection of single-gene and multi-gene data" data-lightbox>
+                      <figcaption>Figure: Collection of single-gene and multi-gene data</figcaption>
                     </figure>
                   </div>
                 </div>
-
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">2</span>
-                    <span class="step-title">导入数据</span>
+                    <span class="step-title">Collection of genomic data</span>
                   </div>
                   <div class="step-body">
+                    <p></p>
                     <p>进入「数据」模块，点击 <strong>导入数据</strong>，选择支持的文件格式（如：FASTQ/CSV/JSON 等）。导入后会在数据表中显示摘要信息。</p>
                     <figure>
-                      <img src="./images/manual/import.png" alt="导入数据面板" data-lightbox>
-                      <figcaption>图 3：导入数据与数据概览。</figcaption>
+                      <img src="./images/howtouse/collection_02.png" alt="Collection of genomic data" data-lightbox>
+                      <figcaption>Figure: Collection of genomic data</figcaption>
                     </figure>
                     <div class="callout info">可批量导入；重复导入会自动去重或提示覆盖（具体行为以设置为准）。</div>
                   </div>
                 </div>
               </div>
+
               <h3>2.2 Alignment</h3>
               <div class="steps">
                 <div class="step">
@@ -356,8 +420,8 @@
                       <li>结果输出目录（默认为项目目录内的 <code>results/</code>）。</li>
                     </ul>
                     <figure>
-                      <img src="./images/manual/config.png" alt="参数配置面板" data-lightbox>
-                      <figcaption>图 4：参数配置（可保存为模板）。</figcaption>
+                      <img src="./images/howtouse/Alignment_MAFFT.png" alt="MAFFT" data-lightbox>
+                      <figcaption>Figure: Operation of MAFFT</figcaption>
                     </figure>
                   </div>
                 </div>
@@ -370,8 +434,8 @@
                   <div class="step-body">
                     <p>点击 <strong>开始</strong>。任务面板会显示实时日志、进度条与估计剩余时间。可随时暂停/继续或取消。</p>
                     <figure>
-                      <img src="./images/manual/run.png" alt="任务进度面板" data-lightbox>
-                      <figcaption>图 5：运行与监控。</figcaption>
+                      <img src="./images/howtouse/Alignment_MUSCLE.png" alt="MUSCLE" data-lightbox>
+                      <figcaption>Figure: Operation of MUSCLE</figcaption>
                     </figure>
                     <div class="callout tip">长任务建议勾选「完成后通知」，后台运行结束会弹出提醒。</div>
                   </div>
@@ -385,8 +449,8 @@
                   <div class="step-body">
                     <p>在「报告」模块查看图表与指标，支持导出为 <strong>HTML / PDF / PNG</strong>。可点击图例筛选数据系列、在图上框选缩放。</p>
                     <figure>
-                      <img src="./images/manual/report.png" alt="报告与导出" data-lightbox>
-                      <figcaption>图 6：结果浏览与导出。</figcaption>
+                      <img src="./images/howtouse/Alignment_ClustalOmega.png" alt="Clustal Omega" data-lightbox>
+                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
                     </figure>
                   </div>
                 </div>
