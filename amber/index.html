@@ -501,11 +501,17 @@
               </div>
 
               <h3>2.2 Alignment</h3>
+              <p>序列比共包含三种比对方法：MAFFT，MUSCLE和Clustal Omega。</p>
               <table class="kv">
-                <tr><th>MAFFT</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>MUSCLE</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>Clustal Omega</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+                <tr><th>MAFFT</th><td>MAFFT implements multiple alignment algorithms, including FFT-NS-2, L-INS-i, and G-INS-i, enabling efficient alignment of large-scale and highly divergent sequence datasets.</td></tr>
+                <tr><th>MUSCLE</th><td>MUSCLE performs multiple sequence alignment through k-mer counting, progressive alignment, and refinement stages, offering a trade-off between speed and accuracy for medium to large datasets.</td></tr>
+                <tr><th>Clustal Omega</th><td>Clustal Omega aligns protein or nucleotide sequences using mBed clustering, guide trees, and HMM-based profile alignment, optimized for high-throughput workflows.</td></tr>
               </table>
+              <ul>
+                <li>点击所需使用的MSA（<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span> or <span class="kbd">Clustal Omega</span>），使其保持在前端；</li>
+                <li>然后设置参数，点击<span class="kbd">Alignment</span>即可运行；</li>
+                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+              </ul>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
@@ -513,16 +519,12 @@
                     <span class="step-title">MAFFT</span>
                   </div>
                   <div class="step-body">
-                    <p>转到「分析」模块，选择预置模板或自定义参数。重要项示例：</p>
-                    <ul>
-                      <li>线程数/内存上限（影响性能与稳定性）；</li>
-                      <li>分析模式（如：对齐 / 识别 / 报告）；</li>
-                      <li>结果输出目录（默认为项目目录内的 <code>results/</code>）。</li>
-                    </ul>
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
                     <figure>
                       <img src="./images/howtouse/Alignment_MAFFT.png" alt="MAFFT" data-lightbox>
                       <figcaption>Figure: Operation of MAFFT</figcaption>
                     </figure>
+                    <div class="callout tip">MAFFT may take a short amount of time to run. The more sequences there are, the longer it will take. Please be patient.</div>
                   </div>
                 </div>
 
@@ -532,12 +534,12 @@
                     <span class="step-title">MUSCLE</span>
                   </div>
                   <div class="step-body">
-                    <p>点击 <strong>开始</strong>。任务面板会显示实时日志、进度条与估计剩余时间。可随时暂停/继续或取消。</p>
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
                     <figure>
                       <img src="./images/howtouse/Alignment_MUSCLE.png" alt="MUSCLE" data-lightbox>
                       <figcaption>Figure: Operation of MUSCLE</figcaption>
                     </figure>
-                    <div class="callout tip">长任务建议勾选「完成后通知」，后台运行结束会弹出提醒。</div>
+                    <div class="callout tip">MUSCLE requires some time to complete. The more sequences involved, the longer the process will take. Please be patient.</div>
                   </div>
                 </div>
 
@@ -547,114 +549,536 @@
                     <span class="step-title">Clustal Omega</span>
                   </div>
                   <div class="step-body">
-                    <p>在「报告」模块查看图表与指标，支持导出为 <strong>HTML / PDF / PNG</strong>。可点击图例筛选数据系列、在图上框选缩放。</p>
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
                     <figure>
                       <img src="./images/howtouse/Alignment_ClustalOmega.png" alt="Clustal Omega" data-lightbox>
                       <figcaption>Figure: Operation of Clustal Omega</figcaption>
                     </figure>
+                    <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
                   </div>
                 </div>
               </div>
               <h3>2.3 Trimming</h3>
+              <p>低质量序列处理共包含两种方法：TrimAl和Gblocks。</p>
               <table class="kv">
-                <tr><th>TrimAl</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>Gblocks</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>TrimAl</th><td>TrimAl performs automated alignment trimming by applying gap-, similarity-, and consistency-based criteria (e.g., gappyout, strict, strictplus, automated1) to remove ambiguously aligned regions, facilitating downstream phylogenetic analyses on large datasets.</td></tr>
+                <tr><th>Gblocks</th><td>Gblocks selects conserved blocks from multiple sequence alignments by enforcing thresholds on positional conservation, block length, and allowed gaps, reducing noise from poorly aligned regions to improve robustness of phylogenetic inference.</td></tr>
               </table>
+              <ul>
+                <li>点击所需使用的方法（<span class="kbd">TrimAl</span>, <span class="kbd">Gblocks</span>），使其保持在前端；</li>
+                <li>然后设置参数，点击<span class="kbd">Trimming</span>即可运行；</li>
+                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+              </ul>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title">TrimAl</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Trimming_TrimAl.png" alt="TrimAl" data-lightbox>
+                      <figcaption>Figure: Operation of TrimAl</figcaption>
+                    </figure>
+                    <div class="callout tip">Ideal for high-throughput pipelines; flexible presets (e.g., automated1, gappyout) efficiently remove ambiguous regions while retaining informative sites.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title">Gblocks</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Trimming_Gblocks.png" alt="Gblocks" data-lightbox>
+                      <figcaption>Figure: Operation of Gblocks</figcaption>
+                    </figure>
+                    <div class="callout tip">Conservative, reproducible block selection with explicit thresholds yields reliable core alignments and reduces false positives in phylogenetic inference.</div>
+                  </div>
+                </div>
+
+              </div>
               <h3>2.4 Integrate</h3>
+              <p>将序列拼接整合在一起</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Integrate" data-lightbox>
+                      <figcaption>Figure: Operation of Integrate</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
               <h3>2.5 Model</h3>
+              <p>此部分共包含两种方法：ModelFinder和PartitionFinder。</p>
               <table class="kv">
-                <tr><th>ModelFinder</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>PartitionFinder</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>ModelFinder</th><td>ModelFinder performs rapid statistical selection of nucleotide or amino-acid substitution models—including rate-heterogeneity options like +G and FreeRate—using information criteria to maximize likelihood (integrated in IQ-TREE).</td></tr>
+                <tr><th>PartitionFinder</th><td>PartitionFinder identifies an optimal partitioning scheme and corresponding substitution models for multilocus alignments by clustering predefined data blocks and evaluating alternatives under information criteria (e.g., AICc, BIC) with heuristic searches.</td></tr>
               </table>
+              <ul>
+                <li>点击所需使用的方法（<span class="kbd">ModelFinder</span>, <span class="kbd">PartitionFinder</span>），使其保持在前端；</li>
+                <li>然后设置参数，点击<span class="kbd">Model</span>即可运行；</li>
+                <li>运行完成后可在相应文件夹中查看运行结果</li>
+              </ul>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title">ModelFinder</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Model_ModelFinder.png" alt="ModelFinder" data-lightbox>
+                      <figcaption>Figure: Operation of ModelFinder</figcaption>
+                    </figure>
+                    <div class="callout tip">Fast, comprehensive model testing (including FreeRate and mixture/empirical matrices) delivers better-fitting substitution models with minimal runtime in IQ-TREE.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title">PartitionFinder</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Model_PartitionFinder.png" alt="PartitionFinder" data-lightbox>
+                      <figcaption>Figure: Operation of PartitionFinder</figcaption>
+                    </figure>
+                    <div class="callout tip">Automatically optimizes partitioning schemes and models across loci/codon positions, improving fit and accuracy while avoiding over-parameterization.</div>
+                  </div>
+                </div>
+
+              </div>
               <h3>2.6 Reconstruct</h3>
+              <p>系统发育冲构建包含三种目前最常用的方法：IQtree，MrBayes和RAxML。</p>
               <table class="kv">
-                <tr><th>IQtree</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>MrBayes</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>RAxML</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+                <tr><th>IQtree</th><td>A fast maximum-likelihood phylogenetics engine with efficient tree search, integrated ModelFinder, FreeRate (+R) models, and ultrafast bootstrap/SH-aLRT support assessment.</td></tr>
+                <tr><th>MrBayes</th><td>A Bayesian phylogenetic inference program using Metropolis-coupled MCMC to estimate trees, model parameters, and posterior probabilities under complex, partitioned models.</td></tr>
+                <tr><th>RAxML</th><td>A high-performance maximum-likelihood tool optimized for large datasets, offering rapid bootstrapping, extensive parallelization, and robust support for GTR-based and partitioned models.</td></tr>
               </table>
+              <ul>
+                <li>点击所需使用的方法（<span class="kbd">IQtree</span>, <span class="kbd">MrBayes</span> or <span class="kbd">RAxML</span>），使其保持在前端；</li>
+                <li>然后设置参数，点击<span class="kbd">Reconstruct</span>即可运行；</li>
+                <li>运行完成后可在相应文件夹中查看运行结果</li>
+              </ul>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title">IQtree</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Reconstruct_IQtree.png" alt="IQtree" data-lightbox>
+                      <figcaption>Figure: Operation of IQtree</figcaption>
+                    </figure>
+                    <div class="callout tip">Very fast ML inference with efficient tree search heuristics for large datasets. Robust support assessment via Ultrafast Bootstrap and SH-aLRT. Integrated ModelFinder and advanced models (e.g., FreeRate, mixture) with strong partition handling.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title">MrBayes</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Reconstruct_MrBayes.png" alt="MrBayes" data-lightbox>
+                      <figcaption>Figure: Operation of MrBayes</figcaption>
+                    </figure>
+                    <div class="callout tip">Full Bayesian framework yields posterior distributions of trees and parameters with explicit uncertainty. Supports complex, partitioned, and mixture models with flexible priors. Built-in convergence diagnostics and parallel chains (MC³) improve mixing and reliability.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">3</span>
+                    <span class="step-title">RAxML</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Reconstruct_RAxML.png" alt="RAxML" data-lightbox>
+                      <figcaption>Figure: Operation of RAxML</figcaption>
+                    </figure>
+                    <div class="callout tip">High-performance ML optimized for large, partitioned datasets with extensive parallelization. Rapid bootstrapping coupled with thorough ML searches provides reliable support quickly. Strong, battle-tested implementation for GTR-based and protein models across diverse data types.</div>
+                  </div>
+                </div>
+              </div>
+              
               <h3>2.7 Treeverse</h3>
+              <p>树的可视化调整含两类方法：Treesformer和Treeplotter。</p>
+              <table class="kv">
+                <tr><th>Treesformer</th><td>Used to adjust the display style of the phylogenetic tree structure.</td></tr>
+                <tr><th>Treeplotter</th><td>Adjust the rendering method of the phylogenetic tree.</td></tr>
+              </table>
+              <p>点击所需使用的方法（<span class="kbd">Treesformer</span>, <span class="kbd">Treeplotter</span>）然后设置参数, 将自动渲染至页面</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title">Treesformer</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Model_ModelFinder.png" alt="Treesformer" data-lightbox>
+                      <figcaption>Figure: Operation of Treesformer</figcaption>
+                    </figure>
+                    <div class="callout tip"></div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title">Treeplotter</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Model_PartitionFinder.png" alt="Treeplotter" data-lightbox>
+                      <figcaption>Figure: Operation of Treeplotter</figcaption>
+                    </figure>
+                    <div class="callout tip"></div>
+                  </div>
+                </div>
+
+              </div>
+
               <h3>2.8 Phylogenetic Agent</h3>
+              <p>将序列拼接整合在仪器</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Phylogenetic Agent" data-lightbox>
+                      <figcaption>Figure: Phylogenetic Agent</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
             </section>
 
             <!-- 3. Evolutionary Analysis -->
             <section>
               <h2>3. Evolutionary Analysis</h2>
               <h3>3.1 Molecular Evolution Analysis</h3>
-              <table class="kv">
-                <tr><th>项目信息</th><td>名称、路径、创建时间、最近修改。</td></tr>
-                <tr><th>模板管理</th><td>保存/加载分析模板，便于复用参数。</td></tr>
-                <tr><th>备份与恢复</th><td>一键压缩备份项目；崩溃后可自动恢复上次状态。</td></tr>
-              </table>
+              <p>序列比共包含功能：MAFFT，MUSCLE和Clustal Omega。</p>
+
+              <ul>
+                <li>点击所需使用的MSA（<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span> or <span class="kbd">Clustal Omega</span>），使其保持在前端；</li>
+                <li>然后设置参数，点击<span class="kbd">Alignment</span>即可运行；</li>
+                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+              </ul>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title">MAFFT</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_MAFFT.png" alt="MAFFT" data-lightbox>
+                      <figcaption>Figure: Operation of MAFFT</figcaption>
+                    </figure>
+                    <div class="callout tip">MAFFT may take a short amount of time to run. The more sequences there are, the longer it will take. Please be patient.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title">MUSCLE</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_MUSCLE.png" alt="MUSCLE" data-lightbox>
+                      <figcaption>Figure: Operation of MUSCLE</figcaption>
+                    </figure>
+                    <div class="callout tip">MUSCLE requires some time to complete. The more sequences involved, the longer the process will take. Please be patient.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">3</span>
+                    <span class="step-title">Clustal Omega</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_ClustalOmega.png" alt="Clustal Omega" data-lightbox>
+                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
+                    </figure>
+                    <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">4</span>
+                    <span class="step-title">Clustal Omega</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_ClustalOmega.png" alt="Clustal Omega" data-lightbox>
+                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
+                    </figure>
+                    <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
+                  </div>
+                </div>
+
+              </div>
 
               <h3>3.2 Population Genetics Analysis</h3>
+              <p>Population genetics analyses, including PCA, Fst, nucleotide diversity (π), Tajima's D, Watterson's θ, and allele frequency spectrum, were conducted to characterize genetic variation and population structure.</p>
               <table class="kv">
                 <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
                 <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
                 <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
               </table>
+              <p>Click <span class="kbd">Population Genetics Analyses</span> to run after configuring the parameters.</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Population Genetics Analysis" data-lightbox>
+                      <figcaption>Figure: Operation of Population Genetics Analysis</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
 
               <h3>3.3 Community-Ecology Diversity</h3>
+              <p>Community-ecology diversity analyses, including alpha and beta diversity metrics, PCoA, PERMANOVA, Mantel tests, and group-wise comparisons (t-test/ANOVA), were conducted to evaluate diversity and community differences across sample groups.</p>
               <table class="kv">
                 <tr><th>模式</th><td>对齐 / 调用 / 汇报（示例，按你的软件实际命名）。</td></tr>
                 <tr><th>资源</th><td>线程、内存、临时目录、GPU（如有）。</td></tr>
                 <tr><th>高级</th><td>阈值、过滤规则、重试策略、日志级别。</td></tr>
               </table>
-              
+              <p>Click <span class="kbd">Community-Ecology Diversity</span> to run after configuring the parameters.</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Community-Ecology Diversity" data-lightbox>
+                      <figcaption>Figure: Operation of Community-Ecology Diversity</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
             </section>
 
             <!-- 4. Gene Set Enrichment Analysis -->
             <section>
               <h2>4. Gene Set Enrichment Analysis (GSEA)</h2>
-              <p>以下为默认快捷键，可在「设置 → 快捷键」中自定义：</p>
+              <p>Gene set enrichment analyses (GSEA), including GO and KEGG pathway enrichment, Pre-ranked GSEA, Single-sample GSEA, and Gene Set Variation Analysis (GSVA), were performed to identify functional patterns in gene expression.</p>
               <table class="kv">
-                <tr><th>新建项目</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">N</span></td></tr>
-                <tr><th>打开项目</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">O</span></td></tr>
-                <tr><th>保存</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">S</span></td></tr>
-                <tr><th>开始/暂停任务</th><td><span class="kbd">Space</span> 或 <span class="kbd">K</span></td></tr>
-                <tr><th>切换模块</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">1..5</span></td></tr>
-                <tr><th>搜索</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">F</span></td></tr>
+                <tr><th>GO and KEGG</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">N</span></td></tr>
+                <tr><th>Prerank GSEA</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">O</span></td></tr>
+                <tr><th>GSEA</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">S</span></td></tr>
+                <tr><th>ssGSEA</th><td><span class="kbd">Space</span> 或 <span class="kbd">K</span></td></tr>
+                <tr><th>GSVA</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">1..5</span></td></tr>
+                <tr><th>Plotting</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">F</span></td></tr>
               </table>
-              <div class="callout tip">多数列表支持方向键 ↑/↓ 选择，回车打开详情。</div>
+              <div class="callout tip">Click <span class="kbd">Gene Set Enrichment Analysis</span> to run after configuring the parameters.</div>
+
               <h3>4.1 GO and KEGG</h3>
+              <p>将序列拼接整合在一起</p>
+              <table class="kv">
+                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="GO and KEGG" data-lightbox>
+                      <figcaption>Figure: Operation of GO and KEGG</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
               <h3>4.2 Prerank GSEA</h3>
+              <p>将序列拼接整合在一起</p>
+              <table class="kv">
+                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Prerank GSEA" data-lightbox>
+                      <figcaption>Figure: Operation of Prerank GSEA</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
               <h3>4.3 GSEA</h3>
+              <p>将序列拼接整合在一起</p>
+              <table class="kv">
+                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="GSEA" data-lightbox>
+                      <figcaption>Figure: Operation of GSEA</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
               <h3>4.4 ssGSEA</h3>
+              <p>将序列拼接整合在一起</p>
+              <table class="kv">
+                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="ssGSEA" data-lightbox>
+                      <figcaption>Figure: Operation of ssGSEA</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
               <h3>4.5 GSVA</h3>
+              <p>将序列拼接整合在一起</p>
+              <table class="kv">
+                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
+                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
+                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+              </table>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Integrate" data-lightbox>
+                      <figcaption>Figure: Operation of Integrate</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
               <h3>4.6 Plotting</h3>
+              <p>序列比共包含三种比对方法：MAFFT，MUSCLE和Clustal Omega。</p>
+              <table class="kv">
+                <tr><th>MAFFT</th><td>MAFFT implements multiple alignment algorithms, including FFT-NS-2, L-INS-i, and G-INS-i, enabling efficient alignment of large-scale and highly divergent sequence datasets.</td></tr>
+                <tr><th>MUSCLE</th><td>MUSCLE performs multiple sequence alignment through k-mer counting, progressive alignment, and refinement stages, offering a trade-off between speed and accuracy for medium to large datasets.</td></tr>
+                <tr><th>Clustal Omega</th><td>Clustal Omega aligns protein or nucleotide sequences using mBed clustering, guide trees, and HMM-based profile alignment, optimized for high-throughput workflows.</td></tr>
+              </table>
+              <ul>
+                <li>点击所需使用的MSA（<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span> or <span class="kbd">Clustal Omega</span>），使其保持在前端；</li>
+                <li>然后设置参数，点击<span class="kbd">Alignment</span>即可运行；</li>
+                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+              </ul>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">1</span>
+                    <span class="step-title">MAFFT</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_MAFFT.png" alt="MAFFT" data-lightbox>
+                      <figcaption>Figure: Operation of MAFFT</figcaption>
+                    </figure>
+                    <div class="callout tip">MAFFT may take a short amount of time to run. The more sequences there are, the longer it will take. Please be patient.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">2</span>
+                    <span class="step-title">MUSCLE</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_MUSCLE.png" alt="MUSCLE" data-lightbox>
+                      <figcaption>Figure: Operation of MUSCLE</figcaption>
+                    </figure>
+                    <div class="callout tip">MUSCLE requires some time to complete. The more sequences involved, the longer the process will take. Please be patient.</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-header">
+                    <span class="step-num">3</span>
+                    <span class="step-title">Clustal Omega</span>
+                  </div>
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Alignment_ClustalOmega.png" alt="Clustal Omega" data-lightbox>
+                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
+                    </figure>
+                    <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
+                  </div>
+                </div>
+
+              </div>
             </section>
 
             <!-- 5. NCBI -->
             <section>
               <h2>5. NCBI</h2>
-              <div class="accordion" id="faq">
-                <div class="ac-item">
-                  <button class="ac-head">启动后界面空白或加载很慢</button>
-                  <div class="ac-body">
-                    <ul>
-                      <li>检查显卡驱动与系统更新；</li>
-                      <li>尝试在设置中关闭「硬件加速」；</li>
-                      <li>删除缓存目录后重启软件。</li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="ac-item">
-                  <button class="ac-head">导入数据失败</button>
-                  <div class="ac-body">
-                    <ul>
-                      <li>确认文件编码与扩展名正确；</li>
-                      <li>查看「数据 → 校验」报错详情；</li>
-                      <li>路径包含中文或空格时，建议移动到英文路径。</li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="ac-item">
-                  <button class="ac-head">任务长时间无进度</button>
-                  <div class="ac-body">
-                    <ul>
-                      <li>在「分析 → 资源」降低线程/内存占用；</li>
-                      <li>确保输出目录在本地 SSD；</li>
-                      <li>查看状态栏错误图标并导出日志给我们。</li>
-                    </ul>
+              <p>The NCBI (National Center for Biotechnology Information) website provides integrated access to a wide range of biological databases, including genomic, sequence, literature, and protein structure resources.</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="NCBI web portal interface" data-lightbox>
+                      <figcaption>Figure: NCBI web portal interface</figcaption>
+                    </figure>
+                    <div class="callout tip">We can search for and download data according to specific research needs.</div>
                   </div>
                 </div>
               </div>
@@ -663,8 +1087,20 @@
             <!-- 6. 反馈与支持 -->
             <section>
               <h2>6. Amber Agent</h2>
-              <p>联系我们：<em>（填写你的邮箱/Issue 地址/QQ群/Slack/Discord）</em></p>
-              <div class="callout warn">提交问题时请附上：软件版本、系统版本、复现步骤、关键截图与日志。</div>
+              <p>将序列拼接整合在一起</p>
+              <div class="steps">
+                <div class="step">
+                  <div class="step-body">
+                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <figure>
+                      <img src="./images/howtouse/Integrate.png" alt="Amber Agent" data-lightbox>
+                      <figcaption>Figure: Amber Agent</figcaption>
+                    </figure>
+                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                  </div>
+                </div>
+              </div>
+
             </section>
           </article>
         </div>
