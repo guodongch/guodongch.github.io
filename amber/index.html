@@ -343,7 +343,7 @@
               <h2>1. Introduction</h2>
               <p>Key analysis features include: Phylogenetic Analysis, Evolutionary Analysis, Gene Set Enrichment Analysis (GSEA). The Toolbox also includes DIAMOND. </p>
               <figure>
-                <img src="./images/howtouse/introduction.png" alt="分析功能总览示意图，可替换为真实截图" data-lightbox>
+                <img src="./images/howtouse/introduction.png" alt="introduction" data-lightbox>
                 <figcaption>Figure: Introduction.</figcaption>
               </figure>
               <table class="kv">
@@ -388,8 +388,7 @@
                     <span class="step-title">Collection of single-gene and multi-gene data</span>
                   </div>
                   <div class="step-body">
-                    <p>AMBER supports direct import of raw sequencing files (.ab1) for both single-gene and multi-gene datasets, encompassing single or multiple DNA fragments. Based on predefined quality parameters, raw data can be automatically processed to generate high-confidence sequences, significantly reducing manual effort and improving both accuracy and consistency. Additionally, sequences in FASTA format can be imported. Data from online sources can be integrated via structured table files, and all acquired data are automatically merged into a unified dataset.</p>
-                    <p>在菜单栏选择 <strong>文件 → 新建项目</strong>（或 <strong>打开项目</strong>）。为项目选择一个空目录，用于保存配置与输出文件。</p>
+                    <p><strong>AMBER</strong> supports direct import of raw sequencing files (.ab1) for both single-gene and multi-gene datasets, encompassing single or multiple DNA fragments. Based on predefined quality parameters, raw data can be automatically processed to generate high-confidence sequences, significantly reducing manual effort and improving both accuracy and consistency. Additionally, sequences in FASTA format can be imported. Data from online sources can be integrated via structured table files, and all acquired data are automatically merged into a unified dataset.</p>
                     <figure>
                       <img src="./images/howtouse/collection_01.png" alt="Collection of single-gene and multi-gene data" data-lightbox>
                       <figcaption>Figure: Collection of single-gene and multi-gene data</figcaption>
@@ -397,13 +396,21 @@
                   </div>
                   <div class="step-body">
                     <p><strong>(1) Import through Form</strong></p>
-                    <p>表格文件准备。准备一个表格文件，第一行为列名。第一列和第二列的列名（第一行）需为表格中的，不可以更改。第三列以后列名为基因名，列中的数据为对应的NCBI ACCESSION号。AMBER将自动下载并整合数据。</p>
+                    <p>Prepare a table where the first row contains column headers.
+                    Do not change the names of the first and second columns.
+                    Starting from the third column, use gene names as headers and fill in the corresponding NCBI accession numbers.
+                    AMBER will automatically retrieve and integrate the data.
+                    </p>
                     <figure>
                       <img src="./images/howtouse/collection_01_form.png" alt="Form Data" data-lightbox>
                       <figcaption>Figure: Accession Numbers in the Form</figcaption>
                     </figure>
-                    <p>下载的文件为genbank文件，文件保存在download_data文件夹中，再次导入时则不需下载。可以将常用的文件保存在local_database文件夹中。当local_database中存在需要的数据时，则不会再下载，直接导入。</p>
-                    <div class="callout info">此功能十分方便，可以手动下载保存，或者从其他地方拷贝。避免消耗时间重复下载文件</div>
+                    <p>The downloaded files are in GenBank format and are stored in the download_data folder.
+                    If the data has already been downloaded, it will not be downloaded again upon re-import.
+                    Frequently used files can be saved in the local_database folder.
+                    If the required data is present in the local_database, AMBER will directly import it without initiating a new download.</p>
+                    <div class="callout info">This functionality offers flexibility and efficiency by allowing users to manually download and store files, or import them from external sources.
+                    By utilizing previously saved files, the system avoids redundant downloads, thereby improving workflow efficiency and reducing time consumption.</div>
                     <figure>
                       <img src="./images/howtouse/collection_01_download.png" alt="Sava Dat" data-lightbox>
                       <figcaption>Figure: Sava Data</figcaption>
@@ -411,7 +418,10 @@
                   </div>
                   <div class="step-body">
                     <p><strong>(2) Import from Folder</strong></p>
-                    <p>数据文件准备。将同一个基因的fasta文件放入同一个文件夹内，文件夹名称为基因名。文件夹中的fasta文件如果只有一个序列时，文件名为序列名称；如果fasta中有多条序列时，序列名使用fasta文件中的名称（>后的字符）；以此将文件整合在一起。</p>
+                    <p>For data preparation, all FASTA files corresponding to the same gene should be stored within a single folder named after that gene.
+                    If a FASTA file contains only one sequence, the file name should be the same as the sequence name.
+                    For FASTA files containing multiple sequences, the names of individual sequences should be taken directly from the headers (i.e., the text following the “>” symbol).
+                    This structure ensures correct file integration during downstream analysis.</p>
                     <figure>
                       <img src="./images/howtouse/collection_01_datasets_form.png" alt="Import from Folder" data-lightbox>
                       <figcaption>Figure: Import from the Folder</figcaption>
@@ -419,12 +429,12 @@
                   </div>
                   <div class="step-body">
                     <p><strong>(3) Datasets presentation</strong></p>
-                    <p>从表格中导入序列的数据统计</p>
+                    <p>Sequence Data Statistics Imported from the Table</p>
                     <figure>
                       <img src="./images/howtouse/collection_01_datasets_form.png" alt="Presentation of datasets from the form" data-lightbox>
                       <figcaption>Figure: Presentation of datasets from the form</figcaption>
                     </figure>
-                    <p>从文件夹中导入序列的数据统计</p>
+                    <p>Statistical Summary of Sequences Imported from Folders</p>
                     <figure>
                       <img src="./images/howtouse/collection_01_datasets_folder.png" alt="Presentation of datasets from the folder" data-lightbox>
                       <figcaption>Figure: Presentation of datasets from the folder</figcaption>
@@ -432,7 +442,7 @@
                   </div>
                   <div class="step-body">
                     <p><strong>(4) Sequences presentation</strong></p>
-                    <p>序列数据展示</p>
+                    <p>Sequence Data Visualization</p>
                     <figure>
                       <img src="./images/howtouse/collection_01_sequences.png" alt="sequences presentation" data-lightbox>
                       <figcaption>Figure: Sequences presentation</figcaption>
@@ -445,32 +455,45 @@
                     <span class="step-title">Collection of genomic data</span>
                   </div>
                   <div class="step-body">
-                    <p></p>
-                    <p>进入「数据」模块，点击 <strong>导入数据</strong>，选择支持的文件格式（如：FASTQ/CSV/JSON 等）。导入后会在数据表中显示摘要信息。</p>
+                    <p><strong>AMBER</strong> supports importing the following types of genomic data:<span class="kbd">Mitogenomes</span>, <span class="kbd">Plastomes</span> , <span class="kbd">Nuclear Genomes</span> , <span class="kbd">Prokaryotic Genomes</span> and  <span class="kbd">Viral GEnomes</span></p>
                     <figure>
                       <img src="./images/howtouse/collection_02.png" alt="Collection of genomic data" data-lightbox>
                       <figcaption>Figure: Collection of genomic data</figcaption>
                     </figure>
-                    <div class="callout info">可批量导入；重复导入会自动去重或提示覆盖（具体行为以设置为准）。</div>
+                    <div class="callout info">Users can specify the genes for phylogenetic analysis in the Custom Genes section, using commas to separate multiple gene names.
+                    AMBER will automatically search for and extract these genes from the provided genome files for downstream analysis.</div>
                   </div>
                   <div class="step-body">
                     <p><strong>(1) Import through Form</strong></p>
-                    <p>表格文件准备。准备一个表格文件，第一行为列名。第一列的列名（第一行）需为表格中的，不可以更改。第二列中的数据为对应的NCBI ACCESSION号。AMBER将自动下载并整合数据。</p>
+                    <p>To prepare the input table, create a file with column headers in the first row.
+                    The name of the first column must follow the required format and must not be changed.
+                    The second column should contain the NCBI accession numbers corresponding to each entry.
+                    AMBER will use this information to automatically download and integrate the associated sequence data.</p>
                     <figure>
                       <img src="./images/howtouse/collection_02_form.png" alt="Form Data" data-lightbox>
                       <figcaption>Figure: Accession Numbers in the Form</figcaption>
                     </figure>
-                    <p>下载的文件为genbank文件，文件保存在download_data文件夹中，再次导入时则不需下载。可以将常用的文件保存在local_database文件夹中。当local_database中存在需要的数据时，则不会再下载，直接导入。</p>
-                    <div class="callout info">此功能十分方便，可以手动下载保存，或者从其他地方拷贝。避免消耗时间重复下载文件</div>
+                    <p>The downloaded files are in GenBank format and are stored in the download_data folder.
+                    If the data has already been downloaded, it will not be downloaded again upon re-import.
+                    Frequently used files can be saved in the local_database folder.
+                    If the required data is present in the local_database, AMBER will directly import it without initiating a new download.</p>
+                    <div class="callout info">This functionality offers flexibility and efficiency by allowing users to manually download and store files, or import them from external sources.
+                    By utilizing previously saved files, the system avoids redundant downloads, thereby improving workflow efficiency and reducing time consumption.</div>
                     <figure>
                       <img src="./images/howtouse/collection_01_download.png" alt="Sava Dat" data-lightbox>
                       <figcaption>Figure: Sava Data</figcaption>
                     </figure>
-                    <div class="callout info">可批量导入；重复导入会自动去重或提示覆盖（具体行为以设置为准）。</div>
+                    <div class="callout info">To improve efficiency, genes that are not immediately required can be stored in a separate folder.
+                    They can be reintroduced into the working directory when needed.
+                    This method minimizes unnecessary processing and reduces the overall time for sequence extraction.</div>
                   </div>
                   <div class="step-body">
                     <p><strong>(2) Import from Folder</strong></p>
-                    <p>数据文件准备。将所需提取数据的genbank文件放入文件夹内。若提取的nuclear genomes或prokaryotic genomes为genbank文件，每个taxon只能放在单独的genbank文件中。gff, gtf与tbl格式文件应为单独的taxon，导入时须有同名（扩展名不同的）fasta文件，否则无法导入。</p>
+                    <p>To prepare data for extraction, place the required GenBank files into the designated folder.
+                    When dealing with nuclear or prokaryotic genomes in GenBank format, each taxon must be represented by a separate GenBank file to ensure proper parsing.
+                    For annotation formats such as GFF, GTF, or TBL, each file should correspond to a single taxon as well.
+                    Furthermore, a FASTA file with the same base filename (differing only by file extension) must accompany the annotation file in the same directory.
+                    Without this corresponding FASTA file, data import will fail.</p>
                     <figure>
                       <img src="./images/howtouse/collection_02_datasets_form.png" alt="Import from Folder" data-lightbox>
                       <figcaption>Figure: Import from the Folder</figcaption>
@@ -478,12 +501,12 @@
                   </div>
                   <div class="step-body">
                     <p><strong>(3) Datasets presentation</strong></p>
-                    <p>从表格中导入序列的数据统计</p>
+                    <p>Sequence Data Statistics Imported from the Table</p>
                     <figure>
                       <img src="./images/howtouse/collection_02_datasets_form.png" alt="Presentation of datasets from the form" data-lightbox>
                       <figcaption>Figure: Presentation of datasets from the form</figcaption>
                     </figure>
-                    <p>从文件夹中导入序列的数据统计</p>
+                    <p>Statistical Summary of Sequences Imported from Folders</p>
                     <figure>
                       <img src="./images/howtouse/collection_02_datasets_folder.png" alt="Presentation of datasets from the folder" data-lightbox>
                       <figcaption>Figure: Presentation of datasets from the folder</figcaption>
@@ -491,7 +514,7 @@
                   </div>
                   <div class="step-body">
                     <p><strong>(4) Sequences presentation</strong></p>
-                    <p>序列数据展示</p>
+                    <p>Sequence Data Visualization</p>
                     <figure>
                       <img src="./images/howtouse/collection_01_sequences.png" alt="sequences presentation" data-lightbox>
                       <figcaption>Figure: Sequences presentation</figcaption>
@@ -501,16 +524,16 @@
               </div>
 
               <h3>2.2 Alignment</h3>
-              <p>序列比共包含三种比对方法：MAFFT，MUSCLE和Clustal Omega。</p>
+              <p>The sequence alignment module includes three alignment methods: MAFFT, MUSCLE, and Clustal Omega.</p>
               <table class="kv">
                 <tr><th>MAFFT</th><td>MAFFT implements multiple alignment algorithms, including FFT-NS-2, L-INS-i, and G-INS-i, enabling efficient alignment of large-scale and highly divergent sequence datasets.</td></tr>
                 <tr><th>MUSCLE</th><td>MUSCLE performs multiple sequence alignment through k-mer counting, progressive alignment, and refinement stages, offering a trade-off between speed and accuracy for medium to large datasets.</td></tr>
                 <tr><th>Clustal Omega</th><td>Clustal Omega aligns protein or nucleotide sequences using mBed clustering, guide trees, and HMM-based profile alignment, optimized for high-throughput workflows.</td></tr>
               </table>
               <ul>
-                <li>点击所需使用的MSA（<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span> or <span class="kbd">Clustal Omega</span>），使其保持在前端；</li>
-                <li>然后设置参数，点击<span class="kbd">Alignment</span>即可运行；</li>
-                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+                <li>Click on the desired MSA method (<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span>, or <span class="kbd">Clustal Omega</span>) to bring it to the foreground.</li>
+                <li>Configure the alignment parameters, then click <span class="kbd">Alignment</span> to start the process.</li>
+                <li>Once the alignment is complete, the results can be viewed under the <span class="kbd">Sequences</span> section.</li>
               </ul>
               <div class="steps">
                 <div class="step">
@@ -519,7 +542,7 @@
                     <span class="step-title">MAFFT</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Alignment_MAFFT.png" alt="MAFFT" data-lightbox>
                       <figcaption>Figure: Operation of MAFFT</figcaption>
@@ -534,7 +557,7 @@
                     <span class="step-title">MUSCLE</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Alignment_MUSCLE.png" alt="MUSCLE" data-lightbox>
                       <figcaption>Figure: Operation of MUSCLE</figcaption>
@@ -549,7 +572,7 @@
                     <span class="step-title">Clustal Omega</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Alignment_ClustalOmega.png" alt="Clustal Omega" data-lightbox>
                       <figcaption>Figure: Operation of Clustal Omega</figcaption>
@@ -559,15 +582,15 @@
                 </div>
               </div>
               <h3>2.3 Trimming</h3>
-              <p>低质量序列处理共包含两种方法：TrimAl和Gblocks。</p>
+              <p>For processing low-quality sequences, two tools are provided: TrimAl and Gblocks, both of which help refine multiple sequence alignments by removing poorly aligned regions.</p>
               <table class="kv">
                 <tr><th>TrimAl</th><td>TrimAl performs automated alignment trimming by applying gap-, similarity-, and consistency-based criteria (e.g., gappyout, strict, strictplus, automated1) to remove ambiguously aligned regions, facilitating downstream phylogenetic analyses on large datasets.</td></tr>
                 <tr><th>Gblocks</th><td>Gblocks selects conserved blocks from multiple sequence alignments by enforcing thresholds on positional conservation, block length, and allowed gaps, reducing noise from poorly aligned regions to improve robustness of phylogenetic inference.</td></tr>
               </table>
               <ul>
-                <li>点击所需使用的方法（<span class="kbd">TrimAl</span>, <span class="kbd">Gblocks</span>），使其保持在前端；</li>
-                <li>然后设置参数，点击<span class="kbd">Trimming</span>即可运行；</li>
-                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+                <li>Please click on the desired trimming method (<span class="kbd">TrimAl</span> or <span class="kbd">Gblocks</span>) to bring it to the foreground.</li>
+                <li>Configure the parameters as needed, then click <span class="kbd">Trimming</span> to execute the process.</li>
+                <li>Once the trimming is complete, the results can be viewed in the <span class="kbd">Sequences</span> section.</li>
               </ul>
               <div class="steps">
                 <div class="step">
@@ -576,7 +599,7 @@
                     <span class="step-title">TrimAl</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Trimming_TrimAl.png" alt="TrimAl" data-lightbox>
                       <figcaption>Figure: Operation of TrimAl</figcaption>
@@ -591,7 +614,7 @@
                     <span class="step-title">Gblocks</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Trimming_Gblocks.png" alt="Gblocks" data-lightbox>
                       <figcaption>Figure: Operation of Gblocks</figcaption>
@@ -602,29 +625,29 @@
 
               </div>
               <h3>2.4 Integrate</h3>
-              <p>将序列拼接整合在一起</p>
+              <p>Concatenate the sequences into a single contiguous sequence.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Integrate.png" alt="Integrate" data-lightbox>
                       <figcaption>Figure: Operation of Integrate</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">Users can select and integrate the relevant sequences based on the objectives of the analysis.</div>
                   </div>
                 </div>
               </div>
               <h3>2.5 Model</h3>
-              <p>此部分共包含两种方法：ModelFinder和PartitionFinder。</p>
+              <p>This module provides two tools for phylogenetic model selection and partitioning strategies: ModelFinder and PartitionFinder.</p>
               <table class="kv">
                 <tr><th>ModelFinder</th><td>ModelFinder performs rapid statistical selection of nucleotide or amino-acid substitution models—including rate-heterogeneity options like +G and FreeRate—using information criteria to maximize likelihood (integrated in IQ-TREE).</td></tr>
                 <tr><th>PartitionFinder</th><td>PartitionFinder identifies an optimal partitioning scheme and corresponding substitution models for multilocus alignments by clustering predefined data blocks and evaluating alternatives under information criteria (e.g., AICc, BIC) with heuristic searches.</td></tr>
               </table>
               <ul>
-                <li>点击所需使用的方法（<span class="kbd">ModelFinder</span>, <span class="kbd">PartitionFinder</span>），使其保持在前端；</li>
-                <li>然后设置参数，点击<span class="kbd">Model</span>即可运行；</li>
-                <li>运行完成后可在相应文件夹中查看运行结果</li>
+                <li>Click on the desired method (<span class="kbd">ModelFinder</span> or <span class="kbd">PartitionFinder</span>) to bring it to the foreground.</li>
+                <li>Configure the necessary parameters, then click <span class="kbd">Model</span> to start the analysis.</li>
+                <li>Once the process is complete, the results can be viewed in the corresponding folder.</li>
               </ul>
               <div class="steps">
                 <div class="step">
@@ -633,7 +656,7 @@
                     <span class="step-title">ModelFinder</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Model_ModelFinder.png" alt="ModelFinder" data-lightbox>
                       <figcaption>Figure: Operation of ModelFinder</figcaption>
@@ -648,7 +671,7 @@
                     <span class="step-title">PartitionFinder</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Model_PartitionFinder.png" alt="PartitionFinder" data-lightbox>
                       <figcaption>Figure: Operation of PartitionFinder</figcaption>
@@ -659,16 +682,16 @@
 
               </div>
               <h3>2.6 Reconstruct</h3>
-              <p>系统发育冲构建包含三种目前最常用的方法：IQtree，MrBayes和RAxML。</p>
+              <p>The phylogenetic analysis module provides three of the most widely adopted methods for tree inference: IQ-TREE (maximum likelihood), MrBayes (Bayesian inference), and RAxML (rapid maximum likelihood).</p>
               <table class="kv">
                 <tr><th>IQtree</th><td>A fast maximum-likelihood phylogenetics engine with efficient tree search, integrated ModelFinder, FreeRate (+R) models, and ultrafast bootstrap/SH-aLRT support assessment.</td></tr>
                 <tr><th>MrBayes</th><td>A Bayesian phylogenetic inference program using Metropolis-coupled MCMC to estimate trees, model parameters, and posterior probabilities under complex, partitioned models.</td></tr>
                 <tr><th>RAxML</th><td>A high-performance maximum-likelihood tool optimized for large datasets, offering rapid bootstrapping, extensive parallelization, and robust support for GTR-based and partitioned models.</td></tr>
               </table>
               <ul>
-                <li>点击所需使用的方法（<span class="kbd">IQtree</span>, <span class="kbd">MrBayes</span> or <span class="kbd">RAxML</span>），使其保持在前端；</li>
-                <li>然后设置参数，点击<span class="kbd">Reconstruct</span>即可运行；</li>
-                <li>运行完成后可在相应文件夹中查看运行结果</li>
+                <li>Click on the desired tree reconstruction method (<span class="kbd">IQ-TREE</span>, <span class="kbd">MrBayes</span>, or <span class="kbd">RAxML</span>) to bring it to the foreground.</li>
+                <li>Configure the required parameters, then click <span class="kbd">Reconstruct</span> to initiate the analysis.</li>
+                <li>Once the process is complete, the results can be viewed in the corresponding folder. </li>
               </ul>
               <div class="steps">
                 <div class="step">
@@ -677,7 +700,7 @@
                     <span class="step-title">IQtree</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Reconstruct_IQtree.png" alt="IQtree" data-lightbox>
                       <figcaption>Figure: Operation of IQtree</figcaption>
@@ -692,7 +715,7 @@
                     <span class="step-title">MrBayes</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Reconstruct_MrBayes.png" alt="MrBayes" data-lightbox>
                       <figcaption>Figure: Operation of MrBayes</figcaption>
@@ -707,7 +730,7 @@
                     <span class="step-title">RAxML</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Reconstruct_RAxML.png" alt="RAxML" data-lightbox>
                       <figcaption>Figure: Operation of RAxML</figcaption>
@@ -718,12 +741,12 @@
               </div>
               
               <h3>2.7 Treeverse</h3>
-              <p>树的可视化调整含两类方法：Treesformer和Treeplotter。</p>
+              <p>Treeverse supports files in Newick format. There are two methods for adjusting tree visualization: Treesformer and Treeplotter. </p>
               <table class="kv">
                 <tr><th>Treesformer</th><td>Used to adjust the display style of the phylogenetic tree structure.</td></tr>
                 <tr><th>Treeplotter</th><td>Adjust the rendering method of the phylogenetic tree.</td></tr>
               </table>
-              <p>点击所需使用的方法（<span class="kbd">Treesformer</span>, <span class="kbd">Treeplotter</span>）然后设置参数, 将自动渲染至页面</p>
+              <p>Please click on the method ( <span class="kbd">Treesformer</span>, <span class="kbd">Treeplotter</span>) you'd like to use. Then set the parameters, and they will be automatically rendered on the page.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
@@ -731,7 +754,7 @@
                     <span class="step-title">Treesformer</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Treeverse.png" alt="Treesformer" data-lightbox>
                       <figcaption>Figure: Operation of Treesformer</figcaption>
@@ -746,7 +769,7 @@
                     <span class="step-title">Treeplotter</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Treeverse.png" alt="Treeplotter" data-lightbox>
                       <figcaption>Figure: Operation of Treeplotter</figcaption>
@@ -758,16 +781,16 @@
               </div>
 
               <h3>2.8 Phylogenetic Agent</h3>
-              <p>将序列拼接整合在仪器</p>
+              <p></p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Phylogenetic_Agent.png" alt="Phylogenetic Agent" data-lightbox>
                       <figcaption>Figure: Phylogenetic Agent</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip"></div>
                   </div>
                 </div>
               </div>
@@ -778,24 +801,17 @@
             <section>
               <h2>3. Evolutionary Analysis</h2>
               <h3>3.1 Molecular Evolution Analysis</h3>
-              <p>序列比共包含功能：MAFFT，MUSCLE和Clustal Omega。</p>
-
-              <ul>
-                <li>点击所需使用的MSA（<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span> or <span class="kbd">Clustal Omega</span>），使其保持在前端；</li>
-                <li>然后设置参数，点击<span class="kbd">Alignment</span>即可运行；</li>
-                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
-              </ul>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">1</span>
-                    <span class="step-title">MAFFT</span>
+                    <span class="step-title">Synteny</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Molecular_Evolution_analysis_01.png" alt="MAFFT" data-lightbox>
-                      <figcaption>Figure: Operation of MAFFT</figcaption>
+                      <img src="./images/howtouse/Molecular_Evolution_analysis_01.png" alt="Synteny" data-lightbox>
+                      <figcaption>Figure: Operation of Synteny</figcaption>
                     </figure>
                     <div class="callout tip">MAFFT may take a short amount of time to run. The more sequences there are, the longer it will take. Please be patient.</div>
                   </div>
@@ -804,13 +820,13 @@
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">2</span>
-                    <span class="step-title">MUSCLE</span>
+                    <span class="step-title">Ka vs Ks</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Molecular_Evolution_analysis_02.png" alt="MUSCLE" data-lightbox>
-                      <figcaption>Figure: Operation of MUSCLE</figcaption>
+                      <img src="./images/howtouse/Molecular_Evolution_analysis_02.png" alt="Ka vs Ks" data-lightbox>
+                      <figcaption>Figure: Operation of Ka vs Ks</figcaption>
                     </figure>
                     <div class="callout tip">MUSCLE requires some time to complete. The more sequences involved, the longer the process will take. Please be patient.</div>
                   </div>
@@ -822,10 +838,10 @@
                     <span class="step-title">Clustal Omega</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Molecular_Evolution_analysis_03.png" alt="Clustal Omega" data-lightbox>
-                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
+                      <img src="./images/howtouse/Molecular_Evolution_analysis_03.png" alt="Synteny and Ka vs Ks" data-lightbox>
+                      <figcaption>Figure: Operation of Synteny and Ka vs Ks</figcaption>
                     </figure>
                     <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
                   </div>
@@ -834,13 +850,13 @@
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">4</span>
-                    <span class="step-title">Clustal Omega</span>
+                    <span class="step-title">Classification</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Molecular_Evolution_analysis_04.png" alt="Clustal Omega" data-lightbox>
-                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
+                      <img src="./images/howtouse/Molecular_Evolution_analysis_04.png" alt="Classification" data-lightbox>
+                      <figcaption>Figure: Operation of Classification</figcaption>
                     </figure>
                     <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
                   </div>
@@ -851,20 +867,21 @@
               <h3>3.2 Population Genetics Analysis</h3>
               <p>Population genetics analyses, including PCA, Fst, nucleotide diversity (π), Tajima's D, Watterson's θ, and allele frequency spectrum, were conducted to characterize genetic variation and population structure.</p>
               <table class="kv">
-                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
+                <tr><th>Fst</th><td>Fixation index measuring population differentiation: the proportion of genetic variance among subpopulations relative to the total (0–1), commonly estimated by Weir–Cockerham or Hudson methods, used in window-based scans for structure/selection but influenced by within-population diversity and sample size.</td></tr>
+                <tr><th>nucleotide diversity (π)</th><td>Average number of pairwise nucleotide differences per site within a population, quantifying standing genetic variation; computed from genotype/allele frequencies or pairwise comparisons and often summarized in sliding windows across the genome.</td></tr>
+                <tr><th>Tajima's D</th><td>Neutrality test comparing π to Watterson's θ to detect deviations from the standard neutral model: D≈0 suggests neutrality/constant size, D&gt;0 indicates balancing selection or population structure/bottlenecks, and D&lt;0 indicates purifying/positive selection or recent expansion (significance assessed via permutation/coalescent expectations).</td></tr>
+                <tr><th>Watterson's θ</th><td>Estimator of the population mutation rate (θ = 4N<sub>e</sub>μ) derived from the number of segregating sites S (θ<sub>W</sub>=S/a<sub>1</sub>), providing a sample-size–adjusted measure of diversity under the infinite-sites, selective neutrality model.</td></tr>
               </table>
               <p>Click <span class="kbd">Population Genetics Analyses</span> to run after configuring the parameters.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Population_Genetics_Analysis.png" alt="Population Genetics Analysis" data-lightbox>
                       <figcaption>Figure: Operation of Population Genetics Analysis</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">Population genetics analyses integrate multi-scale statistics (e.g., F_ST, π, Tajima’s D, θ_W) with structure/phylogeny tools (PCA/ADMIXTURE/IBD) to quantify differentiation, demography, migration, and selection from loci to whole genomes. This yields robust, interpretable, and reproducible insights that pinpoint adaptive regions and guide conservation, breeding, and medical/agrigenomic decision-making—even with heterogeneous sampling and sequencing depth.</div>
                   </div>
                 </div>
               </div>
@@ -872,20 +889,22 @@
               <h3>3.3 Community-Ecology Diversity</h3>
               <p>Community-ecology diversity analyses, including alpha and beta diversity metrics, PCoA, PERMANOVA, Mantel tests, and group-wise comparisons (t-test/ANOVA), were conducted to evaluate diversity and community differences across sample groups.</p>
               <table class="kv">
-                <tr><th>模式</th><td>对齐 / 调用 / 汇报（示例，按你的软件实际命名）。</td></tr>
-                <tr><th>资源</th><td>线程、内存、临时目录、GPU（如有）。</td></tr>
-                <tr><th>高级</th><td>阈值、过滤规则、重试策略、日志级别。</td></tr>
+                <tr><th>PCoA</th><td>Principal Coordinates Analysis: eigen-decomposes a distance/dissimilarity matrix (e.g., Bray–Curtis, UniFrac, Euclidean) to place samples in a low-dimensional space; axes capture the greatest variation in pairwise dissimilarities (reported as % variance), enabling visualization of clustering/gradients and optional fitting of environmental vectors; note potential negative eigenvalues (often addressed by Cailliez/Lingoes corrections).</td></tr>
+
+                <tr><th>PERMANOVA</th><td>Permutation-based multivariate ANOVA on a distance matrix that partitions variation among groups or model terms, yielding a pseudo-F statistic, R² (effect size), and p-value; flexible with complex formulas and any ecologically relevant distance; interpretation assumes similar within-group dispersions—check with PERMDISP as unequal dispersion can inflate significance.</td></tr>
+
+                <tr><th>Mantel tests</th><td>Correlates two distance/dissimilarity matrices (e.g., community vs. environment or geographic distances) using Pearson/Spearman correlation with permutation to assess significance; useful for detecting congruent structure across datasets and for isolation-by-distance analyses; be mindful of limited power and potential biases from spatial autocorrelation or non-independence of matrix entries.</td></tr>
               </table>
               <p>Click <span class="kbd">Community-Ecology Diversity</span> to run after configuring the parameters.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/Community-Ecology_Diversity.png" alt="Community-Ecology Diversity" data-lightbox>
                       <figcaption>Figure: Operation of Community-Ecology Diversity</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">Community-ecology diversity frameworks quantify variation in species composition within and among communities using α/β/γ diversity, flexible indices (e.g., Hill numbers, Shannon/Simpson) and dissimilarities (e.g., Bray–Curtis, Jaccard). These metrics enable scale-aware comparisons, ordination and hypothesis testing, linking biodiversity patterns to environmental gradients, ecosystem function, and management decisions with interpretable, standardized outputs.</div>
                   </div>
                 </div>
               </div>
@@ -897,170 +916,147 @@
               <h2>4. Gene Set Enrichment Analysis (GSEA)</h2>
               <p>Gene set enrichment analyses (GSEA), including GO and KEGG pathway enrichment, Pre-ranked GSEA, Single-sample GSEA, and Gene Set Variation Analysis (GSVA), were performed to identify functional patterns in gene expression.</p>
               <table class="kv">
-                <tr><th>GO and KEGG</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">N</span></td></tr>
-                <tr><th>Prerank GSEA</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">O</span></td></tr>
-                <tr><th>GSEA</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">S</span></td></tr>
-                <tr><th>ssGSEA</th><td><span class="kbd">Space</span> 或 <span class="kbd">K</span></td></tr>
-                <tr><th>GSVA</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">1..5</span></td></tr>
-                <tr><th>Plotting</th><td><span class="kbd">Ctrl/Cmd</span> + <span class="kbd">F</span></td></tr>
+                <tr><th>GO and KEGG</th><td>Functional/pathway enrichment using GO terms and KEGG pathways to interpret gene lists.</td></tr>
+                <tr><th>Prerank GSEA</th><td>Runs enrichment on a single pre-ranked gene list, returning ES/NES/FDR without phenotype labels.</td></tr>
+                <tr><th>GSEA</th><td>Classic two-group, permutation-based enrichment; reports ES/NES/FDR and leading-edge subsets.</td></tr>
+                <tr><th>ssGSEA</th><td>Computes per-sample gene set scores by ranking genes within each sample.</td></tr>
+                <tr><th>GSVA</th><td>Non-parametric, sample-wise pathway activity estimation from gene expression data.</td></tr>
+                <tr><th>Plotting</th><td>Publication-ready dotplots, barplots, and heatmaps for enrichment and expression visualization.</td></tr>
               </table>
               <div class="callout tip">Click <span class="kbd">Gene Set Enrichment Analysis</span> to run after configuring the parameters.</div>
 
               <h3>4.1 GO and KEGG</h3>
-              <p>将序列拼接整合在一起</p>
-              <table class="kv">
-                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
-              </table>
+              <p>Gene Ontology (GO) is a curated framework that standardizes gene function descriptions across species via three domains—Biological Process, Molecular Function, and Cellular Component.</p>
+              <p>KEGG (Kyoto Encyclopedia of Genes and Genomes) is an integrated database that maps genes to biochemical pathways, diseases, and drugs to contextualize molecular data in systems-level networks.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/GSEA_GOKEGG.png" alt="GO and KEGG" data-lightbox>
                       <figcaption>Figure: Operation of GO and KEGG</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">GO: Offers a species-agnostic, hierarchical vocabulary for Biological Process, Molecular Function, and Cellular Component, enabling consistent gene annotations, fine-grained functional enrichment, and cross-dataset comparability.</div>
+                    <div class="callout tip">KEGG: Provides manually curated pathway maps linking genes, metabolites, diseases, and drugs, facilitating systems-level interpretation, pathway enrichment, and actionable mechanistic insights for hypothesis generation.</div>
                   </div>
                 </div>
               </div>
 
               <h3>4.2 Prerank GSEA</h3>
-              <p>将序列拼接整合在一起</p>
-              <table class="kv">
-                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
-              </table>
+              <p>Preranked GSEA (GSEA-Preranked) evaluates gene set enrichment on a single, preordered gene list (ranked by a signed statistic such as log2FC or t-score), avoiding phenotype labels and small-sample permutations while returning ES, NES, and FDR for pathway significance.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/GSEA_Prerank.png" alt="Prerank GSEA" data-lightbox>
                       <figcaption>Figure: Operation of Prerank GSEA</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">Preranked GSEA operates on a single, signed-statistic–ordered gene list, enabling fast, phenotype-agnostic detection of coordinated pathway shifts with stable ES/NES/FDR estimates—ideal for small cohorts, meta-analyses, or when only summary statistics are available.</div>
                   </div>
                 </div>
               </div>
 
               <h3>4.3 GSEA</h3>
-              <p>将序列拼接整合在一起</p>
-              <table class="kv">
-                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
-              </table>
+              <p>the GSEA performs classic gene set enrichment analysis on phenotype-labeled or pre-ranked gene lists, using permutation tests to compute enrichment scores, normalized enrichment scores (NES), and FDR/q-values, and outputs ranked results and visualizations to identify significantly enriched pathways.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/GSEA_GSEA.png" alt="GSEA" data-lightbox>
                       <figcaption>Figure: Operation of GSEA</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">GSEA leverages phenotype labels or preranked gene lists to detect coordinated, subtle pathway shifts using permutation-based statistics with NES and FDR control, delivering robust, interpretable enrichment results with reproducible reports and rich visualizations.</div>
                   </div>
                 </div>
               </div>
 
               <h3>4.4 ssGSEA</h3>
-              <p>将序列拼接整合在一起</p>
-              <table class="kv">
-                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
-              </table>
+              <p>Single-sample Gene Set Enrichment Analysis (ssGSEA) computes an enrichment score for each gene set within each individual sample by ranking genes per sample, enabling pathway activity profiling at single-sample resolution.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/GSEA_ssGSEA.png" alt="ssGSEA" data-lightbox>
                       <figcaption>Figure: Operation of ssGSEA</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">ssGSEA ranks genes within each sample to compute per-sample gene set enrichment scores without phenotype labels or strong distributional assumptions, yielding robust, cross-platform–comparable, and interpretable individual-level pathway activity profiles in heterogeneous cohorts.</div>
                   </div>
                 </div>
               </div>
 
               <h3>4.5 GSVA</h3>
-              <p>将序列拼接整合在一起</p>
-              <table class="kv">
-                <tr><th>数据列表</th><td>展示文件名、大小、导入时间、校验状态。</td></tr>
-                <tr><th>预览</th><td>抽样预览前 N 行；可切换原始/解析视图。</td></tr>
-                <tr><th>校验</th><td>支持 MD5/SHA256；异常高亮并可重传。</td></tr>
-              </table>
+              <p>Gene Set Variation Analysis (GSVA) is a non-parametric, unsupervised method that estimates variation of pathway activity over a sample population in an expression dataset.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/GSEA_GSVA.png" alt="GSVA" data-lightbox>
                       <figcaption>Figure: Operation of GSVA</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip">GSVA transforms gene-level expression data into pathway-level enrichment scores, enabling the analysis of subtle pathway activity changes across samples without relying on predefined phenotypes.</div>
                   </div>
                 </div>
               </div>
 
               <h3>4.6 Plotting</h3>
-              <p>序列比共包含三种比对方法：MAFFT，MUSCLE和Clustal Omega。</p>
+              <p>Based on the data analysis results from the previous section, the corresponding visualizations—including dot plots, bar plots, and heatmaps—can be generated.</p>
               <table class="kv">
-                <tr><th>MAFFT</th><td>MAFFT implements multiple alignment algorithms, including FFT-NS-2, L-INS-i, and G-INS-i, enabling efficient alignment of large-scale and highly divergent sequence datasets.</td></tr>
-                <tr><th>MUSCLE</th><td>MUSCLE performs multiple sequence alignment through k-mer counting, progressive alignment, and refinement stages, offering a trade-off between speed and accuracy for medium to large datasets.</td></tr>
-                <tr><th>Clustal Omega</th><td>Clustal Omega aligns protein or nucleotide sequences using mBed clustering, guide trees, and HMM-based profile alignment, optimized for high-throughput workflows.</td></tr>
+                <tr><th>dotplot</th><td>A visualization that uses dots to represent values, showing gene expression or enrichment scores across different categories.</td></tr>
+                <tr><th>barplot</th><td>A chart that uses bars to compare quantities across categories, useful for showing counts, expression levels, or statistical results.</td></tr>
+                <tr><th>heatmap</th><td>A graphical representation of data where individual values are represented as colors, used to display gene expression patterns or similarity matrices.</td></tr>
               </table>
               <ul>
-                <li>点击所需使用的MSA（<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span> or <span class="kbd">Clustal Omega</span>），使其保持在前端；</li>
-                <li>然后设置参数，点击<span class="kbd">Alignment</span>即可运行；</li>
-                <li>运行完成后可在<span class="kbd">Sequences</span>中查看运行结果</li>
+                <li>Click on the desired visualization method (<span class="kbd">dotplot</span>, <span class="kbd">barplot</span> or <span class="kbd">heatmap</span>）to bring it to the foreground.</li>
+                <li>Next, configure the necessary parameters and click <span class="kbd">Gene Set Enrichment Analysis</span> to initiate the analysis.</li>
+                <li>Once the process is complete, the results can be viewed in the corresponding folder.</li>
               </ul>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">1</span>
-                    <span class="step-title">GSEA Plotting</span>
+                    <span class="step-title">GSEA dotplot</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/GSEA_Plotting_dotplot.png" alt="GSEA Plotting" data-lightbox>
-                      <figcaption>Figure: Operation of GSEA Plotting</figcaption>
+                      <img src="./images/howtouse/GSEA_Plotting_dotplot.png" alt="GSEA dotplot" data-lightbox>
+                      <figcaption>Figure: Operation of GSEA dotplot</figcaption>
                     </figure>
-                    <div class="callout tip">MAFFT may take a short amount of time to run. The more sequences there are, the longer it will take. Please be patient.</div>
+                    <div class="callout tip"></div>
                   </div>
                 </div>
 
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">2</span>
-                    <span class="step-title">MUSCLE</span>
+                    <span class="step-title">barplot</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/GSEA_Plotting_barplot.png" alt="MUSCLE" data-lightbox>
-                      <figcaption>Figure: Operation of MUSCLE</figcaption>
+                      <img src="./images/howtouse/GSEA_Plotting_barplot.png" alt="barplot" data-lightbox>
+                      <figcaption>Figure: Operation of barplot</figcaption>
                     </figure>
-                    <div class="callout tip">MUSCLE requires some time to complete. The more sequences involved, the longer the process will take. Please be patient.</div>
+                    <div class="callout tip"></div>
                   </div>
                 </div>
 
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">3</span>
-                    <span class="step-title">Clustal Omega</span>
+                    <span class="step-title">heatmap</span>
                   </div>
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/GSEA_Plotting_heatmap.png" alt="Clustal Omega" data-lightbox>
-                      <figcaption>Figure: Operation of Clustal Omega</figcaption>
+                      <img src="./images/howtouse/GSEA_Plotting_heatmap.png" alt="GSEA heatmap" data-lightbox>
+                      <figcaption>Figure: Operation of GSEA heatmap</figcaption>
                     </figure>
-                    <div class="callout tip">Clustal Omega may take a relatively long time to run. The more sequences you include, the longer it will take. Please be patient.</div>
+                    <div class="callout tip"></div>
                   </div>
                 </div>
 
@@ -1087,16 +1083,16 @@
             <!-- 6. 反馈与支持 -->
             <section>
               <h2>6. AMBER Agent</h2>
-              <p>将序列拼接整合在一起</p>
+              <p></p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
-                    <p>已设置好默认参数，可以直接运行，也可以根据自己的需求设定参数</p>
+                    <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
                       <img src="./images/howtouse/AMBER_Agent.png" alt="AMBER Agent" data-lightbox>
                       <figcaption>Figure: AMBER Agent</figcaption>
                     </figure>
-                    <div class="callout tip">可根据自己的需求整合需要的序列</div>
+                    <div class="callout tip"></div>
                   </div>
                 </div>
               </div>
