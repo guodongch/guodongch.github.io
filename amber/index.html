@@ -1115,8 +1115,14 @@
 
       <!-- 其它栏目（保持） -->
       <section id="downloadContainer" class="content-section">
-        <div class="card"><h3>Software</h3><p>……</p></div>
-        <div class="card"><h3>Toolbox</h3><p>……</p></div>
+        <div class="card">
+          <h3>Software</h3>
+          <p>……</p>
+        </div>
+        <div class="card">
+          <h3>Toolbox</h3>
+          <p>DIAMOND GUI: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/DOWNLOAD/diamond_gui.zip" data-filename="diamond_gui.zip">DIAMOND GUI</button></p>
+        </div>
       </section>
 
       <section id="exampleContainer" class="content-section">
@@ -1275,6 +1281,23 @@
         el && setTimeout(()=>el.scrollIntoView({behavior:'smooth', block:'start'}), 200);
       }
     })();
+
+    /* ===== Download ===== */
+    
+    document.addEventListener("click", function (e) {
+      if (e.target.classList.contains("download-btn")) {
+        const fileUrl = e.target.getAttribute("data-url");
+        const fileName = e.target.getAttribute("data-filename");
+
+        const a = document.createElement("a");
+        a.href = fileUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    });
+
   </script>
 </body>
 </html>
