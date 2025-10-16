@@ -326,8 +326,8 @@
 
       <!-- 其他栏目（可按需编辑） -->
       <section id="homeContainer" class="content-section show fade-in">
-        <div class="card"><h3>AMBER: An Advanced Molecular Biology Evolution Research Software</h3><p>Research in biological evolution encompasses multiple core components, including phylogenetic analysis, molecular evolution analysis, population genetics analysis, community-ecology diversity analysis, and gene enrichment analysis. Each of these analyses often involves complex procedures, requiring extensive software installation and environment configuration. Many tools lack a graphical user interface and must be operated through the command line. Additionally, users often need to manually adjust data content and formats to connect different stages of analysis. This makes the process time-consuming, cumbersome, and prone to various errors. To address these challenges, we have developed an advanced molecular biology evolution research software named AMBER.</p></div>
-        <div class="card"><h3></h3><p>AMBER integrates phylogenetic analysis, molecular evolution analysis, population genetics analysis, community-ecology diversity, and gene set enrichment analysis into a single, user-friendly platform. It features a visual graphical interface and supports cross-platform usage. AMBER consolidates multiple analysis procedures into streamlined pipelines, enabling smooth data and analysis flow. This significantly improves the efficiency and accuracy of evolutionary research, allowing researchers to focus more on scientific discovery rather than technical implementation</p></div>
+        <div class="card"><h3>AMBER: An Advanced Molecular Biology Evolution Research Software</h3><p>Research in biological evolution encompasses multiple core components, including phylogenetic analysis, molecular evolution analysis, population genetic analysis, community diversity analysis, and gene enrichment analysis. Each of these analysis often involves complex procedures, requiring extensive software installation and environment configuration. Many tools lack a graphical user interface and must be operated through the command line. Additionally, users often need to manually adjust data content and formats to connect different stages of analysis. This makes the process time-consuming, cumbersome, and prone to various errors. To address these challenges, we have developed an advanced molecular biology evolution research software named AMBER.</p></div>
+        <div class="card"><h3></h3><p>AMBER integrates phylogenetic analysis, molecular evolution analysis, population genetic analysis, community diversity, and gene set enrichment analysis into a single, user-friendly platform. It features a visual graphical interface and supports cross-platform usage. AMBER consolidates multiple analysis procedures into streamlined pipelines, enabling smooth data and analysis flow. This significantly improves the efficiency and accuracy of evolutionary research, allowing researchers to focus more on scientific discovery rather than technical implementation</p></div>
       </section>
 
       <!-- ===== GUI Table of Contents ===== -->
@@ -361,7 +361,7 @@
               </figure>
               <table class="kv">
                 <tr><th>Phylogenetic Analysis</th><td>The Phylogenetic Analysis module includes data collection, sequence alignment, low-quality sequence trimming, model selection, partitioning scheme setup, phylogenetic reconstruction, statistical analysis, as well as sequence and tree visualization.</td></tr>
-                <tr><th>Evolutionary Analysis</th><td>The Evolutionary Analysis module includes molecular evolutionary analysis, population genetics analyses, community ecology diversity analyses, and related visualizations.</td></tr>
+                <tr><th>Evolutionary Analysis</th><td>The Evolutionary Analysis module includes molecular evolutionary analysis, population genetics analysis, community diversity analysis, and related visualizations.</td></tr>
                 <tr><th>Gene Set Enrichment Analysis</th><td>The GSEA module includes a range of functionalities, such as GO and KEGG pathway enrichment, pre-ranked GSEA, single-sample GSEA, and Gene Set Variation Analysis (GSVA).</td></tr>
                 <tr><th>Toolbox</th><td>DIAMOND </td></tr>
               </table>
@@ -597,7 +597,7 @@
               <h3>2.3 Trimming</h3>
               <p>For processing low-quality sequences, two tools are provided: TrimAl and Gblocks, both of which help refine multiple sequence alignments by removing poorly aligned regions.</p>
               <table class="kv">
-                <tr><th>TrimAl</th><td>TrimAl performs automated alignment trimming by applying gap-, similarity-, and consistency-based criteria (e.g., gappyout, strict, strictplus, automated1) to remove ambiguously aligned regions, facilitating downstream phylogenetic analyses on large datasets.</td></tr>
+                <tr><th>TrimAl</th><td>TrimAl performs automated alignment trimming by applying gap-, similarity-, and consistency-based criteria (e.g., gappyout, strict, strictplus, automated1) to remove ambiguously aligned regions, facilitating downstream phylogenetic analysis on large datasets.</td></tr>
                 <tr><th>Gblocks</th><td>Gblocks selects conserved blocks from multiple sequence alignments by enforcing thresholds on positional conservation, block length, and allowed gaps, reducing noise from poorly aligned regions to improve robustness of phylogenetic inference.</td></tr>
               </table>
               <ul>
@@ -876,47 +876,47 @@
 
               </div>
 
-              <h3>3.2 Population Genetics Analysis</h3>
-              <p>Population genetics analyses, including PCA, Fst, nucleotide diversity (π), Tajima's D, Watterson's θ, and allele frequency spectrum, were conducted to characterize genetic variation and population structure.</p>
+              <h3>3.2 Population Genetic Analysis</h3>
+              <p>Population genetics analysis, including PCA, Fst, nucleotide diversity (π), Tajima's D, Watterson's θ, and allele frequency spectrum, were conducted to characterize genetic variation and population structure.</p>
               <table class="kv">
                 <tr><th>Fst</th><td>Fixation index measuring population differentiation: the proportion of genetic variance among subpopulations relative to the total (0–1), commonly estimated by Weir–Cockerham or Hudson methods, used in window-based scans for structure/selection but influenced by within-population diversity and sample size.</td></tr>
                 <tr><th>nucleotide diversity (π)</th><td>Average number of pairwise nucleotide differences per site within a population, quantifying standing genetic variation; computed from genotype/allele frequencies or pairwise comparisons and often summarized in sliding windows across the genome.</td></tr>
                 <tr><th>Tajima's D</th><td>Neutrality test comparing π to Watterson's θ to detect deviations from the standard neutral model: D≈0 suggests neutrality/constant size, D&gt;0 indicates balancing selection or population structure/bottlenecks, and D&lt;0 indicates purifying/positive selection or recent expansion (significance assessed via permutation/coalescent expectations).</td></tr>
                 <tr><th>Watterson's θ</th><td>Estimator of the population mutation rate (θ = 4N<sub>e</sub>μ) derived from the number of segregating sites S (θ<sub>W</sub>=S/a<sub>1</sub>), providing a sample-size–adjusted measure of diversity under the infinite-sites, selective neutrality model.</td></tr>
               </table>
-              <p>Click <span class="kbd">Population Genetics Analyses</span> to run after configuring the parameters.</p>
+              <p>Click <span class="kbd">Population Genetics Analysis</span> to run after configuring the parameters.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
                     <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Population_Genetics_Analysis.png" alt="Population Genetics Analysis" data-lightbox>
-                      <figcaption>Figure: Operation of Population Genetics Analysis</figcaption>
+                      <img src="./images/howtouse/Population_Genetic_Analysis.png" alt="Population Genetic Analysis" data-lightbox>
+                      <figcaption>Figure: Operation of Population Genetic Analysis</figcaption>
                     </figure>
-                    <div class="callout tip">Population genetics analyses integrate multi-scale statistics (e.g., F_ST, π, Tajima’s D, θ_W) with structure/phylogeny tools (PCA/ADMIXTURE/IBD) to quantify differentiation, demography, migration, and selection from loci to whole genomes. This yields robust, interpretable, and reproducible insights that pinpoint adaptive regions and guide conservation, breeding, and medical/agrigenomic decision-making—even with heterogeneous sampling and sequencing depth.</div>
+                    <div class="callout tip">Population genetics analysis integrate multi-scale statistics (e.g., F_ST, π, Tajima’s D, θ_W) with structure/phylogeny tools (PCA/ADMIXTURE/IBD) to quantify differentiation, demography, migration, and selection from loci to whole genomes. This yields robust, interpretable, and reproducible insights that pinpoint adaptive regions and guide conservation, breeding, and medical/agrigenomic decision-making—even with heterogeneous sampling and sequencing depth.</div>
                   </div>
                 </div>
               </div>
 
-              <h3>3.3 Community-Ecology Diversity</h3>
-              <p>Community-ecology diversity analyses, including alpha and beta diversity metrics, PCoA, PERMANOVA, Mantel tests, and group-wise comparisons (t-test/ANOVA), were conducted to evaluate diversity and community differences across sample groups.</p>
+              <h3>3.3 Community Diversity Analysis</h3>
+              <p>Community diversity analysis, including alpha and beta diversity metrics, PCoA, PERMANOVA, Mantel tests, and group-wise comparisons (t-test/ANOVA), were conducted to evaluate diversity and community differences across sample groups.</p>
               <table class="kv">
                 <tr><th>PCoA</th><td>Principal Coordinates Analysis: eigen-decomposes a distance/dissimilarity matrix (e.g., Bray–Curtis, UniFrac, Euclidean) to place samples in a low-dimensional space; axes capture the greatest variation in pairwise dissimilarities (reported as % variance), enabling visualization of clustering/gradients and optional fitting of environmental vectors; note potential negative eigenvalues (often addressed by Cailliez/Lingoes corrections).</td></tr>
 
                 <tr><th>PERMANOVA</th><td>Permutation-based multivariate ANOVA on a distance matrix that partitions variation among groups or model terms, yielding a pseudo-F statistic, R² (effect size), and p-value; flexible with complex formulas and any ecologically relevant distance; interpretation assumes similar within-group dispersions—check with PERMDISP as unequal dispersion can inflate significance.</td></tr>
 
-                <tr><th>Mantel tests</th><td>Correlates two distance/dissimilarity matrices (e.g., community vs. environment or geographic distances) using Pearson/Spearman correlation with permutation to assess significance; useful for detecting congruent structure across datasets and for isolation-by-distance analyses; be mindful of limited power and potential biases from spatial autocorrelation or non-independence of matrix entries.</td></tr>
+                <tr><th>Mantel tests</th><td>Correlates two distance/dissimilarity matrices (e.g., community vs. environment or geographic distances) using Pearson/Spearman correlation with permutation to assess significance; useful for detecting congruent structure across datasets and for isolation-by-distance analysis; be mindful of limited power and potential biases from spatial autocorrelation or non-independence of matrix entries.</td></tr>
               </table>
-              <p>Click <span class="kbd">Community-Ecology Diversity</span> to run after configuring the parameters.</p>
+              <p>Click <span class="kbd">Community Diversity Analysis</span> to run after configuring the parameters.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
                     <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Community-Ecology_Diversity.png" alt="Community-Ecology Diversity" data-lightbox>
-                      <figcaption>Figure: Operation of Community-Ecology Diversity</figcaption>
+                      <img src="./images/howtouse/Community_Diversity_Analysis.png" alt="Community Diversity Analysis" data-lightbox>
+                      <figcaption>Figure: Operation of Community Diversity Analysis</figcaption>
                     </figure>
-                    <div class="callout tip">Community-ecology diversity frameworks quantify variation in species composition within and among communities using α/β/γ diversity, flexible indices (e.g., Hill numbers, Shannon/Simpson) and dissimilarities (e.g., Bray–Curtis, Jaccard). These metrics enable scale-aware comparisons, ordination and hypothesis testing, linking biodiversity patterns to environmental gradients, ecosystem function, and management decisions with interpretable, standardized outputs.</div>
+                    <div class="callout tip">Community diversity analysis frameworks quantify variation in species composition within and among communities using α/β/γ diversity, flexible indices (e.g., Hill numbers, Shannon/Simpson) and dissimilarities (e.g., Bray–Curtis, Jaccard). These metrics enable scale-aware comparisons, ordination and hypothesis testing, linking biodiversity patterns to environmental gradients, ecosystem function, and management decisions with interpretable, standardized outputs.</div>
                   </div>
                 </div>
               </div>
@@ -925,7 +925,7 @@
             <!-- 4. Gene Set Enrichment Analysis -->
             <section>
               <h2>4. Gene Set Enrichment Analysis (GSEA)</h2>
-              <p>Gene set enrichment analyses (GSEA), including GO and KEGG pathway enrichment, Pre-ranked GSEA, Single-sample GSEA, and Gene Set Variation Analysis (GSVA), were performed to identify functional patterns in gene expression.</p>
+              <p>Gene set enrichment analysis (GSEA), including GO and KEGG pathway enrichment, Pre-ranked GSEA, Single-sample GSEA, and Gene Set Variation Analysis (GSVA), were performed to identify functional patterns in gene expression.</p>
               <table class="kv">
                 <tr><th>GO and KEGG</th><td>Functional/pathway enrichment using GO terms and KEGG pathways to interpret gene lists.</td></tr>
                 <tr><th>Prerank GSEA</th><td>Runs enrichment on a single pre-ranked gene list, returning ES/NES/FDR without phenotype labels.</td></tr>
@@ -963,7 +963,7 @@
                       <img src="./images/howtouse/GSEA_Prerank.png" alt="Prerank GSEA" data-lightbox>
                       <figcaption>Figure: Operation of Prerank GSEA</figcaption>
                     </figure>
-                    <div class="callout tip">Preranked GSEA operates on a single, signed-statistic–ordered gene list, enabling fast, phenotype-agnostic detection of coordinated pathway shifts with stable ES/NES/FDR estimates—ideal for small cohorts, meta-analyses, or when only summary statistics are available.</div>
+                    <div class="callout tip">Preranked GSEA operates on a single, signed-statistic–ordered gene list, enabling fast, phenotype-agnostic detection of coordinated pathway shifts with stable ES/NES/FDR estimates—ideal for small cohorts, meta-analysis, or when only summary statistics are available.</div>
                   </div>
                 </div>
               </div>
@@ -1145,14 +1145,15 @@
           <p></p>
         </div>
 
-        <div class="card"><h3>Population Genetics Analysis Example</h3>
-          <p>Download population genetics analysis examples: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/EXAMPLE/population_genetics_analysis.zip" data-filename="population_genetics_analysis.zip">population_genetics_analysis.zip</button></p>
+        <div class="card"><h3>Population Genetic Analysis Example</h3>
+          <!-- <p>Download population genetic analysis examples: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/EXAMPLE/population_genetic_analysis.zip" data-filename="population_genetic_analysis.zip">population_genetic_analysis.zip</button></p> -->
+          <p>Download population genetic analysis examples: <a href="https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/" target="_blank">1000genomes</a></p>
           <p></p>
         </div>
 
         <div class="card">
-          <h3>Community-Ecology Diversity Example</h3>
-          <p>Download community-ecology diversity examples: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/EXAMPLE/community-ecology_diversity.zip" data-filename="community-ecology_diversity.zip">community-ecology_diversity.zip</button></p>
+          <h3>Community Diversity Analysis Example</h3>
+          <p>Download community diversity analysis examples: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/EXAMPLE/community_diversity_analysis.zip" data-filename="community_diversity_analysis.zip">community_diversity_analysis.zip</button></p>
           <p></p>
         </div>
 
@@ -1170,7 +1171,8 @@
         
         <div class="card">
           <h3>Multigene</h3>
-          <p>Download Ophiocordyceps dataset: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/DATASET/Ophiocordyceps.xlsx" data-filename="Ophiocordyceps.xlsx">Ophiocordyceps.xlsx</button><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10943269/" target="_blank">Molecular phylogeny and morphology reveal two new entomopathogenic species of Ophiocordyceps (Ophiocordycipitaceae, Hypocreales) parasitic on termites from China (MycoKeys, 2024 Mar 8)</a></p>
+          <p>Download Ophiocordyceps dataset: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/DATASET/Ophiocordyceps.xlsx" data-filename="Ophiocordyceps.xlsx">Ophiocordyceps.xlsx</button></p>
+          <p>Source: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10943269/" target="_blank">Molecular phylogeny and morphology reveal two new entomopathogenic species of Ophiocordyceps (Ophiocordycipitaceae, Hypocreales) parasitic on termites from China (MycoKeys, 2024 Mar 8)</a></p>
           <!-- <p>Download Fusarium and Neocosmospora dataset: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/DATASET/Fusarium_and_Neocosmospora.xlsx" data-filename="Fusarium_and_Neocosmospora.xlsx">Fusarium_and_Neocosmospora.xlsx</button><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12292661/" target="_blank">hylogenomic, Morphological, and Phylogenetic Evidence Reveals Five New Species and Two New Host Records of Nectriaceae (Hypocreales) from China (Biology-Basel, 2025 Jul 17)</a></p> -->
           <p><a href="" target="_blank"></a></p>
           <p><a href="" target="_blank"></a></p>
@@ -1178,7 +1180,8 @@
 
         <div class="card">
           <h3>Mitogenome</h3>
-          <p>Download Hypocreales dataset: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/DATASET/Hypocreales.xlsx" data-filename="Hypocreales.xlsx">Hypocreales.xlsx</button><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12202336/" target="_blank">Mitochondrial genome characterization, evolution and intron dynamics of the entomopathogenic genus Cordyceps (Frontiers in Microbiology, 2025 Jun 13)</a></p>
+          <p>Download Hypocreales dataset: <button class="download-btn" data-url="https://raw.githubusercontent.com/guodongch/amber-dependency/main/DATASET/Hypocreales.xlsx" data-filename="Hypocreales.xlsx">Hypocreales.xlsx</button></p>
+          <p>Source: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12202336/" target="_blank">Mitochondrial genome characterization, evolution and intron dynamics of the entomopathogenic genus Cordyceps (Frontiers in Microbiology, 2025 Jun 13)</a></p>
           <p><a href="" target="_blank"></a></p>
           <p><a href="" target="_blank"></a></p>
         </div>
