@@ -364,8 +364,8 @@
                 <figcaption>Figure: Introduction.</figcaption>
               </figure>
               <table class="kv">
-                <tr><th>Phylogenetic Analysis</th><td>The Phylogenetic Analysis module includes data collection, sequence alignment, low-quality sequence trimming, model selection, partitioning scheme setup, phylogenetic reconstruction, statistical analysis, as well as sequence and tree visualization.</td></tr>
-                <tr><th>Evolutionary Analysis</th><td>The Evolutionary Analysis module includes molecular evolutionary analysis, population genetics analysis, community diversity analysis, and related visualizations.</td></tr>
+                <tr><th>Phylogenetic Analysis</th><td>The Phylogenetic Analysis module includes data collection, sequence alignment, low-quality sequence Refine, model selection, partitioning scheme setup, phylogenetic reconstruction, statistical analysis, as well as sequence and tree visualization.</td></tr>
+                <tr><th>Evolutionary Analysis</th><td>The Evolutionary Analysis module includes molecular evolutionary analysis, population genetic analysis, community diversity analysis, and related visualizations.</td></tr>
                 <tr><th>Gene Set Enrichment Analysis</th><td>The GSEA module includes a range of functionalities, such as GO and KEGG pathway enrichment, pre-ranked GSEA, single-sample GSEA, and Gene Set Variation Analysis (GSVA).</td></tr>
                 <tr><th>Toolbox</th><td>DIAMOND </td></tr>
               </table>
@@ -388,16 +388,19 @@
                       After that, an appropriate evolutionary model is selected, and data partitioning is optimized to improve the reliability of tree construction. 
                       Then, a phylogenetic tree is built using methods such as Maximum Likelihood, Bayesian Inference, or the Neighbor-Joining method. 
                       Finally, the phylogenetic tree is visualized to clearly display the evolutionary relationships.</p>
-                    <p>Operation process in AMBER: <span class="kbd">Collection</span><strong> → </strong><span class="kbd">Alignment</span><strong> → </strong><span class="kbd">Trimming</span><strong> → </strong><span class="kbd">Integrate</span><strong> → </strong><span class="kbd">Model</span><strong> → </strong><span class="kbd">reconstruct</span></p>
+                    <p>Operation process in AMBER: <span class="kbd">Collect</span><strong> → </strong><span class="kbd">Align</span><strong> → </strong><span class="kbd">Refine</span><strong> → </strong><span class="kbd">Concatenate</span><strong> → </strong><span class="kbd">Model</span><strong> → </strong><span class="kbd">reconstruct</span></p>
                     <figure>
                       <img src="./images/howtouse/01_Phylogenetic_Analysis.png" alt="Phylogenetic_Analysis" data-lightbox>
-                      <figcaption>Figure: Operation process in AMBER。</figcaption>
+                      <figcaption>Figure: Operation process in AMBER</figcaption>
                     </figure>
                   </div>
                 </div>
               </div>
               <h3>2.1 Collection</h3>
-              <p>The imported data can be broadly categorized into two types: single-gene or multi-gene data, and genome-scale data. Single-gene and multi-gene datasets are typically generated through Sanger sequencing and correspond to specific, targeted DNA sequences. In contrast, genome-scale data are derived from whole-genome sequencing followed by assembly and annotation.</p>
+              <p>The imported data can be broadly categorized into two types: </p>
+              <p><span class="step-num">1</span> single-gene or multi-gene data, and genome-scale data. Single-gene and multi-gene datasets are typically generated through Sanger sequencing and correspond to specific, targeted DNA sequences. </p>
+              <p><span class="step-num">2</span> genome-scale data are derived from whole-genome sequencing followed by assembly and annotation.</p>
+              <p>When you need to run one of the following modules <span class="kbd">Multigenes</span><strong>, </strong><span class="kbd">Mitogenomes</span><strong>, </strong><span class="kbd">Plastomes</span><strong>, </strong><span class="kbd">Nuclear Genomes</span><strong>, </strong><span class="kbd">Prokaryotic Genomes</span><strong>, </strong><span class="kbd">Viral Genomes</span></p>simply click on the desired option to display it in the panel. Then, click<span class="kbd">Collect</span>to start the process.
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
@@ -540,17 +543,17 @@
                 </div>
               </div>
 
-              <h3>2.2 Alignment</h3>
-              <p>The sequence alignment module includes three alignment methods: MAFFT, MUSCLE, and Clustal Omega.</p>
+              <h3>2.2 Align</h3>
+              <p>The sequence align module includes three align methods: MAFFT, MUSCLE, and Clustal Omega.</p>
               <table class="kv">
-                <tr><th>MAFFT</th><td>MAFFT implements multiple alignment algorithms, including FFT-NS-2, L-INS-i, and G-INS-i, enabling efficient alignment of large-scale and highly divergent sequence datasets.</td></tr>
-                <tr><th>MUSCLE</th><td>MUSCLE performs multiple sequence alignment through k-mer counting, progressive alignment, and refinement stages, offering a trade-off between speed and accuracy for medium to large datasets.</td></tr>
+                <tr><th>MAFFT</th><td>MAFFT implements multiple align algorithms, including FFT-NS-2, L-INS-i, and G-INS-i, enabling efficient align of large-scale and highly divergent sequence datasets.</td></tr>
+                <tr><th>MUSCLE</th><td>MUSCLE performs multiple sequence align through k-mer counting, progressive alignment, and refinement stages, offering a trade-off between speed and accuracy for medium to large datasets.</td></tr>
                 <tr><th>Clustal Omega</th><td>Clustal Omega aligns protein or nucleotide sequences using mBed clustering, guide trees, and HMM-based profile alignment, optimized for high-throughput workflows.</td></tr>
               </table>
               <ul>
                 <li>Click on the desired MSA method (<span class="kbd">MAFFT</span>, <span class="kbd">MUSCLE</span>, or <span class="kbd">Clustal Omega</span>) to bring it to the foreground.</li>
-                <li>Configure the alignment parameters, then click <span class="kbd">Alignment</span> to start the process.</li>
-                <li>Once the alignment is complete, the results can be viewed under the <span class="kbd">Sequences</span> section.</li>
+                <li>Configure the align parameters, then click <span class="kbd">Align</span> to start the process.</li>
+                <li>Once the align is complete, the results can be viewed under the <span class="kbd">Sequences</span> section.</li>
               </ul>
               <div class="steps">
                 <div class="step">
@@ -598,16 +601,16 @@
                   </div>
                 </div>
               </div>
-              <h3>2.3 Trimming</h3>
+              <h3>2.3 Refine</h3>
               <p>For processing low-quality sequences, two tools are provided: TrimAl and Gblocks, both of which help refine multiple sequence alignments by removing poorly aligned regions.</p>
               <table class="kv">
-                <tr><th>TrimAl</th><td>TrimAl performs automated alignment trimming by applying gap-, similarity-, and consistency-based criteria (e.g., gappyout, strict, strictplus, automated1) to remove ambiguously aligned regions, facilitating downstream phylogenetic analysis on large datasets.</td></tr>
+                <tr><th>TrimAl</th><td>TrimAl performs automated alignment Refine by applying gap-, similarity-, and consistency-based criteria (e.g., gappyout, strict, strictplus, automated1) to remove ambiguously aligned regions, facilitating downstream phylogenetic analysis on large datasets.</td></tr>
                 <tr><th>Gblocks</th><td>Gblocks selects conserved blocks from multiple sequence alignments by enforcing thresholds on positional conservation, block length, and allowed gaps, reducing noise from poorly aligned regions to improve robustness of phylogenetic inference.</td></tr>
               </table>
               <ul>
-                <li>Please click on the desired trimming method (<span class="kbd">TrimAl</span> or <span class="kbd">Gblocks</span>) to bring it to the foreground.</li>
-                <li>Configure the parameters as needed, then click <span class="kbd">Trimming</span> to execute the process.</li>
-                <li>Once the trimming is complete, the results can be viewed in the <span class="kbd">Sequences</span> section.</li>
+                <li>Please click on the desired Refine method (<span class="kbd">TrimAl</span> or <span class="kbd">Gblocks</span>) to bring it to the foreground.</li>
+                <li>Configure the parameters as needed, then click <span class="kbd">Refine</span> to execute the process.</li>
+                <li>Once the Refine is complete, the results can be viewed in the <span class="kbd">Sequences</span> section.</li>
               </ul>
               <div class="steps">
                 <div class="step">
@@ -817,6 +820,7 @@
             <section>
               <h2>3. Evolutionary Analysis</h2>
               <h3>3.1 Molecular Evolution Analysis</h3>
+              <p>This section mainly utilizes WGDI, so the input files and parameters should follow WGDI’s usage(https://wgdi.readthedocs.io/).</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-header">
@@ -851,13 +855,13 @@
                 <div class="step">
                   <div class="step-header">
                     <span class="step-num">3</span>
-                    <span class="step-title">Synteny and Ka vs Ks</span>
+                    <span class="step-title">Ks peaks</span>
                   </div>
                   <div class="step-body">
                     <p>The default parameters are already configured. You may run it as-is or adjust the parameters to suit your requirements.</p>
                     <figure>
-                      <img src="./images/howtouse/Molecular_Evolution_analysis_03.png" alt="Synteny and Ka vs Ks" data-lightbox>
-                      <figcaption>Figure: Operation of Synteny and Ka vs Ks</figcaption>
+                      <img src="./images/howtouse/Molecular_Evolution_analysis_03.png" alt="Ks peaks" data-lightbox>
+                      <figcaption>Figure: Operation of Ks peaks</figcaption>
                     </figure>
                     <div class="callout tip"></div>
                   </div>
@@ -881,14 +885,16 @@
               </div>
 
               <h3>3.2 Population Genetic Analysis</h3>
-              <p>Population genetics analysis, including PCA, Fst, nucleotide diversity (π), Tajima's D, Watterson's θ, and allele frequency spectrum, were conducted to characterize genetic variation and population structure.</p>
+              <p>Population genetic analysis, including PCA, nucleotide diversity (π), Tajima's D, Watterson's θ, allele frequency spectrum and Fst, were conducted to characterize genetic variation and population structure.</p>
+              <p>The inputs are a VCF file and a metadata file.</p>
+              <p>The "group col" is used to specify which column in the metadata file will be used for grouping.</p>
               <table class="kv">
-                <tr><th>Fst</th><td>Fixation index measuring population differentiation: the proportion of genetic variance among subpopulations relative to the total (0–1), commonly estimated by Weir–Cockerham or Hudson methods, used in window-based scans for structure/selection but influenced by within-population diversity and sample size.</td></tr>
                 <tr><th>nucleotide diversity (π)</th><td>Average number of pairwise nucleotide differences per site within a population, quantifying standing genetic variation; computed from genotype/allele frequencies or pairwise comparisons and often summarized in sliding windows across the genome.</td></tr>
                 <tr><th>Tajima's D</th><td>Neutrality test comparing π to Watterson's θ to detect deviations from the standard neutral model: D≈0 suggests neutrality/constant size, D&gt;0 indicates balancing selection or population structure/bottlenecks, and D&lt;0 indicates purifying/positive selection or recent expansion (significance assessed via permutation/coalescent expectations).</td></tr>
                 <tr><th>Watterson's θ</th><td>Estimator of the population mutation rate (θ = 4N<sub>e</sub>μ) derived from the number of segregating sites S (θ<sub>W</sub>=S/a<sub>1</sub>), providing a sample-size–adjusted measure of diversity under the infinite-sites, selective neutrality model.</td></tr>
+                <tr><th>Fst</th><td>Fixation index measuring population differentiation: the proportion of genetic variance among subpopulations relative to the total (0–1), commonly estimated by Weir–Cockerham or Hudson methods, used in window-based scans for structure/selection but influenced by within-population diversity and sample size.</td></tr>
               </table>
-              <p>Click <span class="kbd">Population Genetics Analysis</span> to run after configuring the parameters.</p>
+              <p>Click <span class="kbd">Population Genetic Analysis</span> to run after configuring the parameters.</p>
               <div class="steps">
                 <div class="step">
                   <div class="step-body">
@@ -897,13 +903,15 @@
                       <img src="./images/howtouse/Population_Genetic_Analysis.png" alt="Population Genetic Analysis" data-lightbox>
                       <figcaption>Figure: Operation of Population Genetic Analysis</figcaption>
                     </figure>
-                    <div class="callout tip">Population genetics analysis integrate multi-scale statistics (e.g., F_ST, π, Tajima's D, θ_W) with structure/phylogeny tools (PCA/ADMIXTURE/IBD) to quantify differentiation, demography, migration, and selection from loci to whole genomes. This yields robust, interpretable, and reproducible insights that pinpoint adaptive regions and guide conservation, breeding, and medical/agrigenomic decision-making—even with heterogeneous sampling and sequencing depth.</div>
+                    <div class="callout tip">Population genetic analysis integrate multi-scale statistics (e.g., F_ST, π, Tajima's D, θ_W) with structure/phylogeny tools (PCA/ADMIXTURE/IBD) to quantify differentiation, demography, migration, and selection from loci to whole genomes. This yields robust, interpretable, and reproducible insights that pinpoint adaptive regions and guide conservation, breeding, and medical/agrigenomic decision-making—even with heterogeneous sampling and sequencing depth.</div>
                   </div>
                 </div>
               </div>
 
               <h3>3.3 Community Diversity Analysis</h3>
-              <p>Community diversity analysis, including alpha and beta diversity metrics, PCoA, PERMANOVA, Mantel tests, and group-wise comparisons (t-test/ANOVA), were conducted to evaluate diversity and community differences across sample groups.</p>
+              <p>Community diversity analysis, including alpha diversity, alpha diversity betweengroups, beta diversity, PCoA, PERMANOVA, Mantel tests</p>
+              <p>The input may consist of OTU data along with a corresponding metadata file.</p>
+              <p>The "group col" is used to specify which column in the metadata file will be used for grouping.</p>
               <table class="kv">
                 <tr><th>PCoA</th><td>Principal Coordinates Analysis: eigen-decomposes a distance/dissimilarity matrix (e.g., Bray–Curtis, UniFrac, Euclidean) to place samples in a low-dimensional space; axes capture the greatest variation in pairwise dissimilarities (reported as % variance), enabling visualization of clustering/gradients and optional fitting of environmental vectors; note potential negative eigenvalues (often addressed by Cailliez/Lingoes corrections).</td></tr>
 
