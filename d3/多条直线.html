@@ -57,18 +57,12 @@
             .x(d => xScale(d.x))
             .y(d => yScale(d.y));
 
-        // ① 颜色比例尺：按系列索引返回不同颜色
-        const color = options.colorScale
-          || d3.scaleOrdinal(d3.schemeTableau10)      // 或 d3.schemeCategory10
-              .domain(d3.range(lines.length));       // [0,1,2,...]
-
         g.selectAll("path.line")
             .data(lines)
             .join("path")       // .enter()        .append("path")       // 自动处理 enter / update / exit
             .attr("class", "line")
             .attr("fill", "none")
-            // .attr("stroke", options.stroke || "steelblue")
-            .attr("stroke", (d, i) => color(i))       // ② 这里按索引着色
+            .attr("stroke", options.stroke || "steelblue")
             .attr("stroke-width", options.strokeWidth || 2)
             .attr("d", d => line(d));
 
