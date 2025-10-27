@@ -139,11 +139,12 @@
       reader.readAsText(file, 'utf-8');
     });
 
+
     // 可选：窗口大小变化时重绘（已导入过数据才重绘）
     let lastData = null;
     const originalRender = render;
     render = function(data) { lastData = data; originalRender(data); };
     window.addEventListener('resize', () => { if (lastData) originalRender(lastData); });
   </script>
-</body>+
+</body>
 </html>
