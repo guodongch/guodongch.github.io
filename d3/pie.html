@@ -1,0 +1,183 @@
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <title>Pie Chart</title>
+        <script src="d3.v7.min.js"></script>
+
+        <style>
+            body { font-family: sans-serif; }
+            .controls { display:flex; gap:8px; justify-content:center; align-items:center; margin:16px auto; flex-wrap:wrap; }
+            .controls input[type="text"] { width: 520px; padding:6px 8px; }
+            .hint { text-align:center; color:#666; font-size: 13px; margin-top:6px; }
+            svg {
+            border: 1px solid #ccc;
+            /* background: #f9f9f9; */
+            display: block;
+            margin: 12px auto;
+            width: 50%;
+            height: 800px;
+            }
+        </style>
+    </head>
+
+
+    <body>
+        <div class="controls">
+        <button id="pick">选择 CSV 文件</button>
+        <input type="file" id="file" accept=".csv" hidden/>
+        <input type="text" id="source" placeholder="在此显示文件名，或粘贴一个 http/https CSV 地址…" />
+        <button id="run">Run</button>
+    </div>
+
+        <svg id="mainsvg" class="svgs"></svg>
+        <script>
+            const svg = d3.select('#mainsvg');
+            const width = svg.attr('width');
+            const height = svg.attr('height');
+            const margin = { top: 60, right: 30, bottom: 60, left: 120 };
+
+            const pickBtn   = document.getElementById('pick');
+            const fileInput = document.getElementById('file');
+            const srcInput  = document.getElementById('source');
+            const runBtn    = document.getElementById('run');
+
+            let lastFile = null;   // 缓存最近一次用户选择的 File（本地文件）
+            let lastData = null;   // 缓存最近一次渲染的数据（用于窗口 resize 重绘）
+
+            pickBtn.addEventListener('click', () => fileInput.click());
+
+            // 选择文件 → 只缓存，不立刻渲染；把文件名显示到文本框
+            fileInput.addEventListener('change', e => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                lastFile = file;
+                srcInput.value = file.name; // 仅文件名，非本地路径
+                // 允许再次选择同名文件时依然触发 change
+                fileInput.value = '';
+            });
+
+            // Run 按钮：根据输入框内容决定是读取本地 File 还是拉取 URL
+            runBtn.addEventListener('click', async () => {
+            const src = srcInput.value.trim();
+            try {
+                if (isHttpUrl(src)) {
+                // 方式 B：URL 模式（需要 http/https，受 CORS 限制）
+                const data = await d3.csv(src, d3.autoType);
+                render(data);
+                lastData = data;
+                } else if (lastFile) {
+                // 方式 A：本地文件模式，用 FileReader 读取
+                const text = await readFileAsText(lastFile, 'utf-8');
+                const data = d3.csvParse(text, d3.autoType);
+                render(data);
+                lastData = data;
+                } else {
+                alert('请先选择一个本地 CSV 文件，或在输入框粘贴 http/https 的 CSV 地址后再点击 Run。');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('读取或解析失败：' + (err && err.message ? err.message : err));
+            }
+            });
+
+            // 工具：判断是否 http/https URL
+            function isHttpUrl(s) {
+                try {
+                    const u = new URL(s);
+                    return u.protocol === 'http:' || u.protocol === 'https:';
+                } catch { return false; }
+            }
+
+            // 工具：FileReader → Promise
+            function readFileAsText(file, encoding = 'utf-8') {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(reader.error || new Error('File read error'));
+                    reader.readAsText(file, encoding);
+                });
+            }
+
+            // 计算画布尺寸（width="100%" 时不能用 attr('width')）
+            function getSize() {
+                const width  = svg.node().getBoundingClientRect().width;
+                const height = svg.node().getBoundingClientRect().height;
+                return { width, height };
+            }
+
+            // 渲染函数（与你原来的逻辑一致，略有健壮性增强）
+            function render(data) {
+                // 简单列校验（可按需修改列名）
+                const columns = data.columns || Object.keys(data[0] || {});
+                if (!columns.includes('city') || !columns.includes('population')) {
+                    throw new Error('CSV 需要包含列：city, population');
+                }
+
+                // 清洗 & 类型转换（d3.autoType 已做基础推断，这里再保险一次）
+                data = data.map(d => ({
+                    city: d.city,
+                    population: +d.population
+                })).filter(d => d.city != null && !Number.isNaN(d.population));
+
+                svg.selectAll('*').remove();
+
+                const { width, height } = getSize();
+                const innerWidth  = width  - margin.left - margin.right;
+                const innerHeight = height - margin.top  - margin.bottom;
+
+                const centerX = width / 2;
+                const centerY = height / 2;
+                const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top}, ${centerY})`);
+
+                const pie = d3.pie()
+                .startAngle(-Math.PI / 2) // 设置开始角度
+                .endAngle(1.5 * Math.PI)  // 设置结束的位置
+                .value(d => d.population);
+
+                const arcData = pie(data);
+                console.log(arcData);
+                const path = d3.arc().innerRadius(60).outerRadius(260);
+                const color = d3.scaleOrdinal()
+                    .domain(data.map(d => d.city))
+                    .range(d3.schemeSet2.concat(d3.schemeSet3));
+                
+                g.selectAll('path').data(arcData).join('path')
+                    .attr('d', path)
+                    .attr('transform', `translate(${width / 2}, ${height / 2})`)
+                    .attr('fill', d => color(d.data.city));
+
+                const arcOuter = d3.arc().innerRadius(280).outerRadius(280);
+                g.append('g').attr('transform', `translate(${width / 2}, ${height / 2})`)
+                    .selectAll('text').data(arcData).join('text')
+                    .attr('transform', d => `translate(${arcOuter.centroid(d)})`)
+                    .attr('text-anchor', 'middle')
+                    .text(d => d.data.city);
+
+
+                
+                // 缩放行为
+                const zoom = d3.zoom()
+                //   .scaleExtent([0.5, 10])
+                .on("zoom", (event) => {
+                    // xAxisGroup.call(xAxis.scale(zx));
+                    // yAxisGroup.call(yAxis.scale(zy));
+                    g.attr("transform", event.transform);
+                });
+
+                svg.call(zoom);
+
+            }
+
+            // 窗口大小变化后，如已有数据则重绘（加简单防抖）
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                if (!lastData) return;
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => render(lastData), 120);
+            });
+        </script>
+
+    </body>
+
+    </html>
