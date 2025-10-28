@@ -317,7 +317,10 @@
         .attr('y', d => y(String(d.x)))
         .attr('width', d => x(d.y))
         .attr('height', y.bandwidth())
-        .attr('fill', 'steelblue');
+        .attr('fill', 'steelblue')
+        .attr('rx', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+        .attr('ry', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+
 
       // 轴
       g.append('g')
