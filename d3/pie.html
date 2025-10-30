@@ -131,9 +131,9 @@
                 const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top}, ${centerY})`);
 
                 const pie = d3.pie()
-                .startAngle(-Math.PI / 2) // 设置开始角度
-                .endAngle(1.5 * Math.PI)  // 设置结束的位置
-                .value(d => d.population);
+                    .startAngle(-Math.PI / 2) // 设置开始角度
+                    .endAngle(1.5 * Math.PI)  // 设置结束的位置
+                    .value(d => d.population);
 
                 const arcData = pie(data);
                 console.log(arcData);

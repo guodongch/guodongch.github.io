@@ -23,25 +23,36 @@
         // .curve(d3.curveStep); 
         //.curve(d3.curveNatural); 
         // .curve(d3.curveLinear); // default
-        svg.append('path').attr('stroke', 'black').attr('fill', 'none')
-        .attr('d', pathLine(myArray));
+        svg.append('path')
+            .attr('stroke', 'black')
+            .attr('fill', 'none')
+            .attr('d', pathLine(myArray));
 
         const part1 = {'startAngle': 0, 'endAngle': 1.1855848768577961};
         const pathArc1 = d3.arc().innerRadius(100).outerRadius(200);
-        svg.append('path').attr('stroke', 'black').attr('fill', 'green').attr('transform', 'translate(800, 400)')
-        .attr('d', pathArc1(part1));
+        svg.append('path')
+            .attr('stroke', 'black')
+            .attr('fill', 'green')
+            .attr('transform', 'translate(800, 400)')
+            .attr('d', pathArc1(part1));
 
         console.log(pathArc1(part1));
 
         const part2 = {'startAngle': 3.0, 'endAngle': 4.34};
         const pathArc2 = d3.arc().innerRadius(0).outerRadius(200);
-        svg.append('path').attr('stroke', 'black').attr('fill', 'red').attr('transform', 'translate(800, 400)')
-        .attr('d', pathArc2(part2));
+        svg.append('path')
+            .attr('stroke', 'black')
+            .attr('fill', 'red')
+            .attr('transform', 'translate(800, 400)')
+            .attr('d', pathArc2(part2));
 
         const part3 = {'startAngle': 4.34, 'endAngle': 6.283185307179586};
         const pathArc3 = d3.arc().innerRadius(0).outerRadius(160).padAngle(0.1);
-        svg.append('path').attr('stroke', 'black').attr('fill', 'steelblue').attr('transform', 'translate(800, 400)')
-        .attr('d', pathArc3(part3));
+        svg.append('path')
+            .attr('stroke', 'black')
+            .attr('fill', 'steelblue')
+            .attr('transform', 'translate(800, 400)')
+            .attr('d', pathArc3(part3));
 
     </script>
 </body>

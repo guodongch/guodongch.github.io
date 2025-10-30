@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>D3 Bar Chart – Import / URL then Run</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: sans-serif; }
+    .controls { display:flex; gap:8px; justify-content:center; align-items:center; margin:16px auto; flex-wrap:wrap; }
+    .controls input[type="text"] { width: 520px; padding:6px 8px; }
+    .controls select {
+      padding: 6px 8px;
+      font-size: 14px;
+      min-width: 160px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      appearance: none;
+    }
+    .controls select,
+    .controls input[type="text"],
+    .controls button {
+      height: 36px;
+    }
+    .hint { text-align:center; color:#666; font-size: 13px; margin-top:6px; }
+    svg {
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      display: block;
+      margin: 12px auto;
+      width: 50%;
+      height: 800px;
+    }
+
+    .bar-label {
+      font-size: 12px;
+      pointer-events: none; /* 避免挡住鼠标事件 */
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <button id="pick">选择 CSV/TSV 文件</button>
+    <input type="file" id="file" accept=".csv,.tsv" hidden/>
+    <input type="text" id="source" placeholder="在此显示文件名，或粘贴一个 http/https CSV/TSV 地址…" />
+    <button id="run">Run</button>
+  </div>
+
+  <div class="controls">
+    <select id="xField"></select>
+    <select id="yField"></select>
+  </div>
+
+  <div class="hint">
+    提示：本地文件不会暴露真实路径，只显示文件名；如需远程加载，可在输入框粘贴 CSV/TSV 的 URL（http/https）。
+  </div>
+
+  <svg id="mainsvg"></svg>
+
+  <script>
+    const svg = d3.select('#mainsvg');
+    const margin = { top: 60, right: 30, bottom: 60, left: 120 };
+
+    const pickBtn   = document.getElementById('pick');
+    const fileInput = document.getElementById('file');
+    const srcInput  = document.getElementById('source');
+    const runBtn    = document.getElementById('run');
+    const xSelect   = document.getElementById('xField'); // 分类（Y 轴，band）
+    const ySelect   = document.getElementById('yField'); // 数值（X 轴，linear）
+
+    let lastFile = null;   // 缓存最近一次用户选择的 File（本地文件）
+    let lastData = null;   // 缓存最近一次渲染的数据（用于窗口 resize 重绘）
+
+    // 初始把下拉禁用并放占位
+    resetSelectors();
+
+    pickBtn.addEventListener('click', () => fileInput.click());
+
+    // 选择文件 → 只缓存，不立刻渲染；把文件名显示到文本框
+    fileInput.addEventListener('change', async e  => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      lastFile = file;
+      srcInput.value = file.name; // 仅文件名，非本地路径
+      fileInput.value = ''; // 允许再次选择同名文件时依然触发 change
+      // ↓↓↓ 新增：只读取表头并填充下拉（不渲染图）
+      try {
+        const columns = await getColumnsFromLocalFile(file);
+        populateSelectors(columns);
+      } catch (err) {
+        console.error(err);
+        alert('无法从本地 CSV/TSV 读取表头：' + (err && err.message ? err.message : err));
+    }
+    });
+
+
+    // “扩展名判断 + 分隔符嗅探”工具
+    function isTSVName(s) { return /\.tsv(\?.*)?$/i.test(s || ''); }
+    function isCSVName(s) { return /\.csv(\?.*)?$/i.test(s || ''); }
+    // 简单嗅探：看首个非空行里 \t 与 , 的数量
+    function sniffDelimiter(text) {
+      const firstLine = (text || '').split(/\r?\n/).find(l => l.trim().length > 0) || '';
+      const tabs   = (firstLine.match(/\t/g) || []).length;
+      const commas = (firstLine.match(/,/g)  || []).length;
+      return tabs > commas ? '\t' : ','; // 默认回落 CSV
+    }
+
+
+
+
+    // 只读文件前 N 字节，避免整文件都读
+    function readFileHeadAsText(file, encoding = 'utf-8', bytes = 65536) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error('File head read error'));
+        reader.readAsText(file.slice(0, bytes), encoding);
+      });
+    }
+
+    // 从本地文件提取 CSV 表头列名
+    async function getColumnsFromLocalFile(file) {
+      const head = await readFileHeadAsText(file);
+      const delim = isTSVName(file.name) ? '\t' : isCSVName(file.name) ? ',' : sniffDelimiter(head); // 读取表头时支持 CSV/TSV
+      const rows = d3.dsvFormat(delim).parseRows(head);
+      const header = rows && rows[0] ? rows[0] : [];
+      if (!header.length) throw new Error('未检测到 CSV 表头');
+      return header;
+    }
+
+
+    srcInput.addEventListener('change', () => maybeLoadColumnsFromUrl());
+    srcInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') maybeLoadColumnsFromUrl();
+    });
+
+    async function maybeLoadColumnsFromUrl() {
+      const src = srcInput.value.trim();
+      if (!isHttpUrl(src)) return; // 不是 http/https 就不处理
+      try {
+        // 这里只拿文本，解析首行当表头，避免全量解析
+        const text = await d3.text(src);
+        // const rows = d3.csvParseRows(text);
+        const delim = isTSVName(src) ? '\t' : isCSVName(src) ? ',' : sniffDelimiter(text); // maybeLoadColumnsFromUrl() 中按扩展名或嗅探：
+        const rows  = d3.dsvFormat(delim).parseRows(text);
+        const header = rows && rows[0] ? rows[0] : [];
+        if (!header.length) throw new Error('未在该 URL 中检测到 CSV/TSV 表头');
+        populateSelectors(header);
+      } catch (err) {
+        console.error(err);
+        alert('无法从该 URL 读取表头（可能是 CORS 或格式问题）：'(err && err.message ? err.message : err));
+      }
+    }
+
+
+
+
+
+    // Run 按钮：根据输入框内容决定是读取本地 File 还是拉取 URL
+  runBtn.addEventListener('click', async () => {
+    const src = srcInput.value.trim();
+    try {
+      let data;
+      if (isHttpUrl(src)) {
+        // 真正加载数据并渲染时支持 CSV/TSV // data = await d3.csv(src, d3.autoType);
+        if (isTSVName(src)) {
+          data = await d3.tsv(src, d3.autoType);
+        } else if (isCSVName(src)) {
+          data = await d3.csv(src, d3.autoType);
+        } else {
+          const text = await d3.text(src);
+          const delim = sniffDelimiter(text);
+          data = d3.dsvFormat(delim).parse(text, d3.autoType);
+        }
+      } else if (lastFile) {
+        const text = await readFileAsText(lastFile, 'utf-8');
+        // data = d3.csvParse(text, d3.autoType);
+        const delim = isTSVName(lastFile.name) ? '\t' : isCSVName(lastFile.name) ? ',' : sniffDelimiter(text); 
+        data = d3.dsvFormat(delim).parse(text, d3.autoType);
+      } else {
+        alert('请先选择本地 CSV/TSV http/https 的 CSV/TSV 地址。');
+        return;
+      }
+
+      // // 这里再次填充一次下拉也没问题（保证同步）
+      // const columns = data.columns || Object.keys(data[0] || {});
+      // if (Array.isArray(columns) && columns.length) {
+      //   populateSelectors(columns);
+      // }
+
+      lastData = data;
+      render(lastData); // 真正画图
+    } catch (err) {
+      console.error(err);
+      alert('读取或解析失败：' + (err && err.message ? err.message : err));
+    }
+  });
+
+
+
+
+
+
+    // 下拉改变 → 即时重绘
+    xSelect.addEventListener('change', () => { if (lastData) render(lastData); });
+    ySelect.addEventListener('change', () => { if (lastData) render(lastData); });
+
+    // 工具：判断是否 http/https URL
+    function isHttpUrl(s) {
+      try {
+        const u = new URL(s);
+        return u.protocol === 'http:' || u.protocol === 'https:';
+      } catch { return false; }
+    }
+
+    // 工具：FileReader → Promise
+    function readFileAsText(file, encoding = 'utf-8') {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error('File read error'));
+        reader.readAsText(file, encoding);
+      });
+    }
+
+    // 下拉：重置为禁用占位
+    function resetSelectors() {
+      xSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （分类列）</option>';
+      ySelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （数值列）</option>';
+      xSelect.disabled = true;
+      ySelect.disabled = true;
+    }
+      
+    // 1) 加载数据后提取字段并填充下拉
+    function populateSelectors(columns) {
+      xSelect.disabled = false;
+      ySelect.disabled = false;
+      xSelect.innerHTML = '';
+      ySelect.innerHTML = '';
+
+      for (const col of columns) {
+        xSelect.add(new Option(col, col));
+        ySelect.add(new Option(col, col));
+      }
+
+      // 智能默认：分类列常见命名；数值列常见命名
+      const guessCat = columns.find(c => /(platform|name|category|type|label|city|country)/i.test(c)) ?? columns[0];
+      const guessVal = columns.find(c => /(global|sale|value|amount|total|score|count|num|quantity|qty|price)/i.test(c)) 
+                    ?? columns.find(c => c !== guessCat) 
+                    ?? columns[0];
+
+      xSelect.value = guessCat;
+      ySelect.value = guessVal;
+    }
+
+
+    // 计算画布尺寸（width="100%" 时不能用 attr('width')）
+    function getSize() {
+      const width  = svg.node().getBoundingClientRect().width;
+      const height = svg.node().getBoundingClientRect().height;
+      return { width, height };
+    }
+
+    // 渲染函数（与你原来的逻辑一致，略有健壮性增强）
+    function render(data) {
+
+      // 清洗 & 类型转换（d3.autoType 已做基础推断，这里再保险一次）
+      const xField = document.getElementById('xField').value;
+      const yField = document.getElementById('yField').value;
+
+      data = data.map(d => ({
+        x: d[xField],
+        y: +d[yField]
+      })).filter(d => d.x != null && !Number.isNaN(d.y));
+
+      // data = data.map(d => ({
+      //   platform: d.platform,
+      //   globalsale: +d.globalsale
+      // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
+
+      svg.selectAll('*').remove();
+
+      const { width, height } = getSize();
+      const innerWidth  = width  - margin.left - margin.right;
+      const innerHeight = height - margin.top  - margin.bottom;
+
+      const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+      // const x = d3.scaleLinear()
+      //   // .domain([0, d3.max(data, d => d.globalsale) || 0])
+      //   .domain([0, d3.max(data, d => d.x) || 0])
+      //   .nice()
+      //   .range([0, innerWidth]);
+
+      // const y = d3.scaleBand()
+      //   // .domain(data.map(d => d.platform))
+      //   .domain(data.map(d => d.y))
+      //   .range([0, innerHeight])
+      //   .padding(0.1);
+
+      const x = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.y) || 0]) // ✅ X 轴用数值 y
+        .nice()
+        .range([0, innerWidth]);
+
+      const y = d3.scaleBand()
+        .domain(data.map(d => String(d.x))) // ✅ Y 轴用分类 x
+        .range([0, innerHeight])
+        .padding(0.1);
+
+
+      // 条形
+      g.selectAll('rect')
+        .data(data)
+        .join('rect')
+        .attr('x', 0)
+        // .attr('y', d => y(d.platform))
+        // .attr('width', d => x(d.globalsale))
+        // .attr('y', d => y(d.y))
+        // .attr('width', d => x(d.x))
+        .attr('y', d => y(String(d.x)))
+        .attr('width', d => x(d.y))
+        .attr('height', y.bandwidth())
+        .attr('fill', 'steelblue')
+        .attr('rx', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+        .attr('ry', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+
+
+      // === 在横条里放“Y 轴刻度文字”（分类名）===
+      const PADDING = 6;       // 文字与条左边的内边距
+      const INSIDE_MIN_W = 40; // 条太短时把文字放到条外侧，避免看不清
+
+      g.selectAll('text.bar-label')
+        .data(data)
+        .join('text')
+        .attr('class', 'bar-label')
+        .attr('x', d => {
+          const w = x(d.y);
+          return w > INSIDE_MIN_W ? PADDING : w + PADDING; // 条短→放条外
+        })
+        .attr('y', d => y(String(d.x)) + y.bandwidth()/2)
+        .attr('dy', '0.35em') // 垂直居中微调
+        .attr('text-anchor', 'start')
+        .attr('fill', d => x(d.y) > INSIDE_MIN_W ? 'white' : '#333')
+        .text(d => String(d.x)); // 用分类名作为“Y轴刻度文字”
+
+
+      // 轴
+      g.append('g')
+        .attr('transform', `translate(0,${innerHeight})`)
+        .call(d3.axisBottom(x))
+        .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+
+      // g.append('g')
+      //   .call(d3.axisLeft(y))
+      //   .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+
+      // 标题 & 轴标题（根据字段名更新）
+      svg.append('text')
+        .attr('x', width / 2)
+        .attr('y', 28)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '20px')
+        .text(`${xField} vs ${yField}`);
+
+      g.append('text')
+        .attr('x', innerWidth / 2)
+        .attr('y', innerHeight + 40)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'black')
+        .text(yField);
+
+      g.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -innerHeight / 2)
+        .attr('y', -80)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'black')
+        .text(xField);
+      
+      // // 缩放：保持边距不丢失
+      // const zoom = d3.zoom()
+      // //   .scaleExtent([0.5, 10])
+      // .on("zoom", (event) => {
+      //     g.attr("transform", event.transform);
+      // });
+
+      const zoom = d3.zoom()
+      // .scaleExtent([0.5, 10])
+      .on('zoom', (event) => {
+        // ✅ 把边距再加回去，缩放时不丢失 margin
+        g.attr('transform', event.transform.translate(margin.left, margin.top));
+      });
+      svg.on('.zoom', null); // 清理旧的 listener，避免叠加
+      svg.call(zoom);
+
+    }
+
+    // 窗口大小变化后，如已有数据则重绘（加简单防抖）
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      if (!lastData) return;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => render(lastData), 120);
+    });
+  </script>
+</body>
+</html>
