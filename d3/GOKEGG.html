@@ -51,6 +51,8 @@
   <div class="controls">
     <select id="xField"></select>
     <select id="yField"></select>
+    <select id="cField"></select>
+    <select id="tField"></select>
   </div>
 
   <div class="hint">
@@ -67,8 +69,11 @@
     const fileInput = document.getElementById('file');
     const srcInput  = document.getElementById('source');
     const runBtn    = document.getElementById('run');
+
     const xSelect   = document.getElementById('xField'); // 分类（Y 轴，band）
     const ySelect   = document.getElementById('yField'); // 数值（X 轴，linear）
+    const cSelect  = document.getElementById('cField'); // 颜色分组（可选）
+    const tSelect  = document.getElementById('tField'); // 下方文字列（可选）
 
     let lastFile = null;   // 缓存最近一次用户选择的 File（本地文件）
     let lastData = null;   // 缓存最近一次渲染的数据（用于窗口 resize 重绘）
@@ -206,6 +211,9 @@
     // 下拉改变 → 即时重绘
     xSelect.addEventListener('change', () => { if (lastData) render(lastData); });
     ySelect.addEventListener('change', () => { if (lastData) render(lastData); });
+    cSelect.addEventListener('change', () => { if (lastData) render(lastData); });
+    tSelect.addEventListener('change', () => { if (lastData) render(lastData); });
+
 
     // 工具：判断是否 http/https URL
     function isHttpUrl(s) {
@@ -229,30 +237,59 @@
     function resetSelectors() {
       xSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （分类列）</option>';
       ySelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （数值列）</option>';
+      cSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （颜色分组 列，可选）</option>';
+      tSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （下方文字 列，可选）</option>';
       xSelect.disabled = true;
       ySelect.disabled = true;
+      cSelect.disabled = true;
+      tSelect.disabled = true;
     }
       
     // 1) 加载数据后提取字段并填充下拉
     function populateSelectors(columns) {
       xSelect.disabled = false;
       ySelect.disabled = false;
+      cSelect.disabled = false;
+      tSelect.disabled = false;
+
       xSelect.innerHTML = '';
       ySelect.innerHTML = '';
+      cSelect.innerHTML = '';
+      tSelect.innerHTML = '';
 
       for (const col of columns) {
         xSelect.add(new Option(col, col));
         ySelect.add(new Option(col, col));
       }
 
+      // c 下拉：第一项是“无分组”，其后是所有列
+      cSelect.add(new Option('（不按颜色分组）', ''));
+      for (const col of columns) {
+        cSelect.add(new Option(col, col));
+      }
+
+      // t 下拉：第一项“不显示下方文字”
+      tSelect.add(new Option('（不显示下方文字）', ''));
+      for (const col of columns) {
+        tSelect.add(new Option(col, col));
+      }
+
+
       // 智能默认：分类列常见命名；数值列常见命名
       const guessCat = columns.find(c => /(platform|name|category|type|label|city|country)/i.test(c)) ?? columns[0];
       const guessVal = columns.find(c => /(global|sale|value|amount|total|score|count|num|quantity|qty|price)/i.test(c)) 
                     ?? columns.find(c => c !== guessCat) 
                     ?? columns[0];
+      const guessCol = columns.find(c => /^ontology$/i.test(c)) ?? ''; // 有 ONTOLOGY 就默认选它，否则不分组
 
       xSelect.value = guessCat;
       ySelect.value = guessVal;
+      cSelect.value = guessCol;
+
+      // 下方文字默认不显示；若存在常见命名可自动猜测
+      const guessTxt = columns.find(c => /(desc|label2|subtitle|note|info|text)/i.test(c)) ?? '';
+      tSelect.value = guessTxt;
+
     }
 
 
@@ -269,42 +306,20 @@
       // 清洗 & 类型转换（d3.autoType 已做基础推断，这里再保险一次）
       const xField = document.getElementById('xField').value;
       const yField = document.getElementById('yField').value;
+      const cField = cSelect.value || null; // 颜色分组（可为空）
+      const tField = tSelect.value || null;    // 下方文字列（可为空）
 
-      // data = data.map(d => ({
-      //   x: d[xField],
-      //   y: +d[yField]
-      // })).filter(d => d.x != null && !Number.isNaN(d.y));
-
-      // // data = data.map(d => ({
-      // //   platform: d.platform,
-      // //   globalsale: +d.globalsale
-      // // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
-
-
-      // 1) 找到 ONTOLOGY 列（不区分大小写）
-      const ontoField =
-        (data.columns && data.columns.find(c => /^ontology$/i.test(c))) ||
-        (data[0] && Object.keys(data[0]).find(c => /^ontology$/i.test(c))) ||
-        null;
-
-      // 2) 映射数据，附上分组 g=ONTOLOGY
-      data = (data || []).map(d => ({
+      data = data.map(d => ({
         x: d[xField],
         y: +d[yField],
-        g: ontoField ? d[ontoField] : null
+        g: cField ? d[cField] : null,
+        t: tField ? d[tField] : null
       })).filter(d => d.x != null && !Number.isNaN(d.y));
 
-      // 3) 颜色比例尺（按 ONTOLOGY 去重建域）
-      const groups = Array.from(new Set(data.map(d => d.g).filter(v => v != null && v !== '')));
-      const colorRange = groups.length <= 10
-        ? d3.schemeTableau10
-        : d3.quantize(d3.interpolateRainbow, groups.length); // 超过 10 个自动生成调色板
-      const color = groups.length
-        ? d3.scaleOrdinal().domain(groups).range(colorRange)
-        : null; // 没有 ONTOLOGY 列时保持单色
-
-
-
+      // data = data.map(d => ({
+      //   platform: d.platform,
+      //   globalsale: +d.globalsale
+      // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
 
 
       svg.selectAll('*').remove();
@@ -338,6 +353,14 @@
         .padding(0.1);
 
 
+      // 颜色比例尺：当选择了分组列时启用
+      const groups = cField ? Array.from(new Set(data.map(d => d.g))) : [];
+      const colorRange = groups.length <= 10
+        ? d3.schemeTableau10
+        : d3.quantize(d3.interpolateRainbow, groups.length);
+      const color = groups.length ? d3.scaleOrdinal().domain(groups).range(colorRange) : null;
+
+
       // 条形
       g.selectAll('rect')
         .data(data)
@@ -359,6 +382,13 @@
       // === 在横条里放“Y 轴刻度文字”（分类名）===
       const PADDING = 6;       // 文字与条左边的内边距
       const INSIDE_MIN_W = 40; // 条太短时把文字放到条外侧，避免看不清
+      const textColorFor = (bg) => {   // 根据背景自动选黑/白
+        const c = d3.color(bg || '#000');
+        const L = 0.299 * c.r + 0.587 * c.g + 0.114 * c.b;
+        return L < 140 ? 'white' : '#111';
+      };
+
+
 
       g.selectAll('text.bar-label')
         .data(data)
@@ -371,7 +401,12 @@
         .attr('y', d => y(String(d.x)) + y.bandwidth()/2)
         .attr('dy', '0.35em') // 垂直居中微调
         .attr('text-anchor', 'start')
-        .attr('fill', d => x(d.y) > INSIDE_MIN_W ? 'white' : '#333')
+        // .attr('fill', d => x(d.y) > INSIDE_MIN_W ? 'white' : '#333')
+        .attr('fill', d => {
+          const w = x(d.y);
+          const bg = color ? color(d.g) : 'steelblue';
+          return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
+        })
         .text(d => String(d.x)); // 用分类名作为“Y轴刻度文字”
 
 
@@ -414,6 +449,32 @@
       // .on("zoom", (event) => {
       //     g.attr("transform", event.transform);
       // });
+
+
+
+
+      // 图例（当有分组时）
+      g.selectAll('.legend').remove();
+      if (groups.length) {
+        const legend = g.append('g').attr('class', 'legend')
+          .attr('transform', `translate(${Math.max(0, innerWidth - 160)}, 0)`);
+
+        const li = legend.selectAll('g.item')
+          .data(groups)
+          .join('g')
+          .attr('class', 'item')
+          .attr('transform', (d, i) => `translate(0, ${i * 18})`);
+
+        li.append('rect')
+          .attr('width', 12).attr('height', 12).attr('rx', 2).attr('ry', 2)
+          .attr('fill', d => color(d));
+
+        li.append('text')
+          .attr('x', 16).attr('y', 6).attr('dy', '0.35em')
+          .attr('font-size', 12)
+          .text(d => d);
+      }
+
 
       const zoom = d3.zoom()
       // .scaleExtent([0.5, 10])
