@@ -150,7 +150,7 @@
         populateSelectors(header);
       } catch (err) {
         console.error(err);
-        alert('无法从该 URL 读取表头（可能是 CORS 或格式问题）：'(err && err.message ? err.message : err));
+        alert('无法从该 URL 读取表头（可能是 CORS 或格式问题）：' + (err && err.message ? err.message : err));
       }
     }
 
@@ -270,15 +270,42 @@
       const xField = document.getElementById('xField').value;
       const yField = document.getElementById('yField').value;
 
-      data = data.map(d => ({
+      // data = data.map(d => ({
+      //   x: d[xField],
+      //   y: +d[yField]
+      // })).filter(d => d.x != null && !Number.isNaN(d.y));
+
+      // // data = data.map(d => ({
+      // //   platform: d.platform,
+      // //   globalsale: +d.globalsale
+      // // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
+
+
+      // 1) 找到 ONTOLOGY 列（不区分大小写）
+      const ontoField =
+        (data.columns && data.columns.find(c => /^ontology$/i.test(c))) ||
+        (data[0] && Object.keys(data[0]).find(c => /^ontology$/i.test(c))) ||
+        null;
+
+      // 2) 映射数据，附上分组 g=ONTOLOGY
+      data = (data || []).map(d => ({
         x: d[xField],
-        y: +d[yField]
+        y: +d[yField],
+        g: ontoField ? d[ontoField] : null
       })).filter(d => d.x != null && !Number.isNaN(d.y));
 
-      // data = data.map(d => ({
-      //   platform: d.platform,
-      //   globalsale: +d.globalsale
-      // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
+      // 3) 颜色比例尺（按 ONTOLOGY 去重建域）
+      const groups = Array.from(new Set(data.map(d => d.g).filter(v => v != null && v !== '')));
+      const colorRange = groups.length <= 10
+        ? d3.schemeTableau10
+        : d3.quantize(d3.interpolateRainbow, groups.length); // 超过 10 个自动生成调色板
+      const color = groups.length
+        ? d3.scaleOrdinal().domain(groups).range(colorRange)
+        : null; // 没有 ONTOLOGY 列时保持单色
+
+
+
+
 
       svg.selectAll('*').remove();
 
@@ -323,7 +350,8 @@
         .attr('y', d => y(String(d.x)))
         .attr('width', d => x(d.y))
         .attr('height', y.bandwidth())
-        .attr('fill', 'steelblue')
+        // .attr('fill', 'steelblue')
+        .attr('fill', d => color ? color(d.g) : 'steelblue')
         .attr('rx', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
         .attr('ry', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
 
