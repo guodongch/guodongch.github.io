@@ -992,7 +992,8 @@
           .join('circle')
             .attr('cx', d => {
               const r = rScale(Math.max(0, Number.isFinite(d.o) ? d.o : 0));
-              return -r - 8; // 在 y 轴左侧一点点（8px）间距
+              // return -r - 8; // 在 y 轴左侧一点点（8px）间距
+              return -20; // 在 y 轴左侧一点点（8px）间距
             })
             .attr('cy', d => y0(String(d.x)) + y0.bandwidth()/2)
             .attr('r',  d => rScale(Math.max(0, Number.isFinite(d.o) ? d.o : 0)))
