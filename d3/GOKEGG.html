@@ -300,192 +300,539 @@
       return { width, height };
     }
 
-    // 渲染函数（与你原来的逻辑一致，略有健壮性增强）
-    function render(data) {
+    // // 渲染函数（与你原来的逻辑一致，略有健壮性增强）
+    // function render(data) {
 
-      // 清洗 & 类型转换（d3.autoType 已做基础推断，这里再保险一次）
-      const xField = document.getElementById('xField').value;
-      const yField = document.getElementById('yField').value;
-      const cField = cSelect.value || null; // 颜色分组（可为空）
-      const tField = tSelect.value || null;    // 下方文字列（可为空）
+    //   // 清洗 & 类型转换（d3.autoType 已做基础推断，这里再保险一次）
+    //   const xField = document.getElementById('xField').value;
+    //   const yField = document.getElementById('yField').value;
+    //   const cField = cSelect.value || null; // 颜色分组（可为空）
+    //   const tField = tSelect.value || null;    // 下方文字列（可为空）
 
-      data = data.map(d => ({
+    //   data = data.map(d => ({
+    //     x: d[xField],
+    //     y: +d[yField],
+    //     g: cField ? d[cField] : null,
+    //     t: tField ? d[tField] : null
+    //   })).filter(d => d.x != null && !Number.isNaN(d.y));
+
+    //   // data = data.map(d => ({
+    //   //   platform: d.platform,
+    //   //   globalsale: +d.globalsale
+    //   // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
+
+
+    //   svg.selectAll('*').remove();
+
+    //   const { width, height } = getSize();
+    //   const innerWidth  = width  - margin.left - margin.right;
+    //   const innerHeight = height - margin.top  - margin.bottom;
+
+    //   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    //   // const x = d3.scaleLinear()
+    //   //   // .domain([0, d3.max(data, d => d.globalsale) || 0])
+    //   //   .domain([0, d3.max(data, d => d.x) || 0])
+    //   //   .nice()
+    //   //   .range([0, innerWidth]);
+
+    //   // const y = d3.scaleBand()
+    //   //   // .domain(data.map(d => d.platform))
+    //   //   .domain(data.map(d => d.y))
+    //   //   .range([0, innerHeight])
+    //   //   .padding(0.1);
+
+    //   const x = d3.scaleLinear()
+    //     .domain([0, d3.max(data, d => d.y) || 0]) // ✅ X 轴用数值 y
+    //     .nice()
+    //     .range([0, innerWidth]);
+
+    //   const y = d3.scaleBand()
+    //     .domain(data.map(d => String(d.x))) // ✅ Y 轴用分类 x
+    //     .range([0, innerHeight])
+    //     .padding(0.1);
+
+
+    //   // 颜色比例尺：当选择了分组列时启用
+    //   const groups = cField ? Array.from(new Set(data.map(d => d.g))) : [];
+    //   const colorRange = groups.length <= 10
+    //     ? d3.schemeTableau10
+    //     : d3.quantize(d3.interpolateRainbow, groups.length);
+    //   const color = groups.length ? d3.scaleOrdinal().domain(groups).range(colorRange) : null;
+
+
+    //   // 条形
+    //   g.selectAll('rect')
+    //     .data(data)
+    //     .join('rect')
+    //     .attr('x', 0)
+    //     // .attr('y', d => y(d.platform))
+    //     // .attr('width', d => x(d.globalsale))
+    //     // .attr('y', d => y(d.y))
+    //     // .attr('width', d => x(d.x))
+    //     .attr('y', d => y(String(d.x)))
+    //     .attr('width', d => x(d.y))
+    //     .attr('height', y.bandwidth())
+    //     // .attr('fill', 'steelblue')
+    //     .attr('fill', d => color ? color(d.g) : 'steelblue')
+    //     .attr('rx', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+    //     .attr('ry', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+
+
+    //   // === 在横条里放“Y 轴刻度文字”（分类名）===
+    //   const PADDING = 6;       // 文字与条左边的内边距
+    //   const INSIDE_MIN_W = 40; // 条太短时把文字放到条外侧，避免看不清
+    //   const textColorFor = (bg) => {   // 根据背景自动选黑/白
+    //     const c = d3.color(bg || '#000');
+    //     const L = 0.299 * c.r + 0.587 * c.g + 0.114 * c.b;
+    //     return L < 140 ? 'white' : '#111';
+    //   };
+
+
+
+    //   g.selectAll('text.bar-label')
+    //     .data(data)
+    //     .join('text')
+    //     .attr('class', 'bar-label')
+    //     .attr('x', d => {
+    //       const w = x(d.y);
+    //       return w > INSIDE_MIN_W ? PADDING : w + PADDING; // 条短→放条外
+    //     })
+    //     .attr('y', d => y(String(d.x)) + y.bandwidth()/2)
+    //     .attr('dy', '0.35em') // 垂直居中微调
+    //     .attr('text-anchor', 'start')
+    //     // .attr('fill', d => x(d.y) > INSIDE_MIN_W ? 'white' : '#333')
+    //     .attr('fill', d => {
+    //       const w = x(d.y);
+    //       const bg = color ? color(d.g) : 'steelblue';
+    //       return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
+    //     })
+    //     .text(d => String(d.x)); // 用分类名作为“Y轴刻度文字”
+
+
+    //   // 轴
+    //   g.append('g')
+    //     .attr('transform', `translate(0,${innerHeight})`)
+    //     .call(d3.axisBottom(x))
+    //     .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+
+    //   // g.append('g')
+    //   //   .call(d3.axisLeft(y))
+    //   //   .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+
+    //   // 标题 & 轴标题（根据字段名更新）
+    //   svg.append('text')
+    //     .attr('x', width / 2)
+    //     .attr('y', 28)
+    //     .attr('text-anchor', 'middle')
+    //     .attr('font-size', '20px')
+    //     .text(`${xField} vs ${yField}`);
+
+    //   g.append('text')
+    //     .attr('x', innerWidth / 2)
+    //     .attr('y', innerHeight + 40)
+    //     .attr('text-anchor', 'middle')
+    //     .attr('fill', 'black')
+    //     .text(yField);
+
+    //   g.append('text')
+    //     .attr('transform', 'rotate(-90)')
+    //     .attr('x', -innerHeight / 2)
+    //     .attr('y', -80)
+    //     .attr('text-anchor', 'middle')
+    //     .attr('fill', 'black')
+    //     .text(xField);
+      
+    //   // // 缩放：保持边距不丢失
+    //   // const zoom = d3.zoom()
+    //   // //   .scaleExtent([0.5, 10])
+    //   // .on("zoom", (event) => {
+    //   //     g.attr("transform", event.transform);
+    //   // });
+
+
+
+
+    //   // 图例（当有分组时）
+    //   g.selectAll('.legend').remove();
+    //   if (groups.length) {
+    //     const legend = g.append('g').attr('class', 'legend')
+    //       .attr('transform', `translate(${Math.max(0, innerWidth - 160)}, 0)`);
+
+    //     const li = legend.selectAll('g.item')
+    //       .data(groups)
+    //       .join('g')
+    //       .attr('class', 'item')
+    //       .attr('transform', (d, i) => `translate(0, ${i * 18})`);
+
+    //     li.append('rect')
+    //       .attr('width', 12).attr('height', 12).attr('rx', 2).attr('ry', 2)
+    //       .attr('fill', d => color(d));
+
+    //     li.append('text')
+    //       .attr('x', 16).attr('y', 6).attr('dy', '0.35em')
+    //       .attr('font-size', 12)
+    //       .text(d => d);
+    //   }
+
+
+    //   const zoom = d3.zoom()
+    //   // .scaleExtent([0.5, 10])
+    //   .on('zoom', (event) => {
+    //     // ✅ 把边距再加回去，缩放时不丢失 margin
+    //     g.attr('transform', event.transform.translate(margin.left, margin.top));
+    //   });
+    //   svg.on('.zoom', null); // 清理旧的 listener，避免叠加
+    //   svg.call(zoom);
+
+    // }
+
+    // function render(raw) {
+    //   const xField = xSelect.value;          // 分类（Y）
+    //   const yField = ySelect.value;          // 数值（第2个下拉）
+    //   const cField = cSelect.value || null;  // 分组（着色）
+    //   const tField = tSelect.value || '';    // 文本列（可选；若为空就用 xField）
+
+    //   // 先别强转 t；保留原始文本
+    //   let rows = raw.map(d => ({
+    //     x: d[xField],
+    //     y: +d[yField],
+    //     g: cField ? d[cField] : null,
+    //     t: tField ? d[tField] : null
+    //   })).filter(d => d.x != null && !Number.isNaN(d.y));
+
+    //   // tField 是否是“数值列”（如果是，则会出现两根并排）
+    //   const tIsNumeric = !!tField && rows.some(d => d.t != null && d.t !== '' && !Number.isNaN(+d.t));
+
+    //   // 长表：{x, s(系列名), v(值), g(分组), label(用于条内文字的原文)}
+    //   const seriesNames = tIsNumeric ? [yField, tField] : [yField];
+    //   const data = tIsNumeric
+    //     ? rows.flatMap(d => [
+    //         { x: String(d.x), s: yField, v: d.y,   g: d.g, label: d.t },
+    //         { x: String(d.x), s: tField, v: +d.t,  g: d.g, label: d.t }
+    //       ]).filter(d => !Number.isNaN(d.v))
+    //     : rows.map(d => ({ x: String(d.x), s: yField, v: d.y, g: d.g, label: d.t }));
+
+    //   svg.selectAll('*').remove();
+
+    //   const { width, height } = getSize();
+    //   const innerWidth  = width  - margin.left - margin.right;
+    //   const innerHeight = height - margin.top  - margin.bottom;
+    //   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    //   // 比例尺
+    //   const cats = Array.from(new Set(data.map(d => d.x)));
+    //   const x = d3.scaleLinear()
+    //     .domain([0, d3.max(data, d => d.v) || 0]).nice()
+    //     .range([0, innerWidth]);
+
+    //   const y0 = d3.scaleBand()
+    //     .domain(cats)
+    //     .range([0, 3.3 * innerHeight])
+    //     .paddingInner(0.12);
+
+    //   const y1 = d3.scaleBand()
+    //     .domain(seriesNames)
+    //     .range([0, y0.bandwidth()])
+    //     .padding(seriesNames.length > 1 ? 0.12 : 0.0);
+
+    //   // 颜色：按 cField 分组；没选 cField 时按系列
+    //   const groups = cField ? Array.from(new Set(data.map(d => d.g))) : [];
+    //   const color = groups.length
+    //     ? d3.scaleOrdinal().domain(groups)
+    //         .range(groups.length <= 10 ? d3.schemeTableau10 : d3.quantize(d3.interpolateRainbow, groups.length))
+    //     : d3.scaleOrdinal().domain(seriesNames).range(d3.schemeTableau10.slice(0, seriesNames.length));
+    //   const fillOf = d => groups.length ? color(d.g) : color(d.s);
+
+    //   // 画条
+    //   const catG = g.selectAll('.cat')
+    //     .data(cats)
+    //     .join('g')
+    //       .attr('class', 'cat')
+    //       .attr('transform', d => `translate(0,${y0(d)})`);
+
+    //   catG.selectAll('rect')
+    //     .data(cat => data.filter(e => e.x === cat))
+    //     .join('rect')
+    //       .attr('x', 0)
+    //       .attr('y', d => y1(d.s))
+    //       .attr('width', d => x(d.v))
+    //       .attr('height', y1.bandwidth())
+    //       .attr('fill', d => fillOf(d))
+    //       .attr('fill-opacity', d => tIsNumeric ? (d.s === yField ? 0.95 : 0.55) : 0.95)
+    //       .attr('rx', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2))
+    //       .attr('ry', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2));
+
+    //   // === 条内文字（关键改动）===
+    //   // 文本优先级：若 tField 是“文本列” -> 用 tField；否则回退到 xField
+    //   const PADDING = 6, INSIDE_MIN_W = 40;
+    //   const labelText = d => {
+    //     const txt = (!tIsNumeric && tField && d.label != null && d.label !== '') ? String(d.label) : d.x;
+    //     return txt;
+    //   };
+    //   const textColorFor = (bg) => {
+    //     const c = d3.color(bg || '#000'); const L = 0.299*c.r + 0.587*c.g + 0.114*c.b;
+    //     return L < 140 ? 'white' : '#111';
+    //   };
+
+    //   // 只给“第2个下拉（yField）”对应的那根条加文字
+    //   catG.selectAll('text.bar-label')
+    //     .data(cat => data.filter(e => e.x === cat && e.s === yField))
+    //     .join('text')
+    //       .attr('class', 'bar-label')
+    //       .attr('x', d => {
+    //         const w = x(d.v);
+    //         return w > INSIDE_MIN_W ? PADDING : w + PADDING;
+    //       })
+    //       .attr('y', d => y1(d.s) + y1.bandwidth()/2)
+    //       .attr('dy', '0.35em')
+    //       .attr('text-anchor', 'start')
+    //       .attr('fill', d => {
+    //         const w = x(d.v);
+    //         const bg = fillOf(d);
+    //         return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
+    //       })
+    //       .text(d => labelText(d));
+
+    //   // 轴：X 正常；Y 轴只保留位置，去掉刻度文字（不再把 xField 文本显示在轴上）
+    //   g.append('g')
+    //     .attr('transform', `translate(0,${3.3 * innerHeight})`)
+    //     .call(d3.axisBottom(x))
+    //     .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+
+    //   g.append('g')
+    //     .call(d3.axisLeft(y0).tickSize(0).tickFormat(() => '')); // ← 隐藏 Y 轴刻度文字
+
+    //   // 标题
+    //   svg.append('text')
+    //     .attr('x', width / 2)
+    //     .attr('y', 28)
+    //     .attr('text-anchor', 'middle')
+    //     .attr('font-size', '20px')
+    //     .text(() => {
+    //       if (tIsNumeric) return `${xField}：${yField} vs ${tField}（按 ${cField || '无分组'} 着色）`;
+    //       if (tField)     return `${xField}（条内显示：${tField}，着色：${cField || '无分组'}）`;
+    //       return `${xField}（条内显示：${xField}，着色：${cField || '无分组'}）`;
+    //     });
+
+    //   // 分组图例
+    //   g.selectAll('.legend').remove();
+    //   if (groups.length) {
+    //     const legend = g.append('g').attr('class', 'legend')
+    //       .attr('transform', `translate(${Math.max(0, innerWidth - 160)}, 0)`);
+    //     const li = legend.selectAll('g.item')
+    //       .data(groups)
+    //       .join('g')
+    //         .attr('class', 'item')
+    //         .attr('transform', (d, i) => `translate(0, ${i * 18})`);
+    //     li.append('rect')
+    //       .attr('width', 12).attr('height', 12).attr('rx', 2).attr('ry', 2)
+    //       .attr('fill', d => color(d));
+    //     li.append('text')
+    //       .attr('x', 16).attr('y', 6).attr('dy', '0.35em')
+    //       .attr('font-size', 12)
+    //       .text(d => d);
+    //   }
+
+    //   // 二系列时的“小系列说明”（透明度区分），可留可删
+    //   if (tIsNumeric) {
+    //     const seriesLegend = g.append('g').attr('class', 'legend series-legend')
+    //       .attr('transform', `translate(${Math.max(0, innerWidth - 160)}, ${groups.length ? (groups.length*18 + 10) : 0})`);
+    //     const sl = seriesLegend.selectAll('g.item')
+    //       .data(seriesNames)
+    //       .join('g')
+    //         .attr('class', 'item')
+    //         .attr('transform', (d, i) => `translate(0, ${i * 18})`);
+    //     sl.append('rect')
+    //       .attr('width', 12).attr('height', 12).attr('rx', 2).attr('ry', 2)
+    //       .attr('fill', '#777')
+    //       .attr('fill-opacity', d => d === yField ? 0.95 : 0.55);
+    //     sl.append('text')
+    //       .attr('x', 16).attr('y', 6).attr('dy', '0.35em')
+    //       .attr('font-size', 12)
+    //       .text(d => d);
+    //   }
+
+    //   // 缩放
+    //   const zoom = d3.zoom().on('zoom', (event) => {
+    //     g.attr('transform', event.transform.translate(margin.left, margin.top));
+    //   });
+    //   svg.on('.zoom', null);
+    //   svg.call(zoom);
+    // }
+
+    function render(raw) {
+      const xField = xSelect.value;          // 分类（Y 轴）
+      const yField = ySelect.value;          // 数值1（第一根条）
+      const cField = cSelect.value || null;  // 分组（着色）
+      const tField = tSelect.value || '';    // 第二槽位：文字或第二数值
+
+      // 读取行（保留 t 原值用于判断是否数字）
+      const rows = raw.map(d => ({
         x: d[xField],
         y: +d[yField],
         g: cField ? d[cField] : null,
         t: tField ? d[tField] : null
       })).filter(d => d.x != null && !Number.isNaN(d.y));
 
-      // data = data.map(d => ({
-      //   platform: d.platform,
-      //   globalsale: +d.globalsale
-      // })).filter(d => d.platform != null && !Number.isNaN(d.globalsale));
+      const tChosen    = !!tField;
+      const tIsNumeric = tChosen && rows.some(d => d.t != null && d.t !== '' && !Number.isNaN(+d.t));
 
-
+      // 画布
       svg.selectAll('*').remove();
-
       const { width, height } = getSize();
       const innerWidth  = width  - margin.left - margin.right;
       const innerHeight = height - margin.top  - margin.bottom;
-
       const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-      // const x = d3.scaleLinear()
-      //   // .domain([0, d3.max(data, d => d.globalsale) || 0])
-      //   .domain([0, d3.max(data, d => d.x) || 0])
-      //   .nice()
-      //   .range([0, innerWidth]);
+      // 维度域 & 比例尺
+      const cats = Array.from(new Set(rows.map(d => String(d.x))));
+      // 两个槽位都保留（t 为文本时也要给它一个“槽位”放文字）
+      const seriesNames = tChosen ? [yField, tField] : [yField];
 
-      // const y = d3.scaleBand()
-      //   // .domain(data.map(d => d.platform))
-      //   .domain(data.map(d => d.y))
-      //   .range([0, innerHeight])
-      //   .padding(0.1);
+      // 实际会绘制的条：第一条必有；第二条仅在 t 为数字时绘制
+      const bars = [];
+      for (const d of rows) {
+        bars.push({ x: String(d.x), s: yField, v: d.y,  g: d.g });
+        if (tIsNumeric) {
+          const v2 = +d.t;
+          if (!Number.isNaN(v2)) bars.push({ x: String(d.x), s: tField, v: v2, g: d.g });
+        }
+      }
 
       const x = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.y) || 0]) // ✅ X 轴用数值 y
-        .nice()
+        .domain([0, d3.max(bars, d => d.v) || 0]).nice()
         .range([0, innerWidth]);
 
-      const y = d3.scaleBand()
-        .domain(data.map(d => String(d.x))) // ✅ Y 轴用分类 x
-        .range([0, innerHeight])
-        .padding(0.1);
+      const y0 = d3.scaleBand()
+        .domain(cats)
+        .range([0, 3.3 * innerHeight])
+        .paddingInner(0.12);
 
+      const y1 = d3.scaleBand()
+        .domain(seriesNames)
+        .range([0, y0.bandwidth()])
+        .padding(seriesNames.length > 1 ? 0.12 : 0.0);
 
-      // 颜色比例尺：当选择了分组列时启用
-      const groups = cField ? Array.from(new Set(data.map(d => d.g))) : [];
-      const colorRange = groups.length <= 10
-        ? d3.schemeTableau10
-        : d3.quantize(d3.interpolateRainbow, groups.length);
-      const color = groups.length ? d3.scaleOrdinal().domain(groups).range(colorRange) : null;
+      // 颜色（按 cField 分组；若未选 cField，退化为按槽位上色）
+      const groups = cField ? Array.from(new Set(rows.map(d => d.g))) : [];
+      const color = groups.length
+        ? d3.scaleOrdinal().domain(groups)
+            .range(groups.length <= 10 ? d3.schemeTableau10
+                                      : d3.quantize(d3.interpolateRainbow, groups.length))
+        : d3.scaleOrdinal().domain(seriesNames).range(d3.schemeTableau10.slice(0, seriesNames.length));
+      const fillOf = d => groups.length ? color(d.g) : color(d.s);
 
+      // 条形（第一条必画，第二条仅数字时画）
+      const catG = g.selectAll('.cat')
+        .data(cats)
+        .join('g')
+          .attr('class', 'cat')
+          .attr('transform', d => `translate(0,${y0(d)})`);
 
-      // 条形
-      g.selectAll('rect')
-        .data(data)
+      catG.selectAll('rect')
+        .data(cat => bars.filter(e => e.x === cat))
         .join('rect')
-        .attr('x', 0)
-        // .attr('y', d => y(d.platform))
-        // .attr('width', d => x(d.globalsale))
-        // .attr('y', d => y(d.y))
-        // .attr('width', d => x(d.x))
-        .attr('y', d => y(String(d.x)))
-        .attr('width', d => x(d.y))
-        .attr('height', y.bandwidth())
-        // .attr('fill', 'steelblue')
-        .attr('fill', d => color ? color(d.g) : 'steelblue')
-        .attr('rx', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
-        .attr('ry', d => Math.min(3, y.bandwidth()/2, x(d.y)/2)) // 倒角
+          .attr('x', 0)
+          .attr('y', d => y1(d.s))
+          .attr('width', d => x(d.v))
+          .attr('height', y1.bandwidth())
+          .attr('fill', d => fillOf(d))
+          .attr('rx', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2))
+          .attr('ry', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2));
 
-
-      // === 在横条里放“Y 轴刻度文字”（分类名）===
-      const PADDING = 6;       // 文字与条左边的内边距
-      const INSIDE_MIN_W = 40; // 条太短时把文字放到条外侧，避免看不清
-      const textColorFor = (bg) => {   // 根据背景自动选黑/白
-        const c = d3.color(bg || '#000');
-        const L = 0.299 * c.r + 0.587 * c.g + 0.114 * c.b;
+      // === 条内文字（第一个 option：xField）——显示在第一根条里 ===
+      const PADDING = 6, INSIDE_MIN_W = 40;
+      const textColorFor = (bg) => {
+        const c = d3.color(bg || '#000'); const L = 0.299*c.r + 0.587*c.g + 0.114*c.b;
         return L < 140 ? 'white' : '#111';
       };
 
-
-
-      g.selectAll('text.bar-label')
-        .data(data)
+      // 只给第一槽位（yField）的条加 xField 文本
+      catG.selectAll('text.x-in-bar')
+        .data(cat => bars.filter(e => e.x === cat && e.s === yField))
         .join('text')
-        .attr('class', 'bar-label')
-        .attr('x', d => {
-          const w = x(d.y);
-          return w > INSIDE_MIN_W ? PADDING : w + PADDING; // 条短→放条外
-        })
-        .attr('y', d => y(String(d.x)) + y.bandwidth()/2)
-        .attr('dy', '0.35em') // 垂直居中微调
-        .attr('text-anchor', 'start')
-        // .attr('fill', d => x(d.y) > INSIDE_MIN_W ? 'white' : '#333')
-        .attr('fill', d => {
-          const w = x(d.y);
-          const bg = color ? color(d.g) : 'steelblue';
-          return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
-        })
-        .text(d => String(d.x)); // 用分类名作为“Y轴刻度文字”
+          .attr('class', 'x-in-bar')
+          .attr('x', d => {
+            const w = x(d.v);
+            return w > INSIDE_MIN_W ? PADDING : w + PADDING;
+          })
+          .attr('y', d => y1(d.s) + y1.bandwidth()/2)
+          .attr('dy', '0.35em')
+          .attr('text-anchor', 'start')
+          .attr('fill', d => {
+            const w = x(d.v);
+            const bg = fillOf(d);
+            return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
+          })
+          .text(d => d.x); // ← 第一个 option 的文字（分类名）
 
+      // === 第二槽位（tField）：文字或条 ===
+      // t 为文本：不画条，只在它应在的位置显示文字，颜色由 cField 控制
+      if (tChosen && !tIsNumeric) {
+        catG.selectAll('text.t-slot')
+          .data(cat => rows.filter(e => String(e.x) === cat))
+          .join('text')
+            .attr('class', 't-slot')
+            .attr('x', PADDING)
+            .attr('y', y1(tField) + y1.bandwidth()/2)
+            .attr('dy', '0.35em')
+            .attr('text-anchor', 'start')
+            .attr('font-size', 12)
+            .attr('fill', d => groups.length ? color(d.g) : '#333') // ← 受第三个 option（cField）控制
+            .text(d => (d.t != null && d.t !== '') ? String(d.t) : '');
+      }
 
-      // 轴
+      // 轴：X 正常；Y 轴隐藏文字（避免与条内文字重复）
       g.append('g')
-        .attr('transform', `translate(0,${innerHeight})`)
+        .attr('transform', `translate(0,${3.3 * innerHeight})`)
         .call(d3.axisBottom(x))
         .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
 
-      // g.append('g')
-      //   .call(d3.axisLeft(y))
-      //   .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+      g.append('g')
+        .call(d3.axisLeft(y0).tickSize(0).tickFormat(() => ''));
 
-      // 标题 & 轴标题（根据字段名更新）
-      svg.append('text')
-        .attr('x', width / 2)
-        .attr('y', 28)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '20px')
-        .text(`${xField} vs ${yField}`);
-
-      g.append('text')
-        .attr('x', innerWidth / 2)
-        .attr('y', innerHeight + 40)
-        .attr('text-anchor', 'middle')
-        .attr('fill', 'black')
-        .text(yField);
-
-      g.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('x', -innerHeight / 2)
-        .attr('y', -80)
-        .attr('text-anchor', 'middle')
-        .attr('fill', 'black')
-        .text(xField);
-      
-      // // 缩放：保持边距不丢失
-      // const zoom = d3.zoom()
-      // //   .scaleExtent([0.5, 10])
-      // .on("zoom", (event) => {
-      //     g.attr("transform", event.transform);
-      // });
-
-
-
-
-      // 图例（当有分组时）
+      // 分组图例（按 cField）
       g.selectAll('.legend').remove();
       if (groups.length) {
         const legend = g.append('g').attr('class', 'legend')
           .attr('transform', `translate(${Math.max(0, innerWidth - 160)}, 0)`);
-
         const li = legend.selectAll('g.item')
           .data(groups)
           .join('g')
-          .attr('class', 'item')
-          .attr('transform', (d, i) => `translate(0, ${i * 18})`);
-
+            .attr('class', 'item')
+            .attr('transform', (d, i) => `translate(0, ${i * 18})`);
         li.append('rect')
           .attr('width', 12).attr('height', 12).attr('rx', 2).attr('ry', 2)
           .attr('fill', d => color(d));
-
         li.append('text')
           .attr('x', 16).attr('y', 6).attr('dy', '0.35em')
           .attr('font-size', 12)
           .text(d => d);
       }
 
+      // 标题（可选）
+      svg.append('text')
+        .attr('x', width / 2)
+        .attr('y', 28)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '20px')
+        .text(() => {
+          if (!tChosen) return `${xField} vs ${yField}（着色：${cField || '无分组'}）`;
+          return tIsNumeric
+            ? `${xField}：${yField}（条） vs ${tField}（条）｜着色：${cField || '无分组'}`
+            : `${xField}：${yField}（条内显 ${xField}），${tField}（第二槽位文本，按 ${cField || '无分组'} 着色）`;
+        });
 
-      const zoom = d3.zoom()
-      // .scaleExtent([0.5, 10])
-      .on('zoom', (event) => {
-        // ✅ 把边距再加回去，缩放时不丢失 margin
+      // 缩放
+      const zoom = d3.zoom().on('zoom', (event) => {
         g.attr('transform', event.transform.translate(margin.left, margin.top));
       });
-      svg.on('.zoom', null); // 清理旧的 listener，避免叠加
+      svg.on('.zoom', null);
       svg.call(zoom);
-
     }
+
+
 
     // 窗口大小变化后，如已有数据则重绘（加简单防抖）
     let resizeTimer;
