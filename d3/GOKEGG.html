@@ -53,6 +53,7 @@
     <select id="yField"></select>
     <select id="cField"></select>
     <select id="tField"></select>
+    <select id="oField"></select>
   </div>
 
   <div class="hint">
@@ -74,6 +75,7 @@
     const ySelect   = document.getElementById('yField'); // 数值（X 轴，linear）
     const cSelect  = document.getElementById('cField'); // 颜色分组（可选）
     const tSelect  = document.getElementById('tField'); // 下方文字列（可选）
+    const oSelect  = document.getElementById('oField'); // 圆圈列（可选，数值）
 
     let lastFile = null;   // 缓存最近一次用户选择的 File（本地文件）
     let lastData = null;   // 缓存最近一次渲染的数据（用于窗口 resize 重绘）
@@ -239,10 +241,12 @@
       ySelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （数值列）</option>';
       cSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （颜色分组 列，可选）</option>';
       tSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （下方文字 列，可选）</option>';
+      oSelect.innerHTML = '<option disabled selected>先加载 CSV/TSV… （圆圈列，可选，数值）</option>';
       xSelect.disabled = true;
       ySelect.disabled = true;
       cSelect.disabled = true;
       tSelect.disabled = true;
+      oSelect.disabled = true;
     }
       
     // 1) 加载数据后提取字段并填充下拉
@@ -251,12 +255,15 @@
       ySelect.disabled = false;
       cSelect.disabled = false;
       tSelect.disabled = false;
+      oSelect.disabled = false;
 
       xSelect.innerHTML = '';
       ySelect.innerHTML = '';
       cSelect.innerHTML = '';
       tSelect.innerHTML = '';
+      oSelect.innerHTML = '';
 
+      // x / y：全部列
       for (const col of columns) {
         xSelect.add(new Option(col, col));
         ySelect.add(new Option(col, col));
@@ -275,20 +282,25 @@
       }
 
 
+      // o：圆圈列（数值），第一项“不绘制圆圈”
+      oSelect.add(new Option('（不绘制圆圈）', ''));
+      for (const col of columns) oSelect.add(new Option(col, col));
+
       // 智能默认：分类列常见命名；数值列常见命名
       const guessCat = columns.find(c => /(platform|name|category|type|label|city|country)/i.test(c)) ?? columns[0];
       const guessVal = columns.find(c => /(global|sale|value|amount|total|score|count|num|quantity|qty|price)/i.test(c)) 
                     ?? columns.find(c => c !== guessCat) 
                     ?? columns[0];
       const guessCol = columns.find(c => /^ontology$/i.test(c)) ?? ''; // 有 ONTOLOGY 就默认选它，否则不分组
+      const guessTxt = columns.find(c => /(desc|label2|subtitle|note|info|text)/i.test(c)) ?? '';
+
 
       xSelect.value = guessCat;
       ySelect.value = guessVal;
       cSelect.value = guessCol;
+      tSelect.value = guessTxt;       // 下方文字默认不显示；若存在常见命名可自动猜测
+      oSelect.value = '';       // 默认不画圆圈
 
-      // 下方文字默认不显示；若存在常见命名可自动猜测
-      const guessTxt = columns.find(c => /(desc|label2|subtitle|note|info|text)/i.test(c)) ?? '';
-      tSelect.value = guessTxt;
 
     }
 
@@ -661,36 +673,214 @@
     //   svg.call(zoom);
     // }
 
+
+    // // 完成second bar and text
+    // function render(raw) {
+    //   const xField = xSelect.value;          // 分类（Y 轴）
+    //   const yField = ySelect.value;          // 数值1（第一根条）
+    //   const cField = cSelect.value || null;  // 分组（着色）
+    //   const tField = tSelect.value || '';    // 第二槽位：文字或第二数值
+
+    //   // 读取行（保留 t 原值用于判断是否数字）
+    //   const rows = raw.map(d => ({
+    //     x: d[xField],
+    //     y: +d[yField],
+    //     g: cField ? d[cField] : null,
+    //     t: tField ? d[tField] : null
+    //   })).filter(d => d.x != null && !Number.isNaN(d.y));
+
+    //   const tChosen    = !!tField;
+    //   const tIsNumeric = tChosen && rows.some(d => d.t != null && d.t !== '' && !Number.isNaN(+d.t));
+
+    //   // 画布
+    //   svg.selectAll('*').remove();
+    //   const { width, height } = getSize();
+    //   const innerWidth  = width  - margin.left - margin.right;
+    //   const innerHeight = height - margin.top  - margin.bottom;
+    //   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    //   // 维度域 & 比例尺
+    //   const cats = Array.from(new Set(rows.map(d => String(d.x))));
+    //   // 两个槽位都保留（t 为文本时也要给它一个“槽位”放文字）
+    //   const seriesNames = tChosen ? [yField, tField] : [yField];
+
+    //   // 实际会绘制的条：第一条必有；第二条仅在 t 为数字时绘制
+    //   const bars = [];
+    //   for (const d of rows) {
+    //     bars.push({ x: String(d.x), s: yField, v: d.y,  g: d.g });
+    //     if (tIsNumeric) {
+    //       const v2 = +d.t;
+    //       if (!Number.isNaN(v2)) bars.push({ x: String(d.x), s: tField, v: v2, g: d.g });
+    //     }
+    //   }
+
+    //   const x = d3.scaleLinear()
+    //     .domain([0, d3.max(bars, d => d.v) || 0]).nice()
+    //     .range([0, innerWidth]);
+
+    //   const y0 = d3.scaleBand()
+    //     .domain(cats)
+    //     .range([0, 3.3 * innerHeight])
+    //     .paddingInner(0.12);
+
+    //   const y1 = d3.scaleBand()
+    //     .domain(seriesNames)
+    //     .range([0, y0.bandwidth()])
+    //     .padding(seriesNames.length > 1 ? 0.12 : 0.0);
+
+    //   // 颜色（按 cField 分组；若未选 cField，退化为按槽位上色）
+    //   const groups = cField ? Array.from(new Set(rows.map(d => d.g))) : [];
+    //   const color = groups.length
+    //     ? d3.scaleOrdinal().domain(groups)
+    //         .range(groups.length <= 10 ? d3.schemeTableau10
+    //                                   : d3.quantize(d3.interpolateRainbow, groups.length))
+    //     : d3.scaleOrdinal().domain(seriesNames).range(d3.schemeTableau10.slice(0, seriesNames.length));
+    //   const fillOf = d => groups.length ? color(d.g) : color(d.s);
+
+    //   // 条形（第一条必画，第二条仅数字时画）
+    //   const catG = g.selectAll('.cat')
+    //     .data(cats)
+    //     .join('g')
+    //       .attr('class', 'cat')
+    //       .attr('transform', d => `translate(0,${y0(d)})`);
+
+    //   catG.selectAll('rect')
+    //     .data(cat => bars.filter(e => e.x === cat))
+    //     .join('rect')
+    //       .attr('x', 0)
+    //       .attr('y', d => y1(d.s))
+    //       .attr('width', d => x(d.v))
+    //       .attr('height', y1.bandwidth())
+    //       .attr('fill', d => fillOf(d))
+    //       .attr('rx', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2))
+    //       .attr('ry', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2));
+
+    //   // === 条内文字（第一个 option：xField）——显示在第一根条里 ===
+    //   const PADDING = 6, INSIDE_MIN_W = 40;
+    //   const textColorFor = (bg) => {
+    //     const c = d3.color(bg || '#000'); const L = 0.299*c.r + 0.587*c.g + 0.114*c.b;
+    //     return L < 140 ? 'white' : '#111';
+    //   };
+
+    //   // 只给第一槽位（yField）的条加 xField 文本
+    //   catG.selectAll('text.x-in-bar')
+    //     .data(cat => bars.filter(e => e.x === cat && e.s === yField))
+    //     .join('text')
+    //       .attr('class', 'x-in-bar')
+    //       .attr('x', d => {
+    //         const w = x(d.v);
+    //         return w > INSIDE_MIN_W ? PADDING : w + PADDING;
+    //       })
+    //       .attr('y', d => y1(d.s) + y1.bandwidth()/2)
+    //       .attr('dy', '0.35em')
+    //       .attr('text-anchor', 'start')
+    //       .attr('fill', d => {
+    //         const w = x(d.v);
+    //         const bg = fillOf(d);
+    //         return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
+    //       })
+    //       .text(d => d.x); // ← 第一个 option 的文字（分类名）
+
+    //   // === 第二槽位（tField）：文字或条 ===
+    //   // t 为文本：不画条，只在它应在的位置显示文字，颜色由 cField 控制
+    //   if (tChosen && !tIsNumeric) {
+    //     catG.selectAll('text.t-slot')
+    //       .data(cat => rows.filter(e => String(e.x) === cat))
+    //       .join('text')
+    //         .attr('class', 't-slot')
+    //         .attr('x', PADDING)
+    //         .attr('y', y1(tField) + y1.bandwidth()/2)
+    //         .attr('dy', '0.35em')
+    //         .attr('text-anchor', 'start')
+    //         .attr('font-size', 12)
+    //         .attr('fill', d => groups.length ? color(d.g) : '#333') // ← 受第三个 option（cField）控制
+    //         .text(d => (d.t != null && d.t !== '') ? String(d.t) : '');
+    //   }
+
+    //   // 轴：X 正常；Y 轴隐藏文字（避免与条内文字重复）
+    //   g.append('g')
+    //     .attr('transform', `translate(0,${3.3 * innerHeight})`)
+    //     .call(d3.axisBottom(x))
+    //     .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
+
+    //   g.append('g')
+    //     .call(d3.axisLeft(y0).tickSize(0).tickFormat(() => ''));
+
+    //   // 分组图例（按 cField）
+    //   g.selectAll('.legend').remove();
+    //   if (groups.length) {
+    //     const legend = g.append('g').attr('class', 'legend')
+    //       .attr('transform', `translate(${Math.max(0, innerWidth - 160)}, 0)`);
+    //     const li = legend.selectAll('g.item')
+    //       .data(groups)
+    //       .join('g')
+    //         .attr('class', 'item')
+    //         .attr('transform', (d, i) => `translate(0, ${i * 18})`);
+    //     li.append('rect')
+    //       .attr('width', 12).attr('height', 12).attr('rx', 2).attr('ry', 2)
+    //       .attr('fill', d => color(d));
+    //     li.append('text')
+    //       .attr('x', 16).attr('y', 6).attr('dy', '0.35em')
+    //       .attr('font-size', 12)
+    //       .text(d => d);
+    //   }
+
+    //   // 标题（可选）
+    //   svg.append('text')
+    //     .attr('x', width / 2)
+    //     .attr('y', 28)
+    //     .attr('text-anchor', 'middle')
+    //     .attr('font-size', '20px')
+    //     .text(() => {
+    //       if (!tChosen) return `${xField} vs ${yField}（着色：${cField || '无分组'}）`;
+    //       return tIsNumeric
+    //         ? `${xField}：${yField}（条） vs ${tField}（条）｜着色：${cField || '无分组'}`
+    //         : `${xField}：${yField}（条内显 ${xField}），${tField}（第二槽位文本，按 ${cField || '无分组'} 着色）`;
+    //     });
+
+    //   // 缩放
+    //   const zoom = d3.zoom().on('zoom', (event) => {
+    //     g.attr('transform', event.transform.translate(margin.left, margin.top));
+    //   });
+    //   svg.on('.zoom', null);
+    //   svg.call(zoom);
+    // }
+
     function render(raw) {
       const xField = xSelect.value;          // 分类（Y 轴）
       const yField = ySelect.value;          // 数值1（第一根条）
       const cField = cSelect.value || null;  // 分组（着色）
-      const tField = tSelect.value || '';    // 第二槽位：文字或第二数值
+      const tField = tSelect.value || '';    // 第二槽位：文字或第二数值（可选）
+      const oField = oSelect.value || '';    // 圆圈列（可选，数值）
 
-      // 读取行（保留 t 原值用于判断是否数字）
+      // 读取行（保留 t 原值；o 尝试转数值）
       const rows = raw.map(d => ({
         x: d[xField],
         y: +d[yField],
         g: cField ? d[cField] : null,
-        t: tField ? d[tField] : null
+        t: tField ? d[tField] : null,
+        o: oField ? +d[oField] : NaN
       })).filter(d => d.x != null && !Number.isNaN(d.y));
 
       const tChosen    = !!tField;
       const tIsNumeric = tChosen && rows.some(d => d.t != null && d.t !== '' && !Number.isNaN(+d.t));
+      const oChosen    = !!oField;
+      const oMax       = oChosen ? d3.max(rows, d => Number.isFinite(d.o) ? d.o : NaN) : 0;
 
-      // 画布
+      // 清空 & 画布
       svg.selectAll('*').remove();
       const { width, height } = getSize();
       const innerWidth  = width  - margin.left - margin.right;
       const innerHeight = height - margin.top  - margin.bottom;
+
+      // 先创建 g，稍后根据圆圈需要的额外左边距再更新 transform
       const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
       // 维度域 & 比例尺
       const cats = Array.from(new Set(rows.map(d => String(d.x))));
-      // 两个槽位都保留（t 为文本时也要给它一个“槽位”放文字）
       const seriesNames = tChosen ? [yField, tField] : [yField];
 
-      // 实际会绘制的条：第一条必有；第二条仅在 t 为数字时绘制
+      // bars（真正绘制的矩形）：第一条必有；第二条仅 t 为数字时绘制
       const bars = [];
       for (const d of rows) {
         bars.push({ x: String(d.x), s: yField, v: d.y,  g: d.g });
@@ -704,6 +894,7 @@
         .domain([0, d3.max(bars, d => d.v) || 0]).nice()
         .range([0, innerWidth]);
 
+      // 你当前用的是“加长高度”的方式，这里保持一致（3.3 倍）
       const y0 = d3.scaleBand()
         .domain(cats)
         .range([0, 3.3 * innerHeight])
@@ -714,7 +905,7 @@
         .range([0, y0.bandwidth()])
         .padding(seriesNames.length > 1 ? 0.12 : 0.0);
 
-      // 颜色（按 cField 分组；若未选 cField，退化为按槽位上色）
+      // 分组着色（优先按 cField；没有分组时按槽位上色）
       const groups = cField ? Array.from(new Set(rows.map(d => d.g))) : [];
       const color = groups.length
         ? d3.scaleOrdinal().domain(groups)
@@ -723,7 +914,18 @@
         : d3.scaleOrdinal().domain(seriesNames).range(d3.schemeTableau10.slice(0, seriesNames.length));
       const fillOf = d => groups.length ? color(d.g) : color(d.s);
 
-      // 条形（第一条必画，第二条仅数字时画）
+      // ==== 圆圈列：半径比例尺（直径与该分类“两个 bar 的总体高度”对应）====
+      // 最大直径 = y0.bandwidth()；按数值线性映射到直径 → 半径
+      const rScale = (oChosen && oMax > 0)
+        ? d3.scaleLinear().domain([0, oMax]).range([0, y0.bandwidth() / 2])
+        : null;
+
+      // 根据最大半径，为左侧自动留白，避免圆圈被裁剪
+      const maxR     = rScale ? rScale(oMax) : 0;
+      const extraLeft = rScale ? (maxR * 2 + 12) : 0; // 左侧再留 12px 的间距
+      g.attr('transform', `translate(${margin.left + extraLeft},${margin.top})`);
+
+      // ====== 矩形条形（第一条必画，第二条仅数字时画）======
       const catG = g.selectAll('.cat')
         .data(cats)
         .join('g')
@@ -741,14 +943,13 @@
           .attr('rx', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2))
           .attr('ry', d => Math.min(3, y1.bandwidth()/2, x(d.v)/2));
 
-      // === 条内文字（第一个 option：xField）——显示在第一根条里 ===
+      // ====== 条内文字：在“第一槽位（yField）”里显示 xField 文本 ======
       const PADDING = 6, INSIDE_MIN_W = 40;
       const textColorFor = (bg) => {
         const c = d3.color(bg || '#000'); const L = 0.299*c.r + 0.587*c.g + 0.114*c.b;
         return L < 140 ? 'white' : '#111';
       };
 
-      // 只给第一槽位（yField）的条加 xField 文本
       catG.selectAll('text.x-in-bar')
         .data(cat => bars.filter(e => e.x === cat && e.s === yField))
         .join('text')
@@ -765,11 +966,11 @@
             const bg = fillOf(d);
             return w > INSIDE_MIN_W ? textColorFor(bg) : '#333';
           })
-          .text(d => d.x); // ← 第一个 option 的文字（分类名）
+          .text(d => d.x);
 
-      // === 第二槽位（tField）：文字或条 ===
-      // t 为文本：不画条，只在它应在的位置显示文字，颜色由 cField 控制
+      // ====== 第二槽位（tField）：文字或条 ======
       if (tChosen && !tIsNumeric) {
+        // 文本：不画条，只在第二槽位位置显示，颜色由 cField 控制
         catG.selectAll('text.t-slot')
           .data(cat => rows.filter(e => String(e.x) === cat))
           .join('text')
@@ -779,20 +980,38 @@
             .attr('dy', '0.35em')
             .attr('text-anchor', 'start')
             .attr('font-size', 12)
-            .attr('fill', d => groups.length ? color(d.g) : '#333') // ← 受第三个 option（cField）控制
+            .attr('fill', d => groups.length ? color(d.g) : '#333')
             .text(d => (d.t != null && d.t !== '') ? String(d.t) : '');
       }
 
-      // 轴：X 正常；Y 轴隐藏文字（避免与条内文字重复）
+      // ====== 圆圈：在刻度左侧，圆心对齐分类中心，直径按 oField 映射 ======
+      if (rScale) {
+        const circles = g.append('g').attr('class', 'o-circles');
+        circles.selectAll('circle')
+          .data(rows)
+          .join('circle')
+            .attr('cx', d => {
+              const r = rScale(Math.max(0, Number.isFinite(d.o) ? d.o : 0));
+              return -r - 8; // 在 y 轴左侧一点点（8px）间距
+            })
+            .attr('cy', d => y0(String(d.x)) + y0.bandwidth()/2)
+            .attr('r',  d => rScale(Math.max(0, Number.isFinite(d.o) ? d.o : 0)))
+            .attr('fill', 'none')
+            .attr('stroke', d => groups.length ? color(d.g) : '#666')
+            .attr('stroke-width', 1.5);
+      }
+
+      // ====== 坐标轴 ======
       g.append('g')
         .attr('transform', `translate(0,${3.3 * innerHeight})`)
         .call(d3.axisBottom(x))
         .call(g => g.selectAll('.tick text').attr('font-size', '12px'));
 
+      // 隐藏 Y 轴文字（避免与条内文字重复），保留刻度线需要的话可改 tickSize
       g.append('g')
         .call(d3.axisLeft(y0).tickSize(0).tickFormat(() => ''));
 
-      // 分组图例（按 cField）
+      // ====== 分组图例（按 cField）======
       g.selectAll('.legend').remove();
       if (groups.length) {
         const legend = g.append('g').attr('class', 'legend')
@@ -811,27 +1030,28 @@
           .text(d => d);
       }
 
-      // 标题（可选）
+      // ====== 标题（可选）======
       svg.append('text')
         .attr('x', width / 2)
         .attr('y', 28)
         .attr('text-anchor', 'middle')
         .attr('font-size', '20px')
         .text(() => {
-          if (!tChosen) return `${xField} vs ${yField}（着色：${cField || '无分组'}）`;
-          return tIsNumeric
-            ? `${xField}：${yField}（条） vs ${tField}（条）｜着色：${cField || '无分组'}`
-            : `${xField}：${yField}（条内显 ${xField}），${tField}（第二槽位文本，按 ${cField || '无分组'} 着色）`;
+          const parts = [];
+          parts.push(`${xField} × ${yField}`);
+          if (tChosen) parts.push(tIsNumeric ? `+ ${tField}（第二条）` : `+ ${tField}（第二槽位文本）`);
+          if (oChosen) parts.push(`○ ${oField}（左侧圆圈，直径映射）`);
+          parts.push(`着色：${cField || '无分组'}`);
+          return parts.join('｜');
         });
 
       // 缩放
       const zoom = d3.zoom().on('zoom', (event) => {
-        g.attr('transform', event.transform.translate(margin.left, margin.top));
+        g.attr('transform', event.transform.translate(margin.left + extraLeft, margin.top));
       });
       svg.on('.zoom', null);
       svg.call(zoom);
     }
-
 
 
     // 窗口大小变化后，如已有数据则重绘（加简单防抖）
